@@ -35,18 +35,19 @@ typedef struct{
     union Slave slave;
 }Line;
 
+void init(void);
 void I2C_Color_init(void);
 void I2C_LCD_Position(uint8 row, uint8 column);
 void I2C_LCD_Init(void);
 void Motor_Right(int16 speed);
 void Motor_Left(int16 speed);
+void PWM_Servo(uint8 id,uint8 value);
 
 int main()
 {
     const uint8 speed = 200;
     uint8 s = 0, i = 0, sensor[3] = {};
     uint8 AreaFlag = 0, aFlag = 0, hFlag = 0;
-    uint16 x=0;
     double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
     char value[20];
     Line line;
@@ -55,20 +56,8 @@ int main()
     CyDelay(500);
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
-    PWM_Servo_Start();
-    PWM_Motor_a_Start();
-    PWM_Motor_b_Start();    
-    Motor_Right(0);
-    Motor_Left(0);
-    ADC_DelSig_Distance_Start();
-    ADC_DelSig_Distance_StartConvert();
-    AMux_D_Sensor_Start();
-    UART_Line_Sensor_Start();
-    I2C_1_Start();
-    I2C_LCD_1_Start();
-    I2C_LCD_Init();
-
-    CyDelay(1000);
+    init();
+    CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
     CyDelay(1000);
@@ -80,7 +69,7 @@ int main()
     {
         Debug_LED_Write(1);
         /* Place your application code here. */
-        
+        CyDelay(500);
         //ラインセンサ受信
         if(UART_Line_Sensor_GetRxBufferSize())
         {
@@ -173,6 +162,21 @@ int main()
     }
 }
 
+void PWM_Servo(uint8 id, uint8 value){
+    if(value>21){
+        value = 21;
+    }
+    else if(value<9){
+        value = 9;
+    }
+    if(id == 0){
+        PWM_Servo_WriteCompare1(value);
+    }
+    else if(id == 1){
+        PWM_Servo_WriteCompare2(value);
+    }
+}
+
 void Motor_Right(int16 speed){
     
     if((0<speed)&&(speed<255))
@@ -251,4 +255,20 @@ void I2C_LCD_Init(void)
     I2C_LCD_1_Clear();
     I2C_LCD_1_EntryModeSet();
     CyDelay(1);    //I2C_LCD_1_WriteControl(0x0fu); //Disp:On Cursor:On Position:On
+}
+
+void init(void)
+{
+    PWM_Servo_Start();
+    PWM_Motor_a_Start();
+    PWM_Motor_b_Start();    
+    Motor_Right(0);
+    Motor_Left(0);
+    ADC_DelSig_Distance_Start();
+    ADC_DelSig_Distance_StartConvert();
+    AMux_D_Sensor_Start();
+    UART_Line_Sensor_Start();
+    I2C_1_Start();
+    I2C_LCD_1_Start();
+    I2C_LCD_Init();
 }
