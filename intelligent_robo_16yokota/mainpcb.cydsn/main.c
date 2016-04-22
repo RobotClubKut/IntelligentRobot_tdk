@@ -14,6 +14,8 @@
 
 #define BLACK 1
 #define WHITE 0
+#define UPDOWN 0
+#define GRAB 1
 
 union Slave{
     uint8 Trans;
@@ -47,7 +49,7 @@ int main()
 {
     const uint8 speed = 200;
     uint8 s = 0, i = 0, sensor[3] = {};
-    uint8 AreaFlag = 0, aFlag = 0, hFlag = 0;
+    uint8 AreaFlag = 0, aFlag = 0, hFlag = 0, val=0;
     double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
     char value[20];
     Line line;
@@ -65,8 +67,14 @@ int main()
     Motor_Left(speed);
     CyDelay(800);
     I2C_LCD_1_Clear();
+    val = 10;
     for(;;)
     {
+        
+        //PWMサーボ
+        PWM_Servo(GRAB,12);//9~21
+        
+        
         Debug_LED_Write(1);
         /* Place your application code here. */
         CyDelay(500);
@@ -124,7 +132,7 @@ int main()
         }
         if((aFlag == 1)&&(hFlag == 1))
         {
-            AreaFlag++;
+            //AreaFlag++;
             aFlag = 0;
             hFlag = 0;    
             if(AreaFlag == 4)
@@ -260,8 +268,8 @@ void I2C_LCD_Init(void)
 void init(void)
 {
     PWM_Servo_Start();
-    PWM_Motor_a_Start();
-    PWM_Motor_b_Start();    
+    //PWM_Motor_a_Start();
+    //PWM_Motor_b_Start();    
     Motor_Right(0);
     Motor_Left(0);
     ADC_DelSig_Distance_Start();
