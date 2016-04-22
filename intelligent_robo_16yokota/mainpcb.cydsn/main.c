@@ -67,15 +67,49 @@ int main()
     Motor_Left(speed);
     CyDelay(800);
     I2C_LCD_1_Clear();
-    val = 10;
+    while(Debug_Switch_Read()==1);
+    CyDelay(200);
     for(;;)
     {
         
-        //PWMサーボ
-        PWM_Servo(GRAB,12);//9~21
-        
-        
         Debug_LED_Write(1);
+        //PWMサーボ
+        
+        while(Debug_Switch_Read()==1)
+        {
+            PWM_Servo(GRAB,9);//9~21
+            PWM_Servo(UPDOWN,14);
+            sprintf(value, "Mode=1");
+            I2C_LCD_Position(0u,0u);
+            I2C_LCD_1_PrintString(value);
+        }
+        CyDelay(200);
+        while(Debug_Switch_Read()==1)
+        {
+            PWM_Servo(UPDOWN,9);
+            sprintf(value, "Mode=2");
+            I2C_LCD_Position(0u,0u);
+            I2C_LCD_1_PrintString(value);
+        }
+        CyDelay(200);
+        while(Debug_Switch_Read()==1)
+        {
+            PWM_Servo(GRAB,21);
+            sprintf(value, "Mode=3");
+            I2C_LCD_Position(0u,0u);
+            I2C_LCD_1_PrintString(value);
+        }
+        CyDelay(200);
+        while(Debug_Switch_Read()==1)
+        {
+            PWM_Servo(UPDOWN,14);
+            sprintf(value, "Mode=4");
+            I2C_LCD_Position(0u,0u);
+            I2C_LCD_1_PrintString(value);
+        }
+        
+        CyDelay(200);
+        
         /* Place your application code here. */
         CyDelay(500);
         //ラインセンサ受信
