@@ -12,6 +12,8 @@
 #include <project.h>
 #include <stdio.h>
 
+uint8 g_timerFlag = 0;
+
 #define BLACK 1
 #define WHITE 0
 #define UPDOWN 0
@@ -37,19 +39,82 @@ typedef struct{
     union Slave slave;
 }Line;
 
+CY_ISR(clock_isr)
+{
+    g_timerFlag = 1;
+}
+
 void init(void);
 void I2C_Color_init(void);
 void I2C_LCD_Position(uint8 row, uint8 column);
 void I2C_LCD_Init(void);
 void Motor_Right(int16 speed);
 void Motor_Left(int16 speed);
-void PWM_Servo(uint8 id,uint8 value);
+void PWM_Servo(uint8 id,uint16 value);
+
+void Catch_Ball(void){
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    count++;
+    
+    if(count < limit)
+    {
+        return;
+    }
+    
+    if(step == 0)
+    {
+        PWM_Servo(GRAB,500);//450~1050
+        PWM_Servo(UPDOWN,600);
+        limit = 500;
+        I2C_LCD_Position(0u,0u);
+        I2C_LCD_1_PrintString("step=1");
+        step++;
+    }
+    else
+    if(step == 1)
+    {
+        PWM_Servo(UPDOWN,470);
+        limit = 500;
+        I2C_LCD_Position(0u,0u);
+        I2C_LCD_1_PrintString("step=2");
+        step++;
+    }
+    else
+    if(step == 2)
+    {
+        PWM_Servo(GRAB,1050);
+        limit = 500;
+        step++;
+    }
+    else
+    if(step == 3)
+    {
+        PWM_Servo(UPDOWN,600);
+        limit = 500;
+        step++;
+    }
+    else
+    if(step == 4)
+    {
+        step = 0;
+        return;
+    }
+    count = 0;
+    if(limit == 0)
+    {
+        step++;
+    }
+}
 
 int main()
 {
     const uint8 speed = 200;
     uint8 s = 0, i = 0, sensor[3] = {};
     uint8 AreaFlag = 0, aFlag = 0, hFlag = 0, val=0;
+    uint16 j = 0;
     double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
     char value[20];
     Line line;
@@ -59,6 +124,7 @@ int main()
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
     init();
+    isr_1_StartEx(clock_isr);
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
@@ -71,145 +137,113 @@ int main()
     CyDelay(200);
     for(;;)
     {
-        
         Debug_LED_Write(1);
-        //PWMサーボ
         
-        while(Debug_Switch_Read()==1)
+        if(g_timerFlag == 1)
         {
-            PWM_Servo(GRAB,9);//9~21
-            PWM_Servo(UPDOWN,14);
-            sprintf(value, "Mode=1");
-            I2C_LCD_Position(0u,0u);
-            I2C_LCD_1_PrintString(value);
-        }
-        CyDelay(200);
-        while(Debug_Switch_Read()==1)
-        {
-            PWM_Servo(UPDOWN,9);
-            sprintf(value, "Mode=2");
-            I2C_LCD_Position(0u,0u);
-            I2C_LCD_1_PrintString(value);
-        }
-        CyDelay(200);
-        while(Debug_Switch_Read()==1)
-        {
-            PWM_Servo(GRAB,21);
-            sprintf(value, "Mode=3");
-            I2C_LCD_Position(0u,0u);
-            I2C_LCD_1_PrintString(value);
-        }
-        CyDelay(200);
-        while(Debug_Switch_Read()==1)
-        {
-            PWM_Servo(UPDOWN,14);
-            sprintf(value, "Mode=4");
-            I2C_LCD_Position(0u,0u);
-            I2C_LCD_1_PrintString(value);
-        }
-        
-        CyDelay(200);
-        
-        /* Place your application code here. */
-        CyDelay(500);
-        //ラインセンサ受信
-        if(UART_Line_Sensor_GetRxBufferSize())
-        {
-            line.slave.Trans = (uint8)UART_Line_Sensor_GetChar();
-        }
-         
-        p = (double)(line.slave.status.h*(-3)+line.slave.status.g*(-2)+line.slave.status.f*(-1)+line.slave.status.e*(0)+
-        line.slave.status.d*(1)+line.slave.status.c*(2)+line.slave.status.b*(3)+line.slave.status.a*(4));
-        s = line.slave.status.h + line.slave.status.g + line.slave.status.f + line.slave.status.e + 
-        line.slave.status.d + line.slave.status.c + line.slave.status.b + line.slave.status.a;
-        
-        if(s!=0)
-        {
-            p/=(double)s;
-            p2 = p1;
-            p1 = p0;
-            p0 = p;
-            dif += 16.1 * (p0-p1);//speed=200のとき
-            //dif += 16.5 * (p0-p1) + 0.15 * p0 + 3.3 *((p0-p1) - (p1-p2));
-            if(dif > speed)
+            Catch_Ball();
+            /* Place your application code here. */
+            //ラインセンサ受信
+            if(UART_Line_Sensor_GetRxBufferSize())
             {
-                dif = speed;
+                line.slave.Trans = (uint8)UART_Line_Sensor_GetChar();
             }
-            else if(dif < -speed)
-            {
-                dif = -speed;
-            }
-            Motor_Right(speed - (int)dif);
-            Motor_Left(speed + (int)dif);
+             
+            p = (double)(line.slave.status.h*(-3)+line.slave.status.g*(-2)+line.slave.status.f*(-1)+line.slave.status.e*(0)+
+            line.slave.status.d*(1)+line.slave.status.c*(2)+line.slave.status.b*(3)+line.slave.status.a*(4));
+            s = line.slave.status.h + line.slave.status.g + line.slave.status.f + line.slave.status.e + 
+            line.slave.status.d + line.slave.status.c + line.slave.status.b + line.slave.status.a;
             
-           
-            if(dif>0)
+            if(s!=0)
             {
-                I2C_LCD_Position(1u,7u);
-                I2C_LCD_1_PrintString("right");
+                p/=(double)s;
+                p2 = p1;
+                p1 = p0;
+                p0 = p;
+                dif += 16.1 * (p0-p1);//speed=200のとき
+                //dif += 16.5 * (p0-p1) + 0.15 * p0 + 3.3 *((p0-p1) - (p1-p2));
+                if(dif > speed)
+                {
+                    dif = speed;
+                }
+                else if(dif < -speed)
+                {
+                    dif = -speed;
+                }
+                Motor_Right(speed - (int)dif);
+                Motor_Left(speed + (int)dif);
+                
+               
+                if(dif>0)
+                {
+                    I2C_LCD_Position(1u,7u);
+                    I2C_LCD_1_PrintString("right");
+                }
+                else if(dif<0)
+                {
+                    I2C_LCD_Position(1u,7u);
+                    I2C_LCD_1_PrintString("left");
+                }
             }
-            else if(dif<0)
-            {
-                I2C_LCD_Position(1u,7u);
-                I2C_LCD_1_PrintString("left");
-            }
-        }
 
-        //ライン読む
-        if(line.slave.status.a==1)
-        {
-            aFlag = 1;
-        }
-        if(line.slave.status.h==1)
-        {
-            hFlag = 1;
-        }
-        if((aFlag == 1)&&(hFlag == 1))
-        {
-            //AreaFlag++;
-            aFlag = 0;
-            hFlag = 0;    
-            if(AreaFlag == 4)
+            //ライン読む
+            if(line.slave.status.a==1)
             {
-                Motor_Right(0);
-                Motor_Left(0);
-                sprintf(value, "Area=%d",AreaFlag);
-                I2C_LCD_Position(1u,0u);
-                I2C_LCD_1_PrintString(value);
-                for(;;);
+                aFlag = 1;
             }
-            CyDelay(150);
-        }
-        sprintf(value, "Area=%d",AreaFlag);
-        I2C_LCD_Position(1u,0u);
-        I2C_LCD_1_PrintString(value);
-        //距離センサー
-        for(i=0;i<3;i++)
-        {
-            AMux_D_Sensor_Select(i);
-            ADC_DelSig_Distance_StartConvert();
-            ADC_DelSig_Distance_IsEndConversion(ADC_DelSig_Distance_WAIT_FOR_RESULT);
-            sensor[i] = ADC_DelSig_Distance_GetResult8();
-            ADC_DelSig_Distance_StopConvert();
-        }
+            if(line.slave.status.h==1)
+            {
+                hFlag = 1;
+            }
+            if((aFlag == 1)&&(hFlag == 1))
+            {
+                //AreaFlag++;
+                aFlag = 0;
+                hFlag = 0;    
+                if(AreaFlag == 4)
+                {
+                    Motor_Right(0);
+                    Motor_Left(0);
+                    sprintf(value, "Area=%d",AreaFlag);
+                    I2C_LCD_Position(1u,0u);
+                    I2C_LCD_1_PrintString(value);
+                    for(;;);
+                }
+                CyDelay(150);
+            }
+            sprintf(value, "Area=%d",AreaFlag);
+            I2C_LCD_Position(1u,0u);
+            I2C_LCD_1_PrintString(value);
+            //距離センサー
+            for(i=0;i<3;i++)
+            {
+                AMux_D_Sensor_Select(i);
+                ADC_DelSig_Distance_StartConvert();
+                ADC_DelSig_Distance_IsEndConversion(ADC_DelSig_Distance_WAIT_FOR_RESULT);
+                sensor[i] = ADC_DelSig_Distance_GetResult8();
+                ADC_DelSig_Distance_StopConvert();
+            }
 
-        if((sensor[1]>150)&&(sensor[1]<180))
-        {
-            for(;;)
+            if((sensor[1]>150)&&(sensor[1]<180))
             {
-                Motor_Right(0);
-                Motor_Left(0);
+                for(;;)
+                {
+                    Motor_Right(0);
+                    Motor_Left(0);
+                }
             }
-        }           
+            
+            g_timerFlag = 0;
+        }
     }
 }
 
-void PWM_Servo(uint8 id, uint8 value){
-    if(value>21){
-        value = 21;
+void PWM_Servo(uint8 id, uint16 value){
+    if(value>1050){
+        value = 1050;
     }
-    else if(value<9){
-        value = 9;
+    else if(value<450){
+        value = 450;
     }
     if(id == 0){
         PWM_Servo_WriteCompare1(value);
