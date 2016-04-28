@@ -63,11 +63,33 @@ void Motor_Left(int16 speed);
 void PWM_Servo(uint8 id,uint16 value);
 void Catch_Ball(void);
 void Line_Trace(Let *let);
+void Color_Sensor(Let *let){
+    uint8 r=0,g=0,b=0;
+    unsigned char txReadStatus = 0x03;
+    unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
+    char value[20];
+   
+    I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
+    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT));
+    I2C_1_MasterClearStatus();
+    I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
+    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
+    I2C_1_MasterClearStatus();
+    r = rxBuf[0]<< 8|rxBuf[1];
+    g = rxBuf[2]<< 8|rxBuf[3];
+    b = rxBuf[4]<< 8|rxBuf[5];
+    sprintf(value, "r=%d",r);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+    
+    //色判断して構造体に格納
+    
+}
 
 int main()
 {
     const uint8 speed = 200;
-    uint8 i,sensor[3] = {};
+    uint8 i, sensor[3];
     uint16 j = 0;
     char value[20];
     Let *let;
@@ -102,8 +124,9 @@ int main()
     CyDelay(800);
     for(;;)
     {
+        Sensor_LED_Write(1);
         Debug_LED_Write(1);
-        Line_Trace(let);
+        //Line_Trace(let);
         if(g_timerFlag == 1)
         {
             //Catch_Ball();
@@ -352,7 +375,6 @@ void I2C_LCD_Init(void)
 
 void init(void)
 {
-    
     PWM_Motor_a_Start();
     PWM_Motor_b_Start();    
     Motor_Right(0);
@@ -364,5 +386,5 @@ void init(void)
     I2C_1_Start();
     I2C_LCD_1_Start();
     I2C_LCD_Init();
-    //I2C_Color_init();
+    I2C_Color_init();
 }
