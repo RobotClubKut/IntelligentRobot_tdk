@@ -85,11 +85,15 @@ void Catch_Ball(void){
     else
     if(step == 3)
     {
-        PWM_Servo(UPDOWN,count+100);
-        limit = 500;
+        PWM_Servo(UPDOWN,470+(int)(1.3*count));
+        limit = 100;
+    }else
+    if(step == 4)
+    {
+        limit = 200;
     }
     else
-    if(step == 4)
+    if(step == 5)
     {
         step = 0;
         return;
@@ -121,7 +125,7 @@ int main()
     char value[20];
     Line line;
     /* Enable global interrupts. */
-    CyGlobalIntEnable; 
+    CyGlobalIntEnable;
     CyDelay(500);
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
@@ -130,13 +134,21 @@ int main()
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
-    CyDelay(1000);
+    
+    PWM_Servo_Start();
+    for(j=450;j<600;j++)
+    {
+        PWM_Servo(UPDOWN,j);
+        CyDelay(10);
+    }
+    while(Debug_Switch_Read()==1){
+        PWM_Servo(UPDOWN,600);
+        PWM_Servo(GRAB,500);
+    }
+    I2C_LCD_1_Clear();    
     Motor_Right(speed);
     Motor_Left(speed);
     CyDelay(800);
-    I2C_LCD_1_Clear();
-    while(Debug_Switch_Read()==1);
-    CyDelay(200);
     for(;;)
     {
         Debug_LED_Write(1);
@@ -339,7 +351,7 @@ void I2C_LCD_Init(void)
 
 void init(void)
 {
-    PWM_Servo_Start();
+    
     //PWM_Motor_a_Start();
     //PWM_Motor_b_Start();    
     Motor_Right(0);
