@@ -19,6 +19,7 @@ uint16 g_count = 0;
 #define WHITE 0
 #define UPDOWN 0
 #define GRAB 1
+#define LINE_TRACE 0
 
 union Slave{
     uint8 Trans;
@@ -40,6 +41,14 @@ typedef struct{
     union Slave slave;
 }Line;
 
+typedef struct{
+    union Slave slave;
+    uint8 speed;
+    uint8 Area;
+    uint8 position;
+    uint8 unmber;
+}Let;
+
 CY_ISR(clock_isr)
 {
     g_timerFlag = 1;
@@ -52,78 +61,17 @@ void I2C_LCD_Init(void);
 void Motor_Right(int16 speed);
 void Motor_Left(int16 speed);
 void PWM_Servo(uint8 id,uint16 value);
-
-void Catch_Ball(void){
-    static uint8 step = 0;
-    static uint16 count = 0;
-    static uint16 limit = 1;
-    
-    if(step == 0)
-    {
-        PWM_Servo(GRAB,500);//450~1050
-        PWM_Servo(UPDOWN,600);
-        limit = 300;
-        I2C_LCD_Position(0u,0u);
-        I2C_LCD_1_PrintString("step=0");
-    }
-    else
-    if(step == 1)
-    {
-        PWM_Servo(UPDOWN,470);
-        limit = 300;
-        I2C_LCD_Position(0u,0u);
-        I2C_LCD_1_PrintString("step=1");
-    }
-    else
-    if(step == 2)
-    {
-        PWM_Servo(GRAB,1050);
-        limit = 300;
-        I2C_LCD_Position(0u,0u);
-        I2C_LCD_1_PrintString("step=2");
-    }
-    else
-    if(step == 3)
-    {
-        PWM_Servo(UPDOWN,470+(int)(1.3*count));
-        limit = 100;
-    }else
-    if(step == 4)
-    {
-        limit = 200;
-    }
-    else
-    if(step == 5)
-    {
-        step = 0;
-        return;
-    }
-    
-    /*
-    if(count < limit)
-    {
-        return;
-    }
-    */
-    
-    if(limit == count)
-    {
-        count = 0;
-        step++;
-        return;
-    }
-    count++;
-}
+void Catch_Ball(void);
+void Line_Trace(Let *let);
 
 int main()
 {
     const uint8 speed = 200;
-    uint8 s = 0, i = 0, sensor[3] = {};
-    uint8 AreaFlag = 0, aFlag = 0, hFlag = 0, val=0;
+    uint8 i,sensor[3] = {};
     uint16 j = 0;
-    double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
     char value[20];
-    Line line;
+    Let *let;
+    let->speed=200;//速度変更
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -134,100 +82,33 @@ int main()
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
-    
+    //アームの初期化
     PWM_Servo_Start();
-    for(j=450;j<600;j++)
+    CyDelay(200);
+    for(j=470;j<600;j++)
     {
         PWM_Servo(UPDOWN,j);
-        CyDelay(10);
+        CyDelay(8);
     }
     while(Debug_Switch_Read()==1){
+        I2C_LCD_Position(1u,0u);
+        I2C_LCD_1_PrintString("Are You Ready!!");
         PWM_Servo(UPDOWN,600);
         PWM_Servo(GRAB,500);
     }
-    I2C_LCD_1_Clear();    
+    I2C_LCD_1_Clear();   
     Motor_Right(speed);
     Motor_Left(speed);
     CyDelay(800);
     for(;;)
     {
         Debug_LED_Write(1);
-        
+        Line_Trace(let);
         if(g_timerFlag == 1)
         {
-            Catch_Ball();
+            //Catch_Ball();
             /* Place your application code here. */
-            //ラインセンサ受信
-            if(UART_Line_Sensor_GetRxBufferSize())
-            {
-                line.slave.Trans = (uint8)UART_Line_Sensor_GetChar();
-            }
-             
-            p = (double)(line.slave.status.h*(-3)+line.slave.status.g*(-2)+line.slave.status.f*(-1)+line.slave.status.e*(0)+
-            line.slave.status.d*(1)+line.slave.status.c*(2)+line.slave.status.b*(3)+line.slave.status.a*(4));
-            s = line.slave.status.h + line.slave.status.g + line.slave.status.f + line.slave.status.e + 
-            line.slave.status.d + line.slave.status.c + line.slave.status.b + line.slave.status.a;
             
-            if(s!=0)
-            {
-                p/=(double)s;
-                p2 = p1;
-                p1 = p0;
-                p0 = p;
-                dif += 16.1 * (p0-p1);//speed=200のとき
-                //dif += 16.5 * (p0-p1) + 0.15 * p0 + 3.3 *((p0-p1) - (p1-p2));
-                if(dif > speed)
-                {
-                    dif = speed;
-                }
-                else if(dif < -speed)
-                {
-                    dif = -speed;
-                }
-                Motor_Right(speed - (int)dif);
-                Motor_Left(speed + (int)dif);
-                
-               
-                if(dif>0)
-                {
-                    I2C_LCD_Position(1u,7u);
-                    I2C_LCD_1_PrintString("right");
-                }
-                else if(dif<0)
-                {
-                    I2C_LCD_Position(1u,7u);
-                    I2C_LCD_1_PrintString("left");
-                }
-            }
-
-            //ライン読む
-            if(line.slave.status.a==1)
-            {
-                aFlag = 1;
-            }
-            if(line.slave.status.h==1)
-            {
-                hFlag = 1;
-            }
-            if((aFlag == 1)&&(hFlag == 1))
-            {
-                //AreaFlag++;
-                aFlag = 0;
-                hFlag = 0;    
-                if(AreaFlag == 4)
-                {
-                    Motor_Right(0);
-                    Motor_Left(0);
-                    sprintf(value, "Area=%d",AreaFlag);
-                    I2C_LCD_Position(1u,0u);
-                    I2C_LCD_1_PrintString(value);
-                    for(;;);
-                }
-                CyDelay(150);
-            }
-            sprintf(value, "Area=%d",AreaFlag);
-            I2C_LCD_Position(1u,0u);
-            I2C_LCD_1_PrintString(value);
             //距離センサー
             for(i=0;i<3;i++)
             {
@@ -252,6 +133,126 @@ int main()
             g_timerFlag = 0;
         }
     }
+}
+
+void Line_Trace(Let *let){
+    uint8 s = 0;
+    uint8 AreaFlag = 0, aFlag = 0, hFlag = 0;
+    double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
+    char value[20];
+    if(UART_Line_Sensor_GetRxBufferSize())
+    {
+        let->slave.Trans = (uint8)UART_Line_Sensor_GetChar();
+    }
+    p = (double)(let->slave.status.h*(-3)+let->slave.status.g*(-2)+let->slave.status.f*(-1)+let->slave.status.e*(0)+
+    let->slave.status.d*(1)+let->slave.status.c*(2)+let->slave.status.b*(3)+let->slave.status.a*(4));
+    s = let->slave.status.h + let->slave.status.g + let->slave.status.f + let->slave.status.e + 
+    let->slave.status.d + let->slave.status.c + let->slave.status.b + let->slave.status.a;
+    
+    if(s!=0)
+    {
+        p/=(double)s;
+        p2 = p1;
+        p1 = p0;
+        p0 = p;
+        dif += 16.1 * (p0-p1);//speed=200のとき
+        //dif += 16.5 * (p0-p1) + 0.15 * p0 + 3.3 *((p0-p1) - (p1-p2));
+        if(dif > let->speed)
+        {
+            dif = let->speed;
+        }
+        else if(dif < -let->speed)
+        {
+            dif = -let->speed;
+        }
+        Motor_Right(let->speed - (int)dif);
+        Motor_Left(let->speed + (int)dif);
+        
+        if(dif>0)
+        {
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("right");
+        }
+        else if(dif<0)
+        {
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("left");
+        }
+    }
+
+    //ライン読む
+    if(let->slave.status.a==1)
+    {
+        aFlag = 1;
+    }
+    if(let->slave.status.h==1)
+    {
+        hFlag = 1;
+    }
+    if((aFlag == 1)&&(hFlag == 1))
+    {
+        AreaFlag++;
+        aFlag = 0;
+        hFlag = 0;    
+        if(AreaFlag == 4)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            sprintf(value, "Area=%d",AreaFlag);
+            I2C_LCD_Position(1u,0u);
+            I2C_LCD_1_PrintString(value);
+            for(;;);
+        }
+        CyDelay(150);
+    }
+    sprintf(value, "Area=%d",AreaFlag);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+}
+
+void Catch_Ball(void){
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    if(step == 0)
+    {
+        PWM_Servo(GRAB,500);//450~1050
+        PWM_Servo(UPDOWN,600);
+        limit = 100;
+    }else
+    if(step == 1)
+    {
+        PWM_Servo(UPDOWN,600-(int)(2.6*count));
+        limit = 50;
+    }else
+    if(step == 2)
+    {
+        PWM_Servo(GRAB,1050);
+        limit = 100;
+    }else
+    if(step == 3)
+    {
+        PWM_Servo(UPDOWN,470+(int)(2.6*count));
+        limit = 50;
+    }else
+    if(step == 4)
+    {
+        limit = 200;
+    }
+    else
+    if(step == 5)
+    {
+        step = 0;
+        return;
+    }
+    if(limit == count)
+    {
+        count = 0;
+        step++;
+        return;
+    }
+    count++;
 }
 
 void PWM_Servo(uint8 id, uint16 value){
@@ -352,8 +353,8 @@ void I2C_LCD_Init(void)
 void init(void)
 {
     
-    //PWM_Motor_a_Start();
-    //PWM_Motor_b_Start();    
+    PWM_Motor_a_Start();
+    PWM_Motor_b_Start();    
     Motor_Right(0);
     Motor_Left(0);
     ADC_DelSig_Distance_Start();
@@ -363,4 +364,5 @@ void init(void)
     I2C_1_Start();
     I2C_LCD_1_Start();
     I2C_LCD_Init();
+    //I2C_Color_init();
 }
