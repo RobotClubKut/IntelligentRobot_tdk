@@ -13,6 +13,7 @@
 #include <stdio.h>
 
 uint8 g_timerFlag = 0;
+uint16 g_count = 0;
 
 #define BLACK 1
 #define WHITE 0
@@ -57,44 +58,35 @@ void Catch_Ball(void){
     static uint16 count = 0;
     static uint16 limit = 1;
     
-    count++;
-    
-    if(count < limit)
-    {
-        return;
-    }
-    
     if(step == 0)
     {
         PWM_Servo(GRAB,500);//450~1050
         PWM_Servo(UPDOWN,600);
-        limit = 500;
+        limit = 300;
         I2C_LCD_Position(0u,0u);
-        I2C_LCD_1_PrintString("step=1");
-        step++;
+        I2C_LCD_1_PrintString("step=0");
     }
     else
     if(step == 1)
     {
         PWM_Servo(UPDOWN,470);
-        limit = 500;
+        limit = 300;
         I2C_LCD_Position(0u,0u);
-        I2C_LCD_1_PrintString("step=2");
-        step++;
+        I2C_LCD_1_PrintString("step=1");
     }
     else
     if(step == 2)
     {
         PWM_Servo(GRAB,1050);
-        limit = 500;
-        step++;
+        limit = 300;
+        I2C_LCD_Position(0u,0u);
+        I2C_LCD_1_PrintString("step=2");
     }
     else
     if(step == 3)
     {
-        PWM_Servo(UPDOWN,600);
+        PWM_Servo(UPDOWN,count+100);
         limit = 500;
-        step++;
     }
     else
     if(step == 4)
@@ -102,11 +94,21 @@ void Catch_Ball(void){
         step = 0;
         return;
     }
-    count = 0;
-    if(limit == 0)
+    
+    /*
+    if(count < limit)
     {
-        step++;
+        return;
     }
+    */
+    
+    if(limit == count)
+    {
+        count = 0;
+        step++;
+        return;
+    }
+    count++;
 }
 
 int main()
@@ -224,6 +226,7 @@ int main()
                 ADC_DelSig_Distance_StopConvert();
             }
 
+            /*
             if((sensor[1]>150)&&(sensor[1]<180))
             {
                 for(;;)
@@ -232,6 +235,7 @@ int main()
                     Motor_Left(0);
                 }
             }
+            */
             
             g_timerFlag = 0;
         }
