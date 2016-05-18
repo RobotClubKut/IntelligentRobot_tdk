@@ -49,7 +49,7 @@ int main()
     uint32 min[8]  = {175,100,130,180,160,170,140,140};
     uint32 max[8]  = {190,130,160,200,180,190,160,160};
                      //a ~~~ h
-    uint8 i,tx=0;
+    uint8 i,tx=0,txold=0;
     char value[40];
     uint8 x[8];
     //Line line;
@@ -90,8 +90,10 @@ int main()
                 }
             }
          
-            UART_2_UartPutChar(tx);
-            //UART_2_SpiUartPutArray(x,8);
+            if(tx==txold){            
+                UART_2_UartPutChar(tx);
+                txold = tx;
+            }
             
             /*
             //デバッグ
