@@ -44,12 +44,13 @@ typedef struct{
 
 typedef struct{
     union Slave slave;
-    uint8 speed;
-    uint8 Area;
-    uint8 position;
-    uint8 unmber;
-    uint8 color;
-    uint8 d[3];
+    uint8 speed;//速度
+    uint8 mode;//モード
+    uint8 area;//エリア
+    uint8 line;//ライン
+    uint8 number;//ボールの個数
+    uint8 color;//色
+    uint8 d[3];//PSDセンサーの値
 }Let;
 
 CY_ISR(clock_isr)
@@ -114,8 +115,7 @@ int main()
             //Catch_Ball();
             //Color_Sensor(&let);
             PSD_Sensor(&let);
-            
-            
+
             g_timerFlag = 0;
         }
     }
@@ -153,7 +153,7 @@ void Line_Trace(Let *let){
         }
         Motor_Right(let->speed - (int)dif);
         Motor_Left(let->speed + (int)dif);
-        
+        /*
         if(dif>0)
         {
             I2C_LCD_Position(1u,7u);
@@ -164,6 +164,7 @@ void Line_Trace(Let *let){
             I2C_LCD_Position(1u,7u);
             I2C_LCD_1_PrintString("left");
         }
+        */
     }
 
     //ライン読む
@@ -231,7 +232,7 @@ void Color_Sensor(Let *let)
     //let->color = BLUE;
     //みたいな
 }
-void PSD_Sensor(Let *let){
+void PSD_Sensor(Let *let){//左端が2
     uint8 i;
     char value[20];
     for(i=0;i<3;i++)
@@ -242,6 +243,7 @@ void PSD_Sensor(Let *let){
         let->d[i] = ADC_DelSig_Distance_GetResult8();
         ADC_DelSig_Distance_StopConvert();
     }
+    /*
     I2C_LCD_1_Clear();
     sprintf(value, "1=%3d 2=%3d",let->d[0],let->d[1]);
     I2C_LCD_Position(0u,0u);
@@ -249,6 +251,7 @@ void PSD_Sensor(Let *let){
     sprintf(value, "3=%3d",let->d[2]);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
+    */
 }
 
 
