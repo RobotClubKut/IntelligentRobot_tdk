@@ -15,11 +15,12 @@
 uint8 g_timerFlag = 0;
 uint16 g_count = 0;
 
-#define BLACK 1
-#define WHITE 0
 #define UPDOWN 0
 #define GRAB 1
-#define LINE_TRACE 0
+#define LINE_TRACE 2
+#define BLUE 3
+#define RED 4
+#define YELLOW 5
 
 union Slave{
     uint8 Trans;
@@ -47,6 +48,8 @@ typedef struct{
     uint8 Area;
     uint8 position;
     uint8 unmber;
+    uint8 color;
+    uint8 d[3];
 }Let;
 
 CY_ISR(clock_isr)
@@ -63,37 +66,16 @@ void Motor_Left(int16 speed);
 void PWM_Servo(uint8 id,uint16 value);
 void Catch_Ball(void);
 void Line_Trace(Let *let);
-void Color_Sensor(Let *let){
-    uint8 r=0,g=0,b=0;
-    unsigned char txReadStatus = 0x03;
-    unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
-    char value[20];
-   
-    I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
-    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT));
-    I2C_1_MasterClearStatus();
-    I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
-    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
-    I2C_1_MasterClearStatus();
-    r = rxBuf[0]<< 8|rxBuf[1];
-    g = rxBuf[2]<< 8|rxBuf[3];
-    b = rxBuf[4]<< 8|rxBuf[5];
-    sprintf(value, "r=%d",r);
-    I2C_LCD_Position(1u,0u);
-    I2C_LCD_1_PrintString(value);
-    
-    //色判断して構造体に格納
-    
-}
+void Color_Sensor(Let *let);
+void PSD_Sensor(Let *let);
 
 int main()
 {
-    const uint8 speed = 200;
-    uint8 i, sensor[3];
     uint16 j = 0;
     char value[20];
-    Let *let;
-    let->speed=200;//速度変更
+    Let let;
+    let.speed = 200;//速度変更
+    
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -119,39 +101,20 @@ int main()
         PWM_Servo(GRAB,500);
     }
     I2C_LCD_1_Clear();   
-    Motor_Right(speed);
-    Motor_Left(speed);
+    //Motor_Right(speed);
+    //Motor_Left(speed);
     CyDelay(800);
     for(;;)
     {
-        Sensor_LED_Write(1);
+        /* Place your application code here. */
         Debug_LED_Write(1);
         //Line_Trace(let);
         if(g_timerFlag == 1)
         {
             //Catch_Ball();
-            /* Place your application code here. */
+            //Color_Sensor(&let);
+            PSD_Sensor(&let);
             
-            //距離センサー
-            for(i=0;i<3;i++)
-            {
-                AMux_D_Sensor_Select(i);
-                ADC_DelSig_Distance_StartConvert();
-                ADC_DelSig_Distance_IsEndConversion(ADC_DelSig_Distance_WAIT_FOR_RESULT);
-                sensor[i] = ADC_DelSig_Distance_GetResult8();
-                ADC_DelSig_Distance_StopConvert();
-            }
-
-            /*
-            if((sensor[1]>150)&&(sensor[1]<180))
-            {
-                for(;;)
-                {
-                    Motor_Right(0);
-                    Motor_Left(0);
-                }
-            }
-            */
             
             g_timerFlag = 0;
         }
@@ -227,11 +190,67 @@ void Line_Trace(Let *let){
             for(;;);
         }
         CyDelay(150);
+        //いずれ書き直す
     }
     sprintf(value, "Area=%d",AreaFlag);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
 }
+
+void Color_Sensor(Let *let)
+{
+    uint8 r=0,g=0,b=0;
+    unsigned char txReadStatus = 0x03;
+    unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
+    char value[20];
+    //Debug_LED_Write(1);
+    I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
+    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT)){
+//        Debug_LED_Write(0);
+//        if(g_timerFlag==1){
+//            x++;
+//        }
+//        if(x>50){
+//            break;
+//        }
+//        g_timerFlag=0;
+    }
+    I2C_1_MasterClearStatus();
+    I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
+    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
+    //Debug_LED_Write(1);
+    I2C_1_MasterClearStatus();
+    r = rxBuf[0]<< 8|rxBuf[1];
+    g = rxBuf[2]<< 8|rxBuf[3];
+    b = rxBuf[4]<< 8|rxBuf[5];
+    //sprintf(value, "r=%3d a=%3d",r,x);
+    //I2C_LCD_Position(1u,0u);
+    //I2C_LCD_1_PrintString(value);
+    //色判断して構造体に格納
+    
+    //let->color = BLUE;
+    //みたいな
+}
+void PSD_Sensor(Let *let){
+    uint8 i;
+    char value[20];
+    for(i=0;i<3;i++)
+    {
+        AMux_D_Sensor_Select(i);
+        ADC_DelSig_Distance_StartConvert();
+        ADC_DelSig_Distance_IsEndConversion(ADC_DelSig_Distance_WAIT_FOR_RESULT);
+        let->d[i] = ADC_DelSig_Distance_GetResult8();
+        ADC_DelSig_Distance_StopConvert();
+    }
+    I2C_LCD_1_Clear();
+    sprintf(value, "1=%3d 2=%3d",let->d[0],let->d[1]);
+    I2C_LCD_Position(0u,0u);
+    I2C_LCD_1_PrintString(value);
+    sprintf(value, "3=%3d",let->d[2]);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+}
+
 
 void Catch_Ball(void){
     static uint8 step = 0;
