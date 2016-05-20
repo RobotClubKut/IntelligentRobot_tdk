@@ -9,7 +9,6 @@
  *
  * ========================================
 */
-
 #include <project.h>
 #include <stdio.h>
 #include "intelligent_robo.h"
@@ -17,12 +16,14 @@
 uint8 g_timerFlag = 0;
 uint16 g_count = 0;
 
-#define UPDOWN 0
-#define GRAB 1
-#define LINE_TRACE 2
-#define BLUE 3
-#define RED 4
-#define YELLOW 5
+/* Mode */
+#define MODE_SHOOTING_TENNIS_BALL   1
+#define MODE_LINE_TRACE             2
+#define MODE_SEEK                   3
+#define MODE_APPROACH               4
+#define MODE_CATCH                  5
+#define MODE_SHOOT                  6
+#define MODE_MOVE                   7
 
 CY_ISR(clock_isr)
 {
@@ -47,23 +48,25 @@ int main()
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
     //アームの初期化
+    let.mode = MODE_SHOOTING_TENNIS_BALL;
     PWM_Servo_Start();
     CyDelay(200);
-    for(j=470;j<600;j++)
+    for(j=470;j<800;j++)
     {
         PWM_Servo(UPDOWN,j);
         CyDelay(8);
     }
-    while(Debug_Switch_Read()==1){
-        I2C_LCD_Position(1u,0u);
-        I2C_LCD_1_PrintString("Are You Ready!!");
-        PWM_Servo(UPDOWN,600);
+    while(Debug_Switch_Read()==1){//ボタン押したらスタート
+        //I2C_LCD_Position(1u,0u);
+        //I2C_LCD_1_PrintString("Are You Ready!!");
+        PWM_Servo(UPDOWN,800);
         PWM_Servo(GRAB,1050);
     }
-    I2C_LCD_1_Clear();   
-    //Motor_Right(speed);
-    //Motor_Left(speed);
-    CyDelay(800);
+    I2C_LCD_1_Clear();
+    CyDelay(400);
+    Motor_Right(let.speed);
+    Motor_Left(let.speed);
+    CyDelay(700);
     for(;;)
     {
         /* Place your application code here. */
@@ -71,12 +74,15 @@ int main()
         //Line_Trace(let);
         if(g_timerFlag == 1)
         {
-            Catch_Ball();
+            if(let.mode == MODE_SHOOTING_TENNIS_BALL)
+            {
+                Shooting_tennis_ball(&let);
+            }
+            //Catch_Ball();
             //Color_Sensor(&let);
-            PSD_Sensor(&let);
-
+            //PSD_Sensor(&let);
+            //Line_Trace(&let);
             g_timerFlag = 0;
         }
     }
 }
-

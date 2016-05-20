@@ -2,10 +2,67 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
+void Throw_Ball(void){
+ 
+    
+    
+    
+}
+
+void Shooting_tennis_ball(Let *let){
+    
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    if(let->area == 0)
+    {
+        Line_Trace(let);
+    }
+    else if(let->area == 1)
+    {
+        if(step == 0)
+        {
+            Motor_Right(150);
+            Motor_Left(-20);
+            limit = 100;
+        }else 
+        if(step == 1)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            PWM_Servo(UPDOWN,470);
+            PWM_Servo(GRAB,500);
+            limit = 100;
+        }else
+        if(step == 2)
+        {
+            PWM_Servo(UPDOWN,470+(int)(3.3*count));
+            Motor_Right(-150);
+            limit = 100;
+        }else
+        if(step == 3)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->mode = MODE_LINE_TRACE;
+        }
+           
+        if(limit == count)
+        {
+            count = 0;
+            step++;
+            return;
+        }
+        count++;
+    }
+    
+}
+
 void Line_Trace(Let *let){
     uint8 s = 0;
-    uint8 AreaFlag = 0, aFlag = 0, hFlag = 0;
-    double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
+    static uint8 AreaFlag = 0, aFlag = 0, hFlag = 0;
+    static double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
     char value[20];
     if(UART_Line_Sensor_GetRxBufferSize())
     {
@@ -59,22 +116,13 @@ void Line_Trace(Let *let){
     }
     if((aFlag == 1)&&(hFlag == 1))
     {
-        AreaFlag++;
+        let->area++;
         aFlag = 0;
-        hFlag = 0;    
-        if(AreaFlag == 4)
-        {
-            Motor_Right(0);
-            Motor_Left(0);
-            sprintf(value, "Area=%d",AreaFlag);
-            I2C_LCD_Position(1u,0u);
-            I2C_LCD_1_PrintString(value);
-            for(;;);
-        }
+        hFlag = 0;
         CyDelay(150);
         //いずれ書き直す
     }
-    sprintf(value, "Area=%d",AreaFlag);
+    sprintf(value, "Area=%d",let->area);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
 }
@@ -86,6 +134,7 @@ void Color_Sensor(Let *let)
     unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
     char value[20];
     //Debug_LED_Write(1);
+    Sensor_LED_Write(1);
     I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
     while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT)){
 //        Debug_LED_Write(0);
@@ -105,9 +154,14 @@ void Color_Sensor(Let *let)
     r = rxBuf[0]<< 8|rxBuf[1];
     g = rxBuf[2]<< 8|rxBuf[3];
     b = rxBuf[4]<< 8|rxBuf[5];
-    //sprintf(value, "r=%3d a=%3d",r,x);
-    //I2C_LCD_Position(1u,0u);
-    //I2C_LCD_1_PrintString(value);
+    
+    I2C_LCD_1_Clear();
+    sprintf(value, "r=%3d g=%3d",r,g);
+    I2C_LCD_Position(0u,0u);
+    I2C_LCD_1_PrintString(value);
+     sprintf(value, "b=%3d",b);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
     //色判断して構造体に格納
     
     //let->color = BLUE;
@@ -188,10 +242,10 @@ void PWM_Servo(uint8 id, uint16 value){
     else if(value<450){
         value = 450;
     }
-    if(id == 0){
+    if(id == UPDOWN){
         PWM_Servo_WriteCompare1(value);
     }
-    else if(id == 1){
+    else if(id == GRAB){
         PWM_Servo_WriteCompare2(value);
     }
 }
