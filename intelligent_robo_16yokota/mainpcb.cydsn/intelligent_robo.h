@@ -49,7 +49,7 @@ typedef struct{
 
 
 /* 汎用 */
-void Throw_Ball(void);
+void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);
 void Catch_Ball(void);
 void Line_Trace(Let *let);

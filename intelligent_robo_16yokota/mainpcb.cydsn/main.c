@@ -78,6 +78,14 @@ int main()
             {
                 Shooting_tennis_ball(&let);
             }
+            else if(let.mode == MODE_LINE_TRACE)
+            {
+                Go_Ball_Area(&let);
+            }
+            else if(let.mode == MODE_SEEK)
+            {
+                    
+            }
             //Catch_Ball();
             //Color_Sensor(&let);
             //PSD_Sensor(&let);

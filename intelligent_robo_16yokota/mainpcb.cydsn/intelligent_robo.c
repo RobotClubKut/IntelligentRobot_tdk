@@ -2,11 +2,15 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
-void Throw_Ball(void){
- 
+void Go_Ball_Area(Let *let){
     
-    
-    
+    Line_Trace(let);
+    if(let->area == 4)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        let->mode = MODE_SEEK;
+    }
 }
 
 void Shooting_tennis_ball(Let *let){
