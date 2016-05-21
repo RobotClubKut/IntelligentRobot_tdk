@@ -196,9 +196,9 @@ void Color_Sensor(Let *let)
     //let->color = BLUE;
     //みたいな
 }
-void PSD_Sensor(Let *let){//左端が2
+void PSD_Sensor(Let *let){//0が右端
     uint8 i;
-    char value[20];
+    char value[30];
     for(i=0;i<3;i++)
     {
         AMux_D_Sensor_Select(i);
@@ -215,7 +215,8 @@ void PSD_Sensor(Let *let){//左端が2
     sprintf(value, "3=%3d",let->d[2]);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
-    
+    sprintf(value,"1=%3d 2=%3d 3=%3d\n", let->d[0], let->d[1], let->d[2]);
+    UART_Line_Sensor_PutString(value);
 }
 
 //改良する予定

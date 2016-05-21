@@ -51,10 +51,12 @@ int main()
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
+    PWM_Servo_Start();
     if(MODE_DEBUG)
     {
         for(;;)
         {
+            PWM_Servo(UPDOWN,DOWN);
             PSD_Sensor(&let); 
         }
     }
