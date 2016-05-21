@@ -38,8 +38,8 @@ int main()
     /* 速度変更 */
     let.speed = 200;
     /* アームの初期化 */
-    let.mode = MODE_SHOOTING_TENNIS_BALL;
-    
+    //let.mode = MODE_SHOOTING_TENNIS_BALL;
+    let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -51,10 +51,17 @@ int main()
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
-   
+    if(MODE_DEBUG)
+    {
+        for(;;)
+        {
+            PSD_Sensor(&let); 
+        }
+    }
+    
     PWM_Servo_Start();
     CyDelay(200);
-    for(j=470;j<800;j++)
+    for(j=DOWN;j<UP;j++)
     {
         PWM_Servo(UPDOWN,j);
         CyDelay(8);
@@ -62,9 +69,11 @@ int main()
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
-        PWM_Servo(UPDOWN,800);
-        PWM_Servo(GRAB,1050);
+        PWM_Servo(UPDOWN,UP);
+        PWM_Servo(GRAB_BALL,GRAB);
     }
+    let.grab = GRAB;
+    let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
     Motor_Right(let.speed);
@@ -76,6 +85,10 @@ int main()
         Debug_LED_Write(1);
         if(g_timerFlag == 1)
         {
+            /* PWMServoへの命令 */
+            PWM_Servo(UPDOWN,let.updown);
+            PWM_Servo(GRAB_BALL,let.grab);
+            /* モードによって処理を管理 */
             if(let.mode == MODE_SHOOTING_TENNIS_BALL)
             {
                 Shooting_tennis_ball(&let);
@@ -94,5 +107,6 @@ int main()
             //Line_Trace(&let);
             g_timerFlag = 0;
         }
+        
     }
 }

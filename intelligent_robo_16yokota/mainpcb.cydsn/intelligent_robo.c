@@ -35,13 +35,13 @@ void Shooting_tennis_ball(Let *let){
         {
             Motor_Right(0);
             Motor_Left(0);
-            PWM_Servo(UPDOWN,470);
-            PWM_Servo(GRAB,500);
+            let->updown = DOWN;
+            let->grab = RELEASE;
             limit = 100;
         }else
         if(step == 2)
         {
-            PWM_Servo(UPDOWN,470+(int)(3.3*count));
+            let->updown = 470 + ((int)2.3 * count );
             Motor_Right(-150);
             limit = 100;
         }else
@@ -60,7 +60,6 @@ void Shooting_tennis_ball(Let *let){
         }
         count++;
     }
-    
 }
 
 void Line_Trace(Let *let,uint8 mode){
@@ -132,10 +131,12 @@ void Line_Trace(Let *let,uint8 mode){
             aFlag = 0;
             hFlag = 0;
             AreaFlag = 1;
+            /* 探査エリアに向かうならインクリメント */
             if(mode == MODE_FORWARD)
             {
                 let->area++;
             }
+            /* スタートに戻るならデクリメント */
             else if(mode == MODE_BACKWARD)
             {
                 let->area--;
@@ -149,6 +150,7 @@ void Line_Trace(Let *let,uint8 mode){
     if(count == 15)
     {
         AreaFlag = 0;
+        count = 0;
     }
     sprintf(value, "Area=%d",let->area);
     I2C_LCD_Position(1u,0u);
@@ -177,7 +179,6 @@ void Color_Sensor(Let *let)
     I2C_1_MasterClearStatus();
     I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
     while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
-    //Debug_LED_Write(1);
     I2C_1_MasterClearStatus();
     r = rxBuf[0]<< 8|rxBuf[1];
     g = rxBuf[2]<< 8|rxBuf[3];
@@ -217,7 +218,7 @@ void PSD_Sensor(Let *let){//左端が2
     
 }
 
-
+//改良する予定
 void Catch_Ball(void){
     static uint8 step = 0;
     static uint16 count = 0;
@@ -225,7 +226,7 @@ void Catch_Ball(void){
     
     if(step == 0)
     {
-        PWM_Servo(GRAB,500);//450~1050
+        PWM_Servo(GRAB_BALL,RELEASE);//450~1050
         PWM_Servo(UPDOWN,600);
         limit = 100;
     }else
@@ -236,7 +237,7 @@ void Catch_Ball(void){
     }else
     if(step == 2)
     {
-        PWM_Servo(GRAB,1100);
+        PWM_Servo(GRAB_BALL,1100);
         limit = 100;
     }else
     if(step == 3)
@@ -273,7 +274,7 @@ void PWM_Servo(uint8 id, uint16 value){
     if(id == UPDOWN){
         PWM_Servo_WriteCompare1(value);
     }
-    else if(id == GRAB){
+    else if(id == GRAB_BALL){
         PWM_Servo_WriteCompare2(value);
     }
 }

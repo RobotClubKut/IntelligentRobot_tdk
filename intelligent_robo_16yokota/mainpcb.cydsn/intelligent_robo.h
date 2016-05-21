@@ -12,12 +12,17 @@
 #define MODE_CATCH                  5
 #define MODE_SHOOT                  6
 #define MODE_MOVE                   7
-#define MODE_BACKWARD               8
-#define MODE_FORWARD                9
-    
+#define MODE_DEBUG                  8
+#define MODE_BACKWARD               9
+#define MODE_FORWARD                10
+
 /* Servo */
-#define UPDOWN  0
-#define GRAB    1
+#define UPDOWN                      0
+#define GRAB_BALL                   1
+#define UP                          700
+#define DOWN                        470
+#define GRAB                        1050
+#define RELEASE                     500
     
 union Slave{
     uint8 Trans;
@@ -48,10 +53,13 @@ typedef struct{
     uint8 number;//ボールの個数
     uint8 color;//色
     uint8 d[3];//PSDセンサーの値
+    uint16 grab;
+    uint16 updown;
+    
 }Let;
 
 
-/* 汎用 */
+/* 大会用 */
 void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);
 void Catch_Ball(void);
