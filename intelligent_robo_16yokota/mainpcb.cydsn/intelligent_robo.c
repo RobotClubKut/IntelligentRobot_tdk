@@ -4,7 +4,7 @@
 
 void Go_Ball_Area(Let *let){
     
-    Line_Trace(let);
+    Line_Trace(let, MODE_FORWARD);
     if(let->area == 4)
     {
         Motor_Right(0);
@@ -21,7 +21,7 @@ void Shooting_tennis_ball(Let *let){
     
     if(let->area == 0)
     {
-        Line_Trace(let);
+        Line_Trace(let, MODE_FORWARD);
     }
     else if(let->area == 1)
     {
@@ -63,10 +63,17 @@ void Shooting_tennis_ball(Let *let){
     
 }
 
-void Line_Trace(Let *let){
+void Line_Trace(Let *let,uint8 mode){
     uint8 s = 0;
-    static uint8 AreaFlag = 0, aFlag = 0, hFlag = 0;
-    static double p = 0, p0 = 0, p1 = 0, p2 = 0, dif = 0;
+    static uint8 AreaFlag = 0;
+    static uint8 aFlag = 0;
+    static uint8 hFlag = 0;
+    static uint16 count = 0;
+    static double p = 0;
+    static double p0 = 0;
+    static double p1 = 0;
+    static double p2 = 0;
+    static double dif = 0;
     char value[20];
     if(UART_Line_Sensor_GetRxBufferSize())
     {
@@ -109,22 +116,39 @@ void Line_Trace(Let *let){
         */
     }
 
-    //ライン読む
-    if(let->slave.status.a==1)
+    //直した
+    if(AreaFlag == 0)
     {
-        aFlag = 1;
+        if(let->slave.status.a==1)
+        {
+            aFlag = 1;
+        }
+        if(let->slave.status.h==1)
+        {
+            hFlag = 1;
+        }
+        if((aFlag == 1)&&(hFlag == 1))
+        {
+            aFlag = 0;
+            hFlag = 0;
+            AreaFlag = 1;
+            if(mode == MODE_FORWARD)
+            {
+                let->area++;
+            }
+            else if(mode == MODE_BACKWARD)
+            {
+                let->area--;
+            }
+        }
     }
-    if(let->slave.status.h==1)
+    else
     {
-        hFlag = 1;
+        count++;
     }
-    if((aFlag == 1)&&(hFlag == 1))
+    if(count == 15)
     {
-        let->area++;
-        aFlag = 0;
-        hFlag = 0;
-        CyDelay(150);
-        //いずれ書き直す
+        AreaFlag = 0;
     }
     sprintf(value, "Area=%d",let->area);
     I2C_LCD_Position(1u,0u);
@@ -182,7 +206,7 @@ void PSD_Sensor(Let *let){//左端が2
         let->d[i] = ADC_DelSig_Distance_GetResult8();
         ADC_DelSig_Distance_StopConvert();
     }
-    /*
+    
     I2C_LCD_1_Clear();
     sprintf(value, "1=%3d 2=%3d",let->d[0],let->d[1]);
     I2C_LCD_Position(0u,0u);
@@ -190,7 +214,7 @@ void PSD_Sensor(Let *let){//左端が2
     sprintf(value, "3=%3d",let->d[2]);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
-    */
+    
 }
 
 

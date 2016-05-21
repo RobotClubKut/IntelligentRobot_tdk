@@ -12,6 +12,9 @@
 #define MODE_CATCH                  5
 #define MODE_SHOOT                  6
 #define MODE_MOVE                   7
+#define MODE_BACKWARD               8
+#define MODE_FORWARD                9
+    
 /* Servo */
 #define UPDOWN  0
 #define GRAB    1
@@ -52,7 +55,7 @@ typedef struct{
 void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);
 void Catch_Ball(void);
-void Line_Trace(Let *let);
+void Line_Trace(Let *let,uint8 mode);
 /* センサー系 */
 void Color_Sensor(Let *let);
 void PSD_Sensor(Let *let);

@@ -33,13 +33,17 @@ CY_ISR(clock_isr)
 int main()
 {
     uint16 j = 0;
-    char value[20];
     Let let;
-    let.speed = 200;//速度変更
+    
+    /* 速度変更 */
+    let.speed = 200;
+    /* アームの初期化 */
+    let.mode = MODE_SHOOTING_TENNIS_BALL;
     
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
+    
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
     init();
@@ -47,8 +51,7 @@ int main()
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
-    //アームの初期化
-    let.mode = MODE_SHOOTING_TENNIS_BALL;
+   
     PWM_Servo_Start();
     CyDelay(200);
     for(j=470;j<800;j++)
@@ -57,8 +60,8 @@ int main()
         CyDelay(8);
     }
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
-        //I2C_LCD_Position(1u,0u);
-        //I2C_LCD_1_PrintString("Are You Ready!!");
+        I2C_LCD_Position(1u,0u);
+        I2C_LCD_1_PrintString("Are You Ready!!");
         PWM_Servo(UPDOWN,800);
         PWM_Servo(GRAB,1050);
     }
@@ -71,7 +74,6 @@ int main()
     {
         /* Place your application code here. */
         Debug_LED_Write(1);
-        //Line_Trace(let);
         if(g_timerFlag == 1)
         {
             if(let.mode == MODE_SHOOTING_TENNIS_BALL)
@@ -84,7 +86,7 @@ int main()
             }
             else if(let.mode == MODE_SEEK)
             {
-                    
+                
             }
             //Catch_Ball();
             //Color_Sensor(&let);
