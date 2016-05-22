@@ -41,7 +41,8 @@ int main()
     let.place = 0;
     let.area = 0;
     
-    let.mode = MODE_SHOOTING_TENNIS_BALL;
+    //let.mode = MODE_SHOOTING_TENNIS_BALL;
+    let.mode = MODE_LINE_TRACE;
     //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
@@ -105,7 +106,7 @@ int main()
             }
             else if(let.mode == MODE_SEEK)
             {
-                
+                Ball_Seek(&let);
             }
             //Catch_Ball();
             //Color_Sensor(&let);

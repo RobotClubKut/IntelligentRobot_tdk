@@ -7,7 +7,45 @@ void Ball_Seek(Let *let)
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
+    uint8 speed = 80;
     
+    if(step == 0)
+    {
+        Motor_Right(speed);
+        Motor_Left(-speed);
+        limit = 100;
+    }else
+    if(step == 1)
+    {
+        Motor_Right(-speed);
+        Motor_Left(speed);
+        limit = 100;
+    }else
+    if(step == 2)
+    {
+        Motor_Right(-speed);
+        Motor_Left(speed);
+        limit = 100;
+    }else
+    if(step == 3)
+    {
+        Motor_Right(speed);
+        Motor_Left(-speed);
+        limit = 100;
+    }else
+    if(step == 4)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        let->mode = MODE_APPROACH;
+    }
+    if(limit == count)
+    {
+        count = 0;
+        step++;
+        return;
+    }
+    count++;
 }
 
 void Go_Ball_Area(Let *let){
@@ -25,19 +63,21 @@ void Go_Ball_Area(Let *let){
         {
             Motor_Right(0);
             Motor_Left(0);
-            limit = 40;
+            limit = 100;
         }else
         if(step == 1)
         {
-            Motor_Right(-180);
+            Motor_Right(-150);
             Motor_Left(-150);
-            limit = 50;
+            limit = 80;
         }else
         if(step == 2)
         {
             Motor_Right(0);
             Motor_Left(0);
             let->mode = MODE_SEEK;
+            step = 0;
+            return;
         }
         if(limit == count)
         {
@@ -125,8 +165,8 @@ void Line_Trace(Let *let,uint8 mode){
         p2 = p1;
         p1 = p0;
         p0 = p;
-        dif += 16.1 * (p0-p1);//speed=200のとき
-        //dif += 16.5 * (p0-p1) + 0.15 * p0 + 3.3 *((p0-p1) - (p1-p2));
+        dif += 13.5 * (p0-p1);//speed=200のとき
+        //dif += 13.5 * (p0-p1) + 0.1 * p0 + 2.4 *((p0-p1) - (p1-p2));
         if(dif > let->speed)
         {
             dif = let->speed;
