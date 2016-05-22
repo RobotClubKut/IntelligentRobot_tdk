@@ -35,11 +35,14 @@ int main()
     uint16 j = 0;
     Let let;
     
-    /* 速度変更 */
+    /* 構造体の初期化 */
     let.speed = 200;
-    /* アームの初期化 */
-    //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    let.mode = MODE_DEBUG;
+    let.number = 0;
+    let.place = 0;
+    let.area = 0;
+    
+    let.mode = MODE_SHOOTING_TENNIS_BALL;
+    //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -51,16 +54,17 @@ int main()
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
-    PWM_Servo_Start();
-    if(MODE_DEBUG)
+    /* デバッグモード */
+    if(let.mode == MODE_DEBUG)
     {
+        PWM_Servo_Start();
         for(;;)
         {
             PWM_Servo(UPDOWN,DOWN);
             PSD_Sensor(&let); 
         }
     }
-    
+    /* アームの初期化 */
     PWM_Servo_Start();
     CyDelay(200);
     for(j=DOWN;j<UP;j++)

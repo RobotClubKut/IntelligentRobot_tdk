@@ -2,14 +2,50 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
-void Go_Ball_Area(Let *let){
+void Ball_Seek(Let *let)
+{
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
     
-    Line_Trace(let, MODE_FORWARD);
-    if(let->area == 4)
+}
+
+void Go_Ball_Area(Let *let){
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    if(let->area != 4)
     {
-        Motor_Right(0);
-        Motor_Left(0);
-        let->mode = MODE_SEEK;
+        Line_Trace(let, MODE_FORWARD);
+    }
+    else if(let->area == 4)
+    {
+        if(step == 0)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 40;
+        }else
+        if(step == 1)
+        {
+            Motor_Right(-180);
+            Motor_Left(-150);
+            limit = 50;
+        }else
+        if(step == 2)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->mode = MODE_SEEK;
+        }
+        if(limit == count)
+        {
+            count = 0;
+            step++;
+            return;
+        }
+        count++;
     }
 }
 

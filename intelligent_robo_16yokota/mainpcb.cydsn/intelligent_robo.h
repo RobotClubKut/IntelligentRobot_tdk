@@ -15,7 +15,12 @@
 #define MODE_DEBUG                  8
 #define MODE_BACKWARD               9
 #define MODE_FORWARD                10
-
+    
+/* Color */
+#define RED                         11
+#define GREEN                       12
+#define BLUE                        13
+    
 /* Servo */
 #define UPDOWN                      0
 #define GRAB_BALL                   1
@@ -44,6 +49,7 @@ typedef struct{
     union Slave slave;
 }Line;
 
+/* 構造体で管理 */
 typedef struct{
     union Slave slave;
     uint8 speed;//速度
@@ -51,15 +57,15 @@ typedef struct{
     uint8 area;//エリア
     uint8 line;//ライン
     uint8 number;//ボールの個数
+    uint8 place;//SeekMode中の場所
     uint8 color;//色
     uint8 d[3];//PSDセンサーの値
     uint16 grab;
     uint16 updown;
-    
 }Let;
 
-
 /* 大会用 */
+void Ball_Seek(Let *let);
 void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);
 void Catch_Ball(void);
