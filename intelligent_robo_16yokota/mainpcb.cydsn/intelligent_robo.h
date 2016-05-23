@@ -65,6 +65,8 @@ typedef struct{
 }Let;
 
 /* 大会用 */
+void approach(Let *let);
+void move(Let *let);
 void Ball_Seek(Let *let);
 void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);

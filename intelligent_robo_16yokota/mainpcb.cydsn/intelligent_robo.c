@@ -2,6 +2,30 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
+void approach(Let *let)
+{
+        
+    
+    
+}
+
+void move(Let *let)
+{
+    static uint16 count = 0;
+    uint16 limit = 50;
+    
+    if(let->place > 0)
+    {
+        Line_Trace(let,MODE_FORWARD);
+    }
+    count++;
+    if(count == (limit*let->place))
+    {
+        count = 0;
+        let->mode = MODE_SEEK;
+    }
+}
+
 void Ball_Seek(Let *let)
 {
     static uint8 step = 0;
@@ -11,6 +35,7 @@ void Ball_Seek(Let *let)
     
     if(step == 0)
     {
+        /* PSDセンサの処理を追加 */
         Motor_Right(speed);
         Motor_Left(-speed);
         limit = 100;
@@ -23,6 +48,7 @@ void Ball_Seek(Let *let)
     }else
     if(step == 2)
     {
+        /* PSDセンサの処理を追加 */
         Motor_Right(-speed);
         Motor_Left(speed);
         limit = 100;
@@ -35,9 +61,16 @@ void Ball_Seek(Let *let)
     }else
     if(step == 4)
     {
-        Motor_Right(0);
-        Motor_Left(0);
-        let->mode = MODE_APPROACH;
+        let->place++;
+        Motor_Right(speed);
+        Motor_Left(speed);
+        limit = 100;
+    }else
+    if(step == 5)
+    {
+        step = 0;
+        count = 0;
+        return;
     }
     if(limit == count)
     {
@@ -59,6 +92,11 @@ void Go_Ball_Area(Let *let){
     }
     else if(let->area == 4)
     {
+        if(let->place > 0)
+        {
+            let->mode = MODE_MOVE;
+            return;
+        }
         if(step == 0)
         {
             Motor_Right(0);

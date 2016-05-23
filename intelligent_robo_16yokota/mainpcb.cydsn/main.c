@@ -108,6 +108,14 @@ int main()
             {
                 Ball_Seek(&let);
             }
+            else if(let.mode == MODE_APPROACH)
+            {
+                
+            }
+            else if(let.mode == MODE_MOVE)
+            {
+                move(&let);
+            }
             //Catch_Ball();
             //Color_Sensor(&let);
             //PSD_Sensor(&let);
