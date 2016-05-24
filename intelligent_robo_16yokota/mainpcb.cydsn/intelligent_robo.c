@@ -31,42 +31,63 @@ void Ball_Seek(Let *let)
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
-    uint8 speed = 80;
+    uint8 R_speed = 70;
+    uint8 L_speed = 70;
     
     if(step == 0)
     {
         /* PSDセンサの処理を追加 */
-        Motor_Right(speed);
-        Motor_Left(-speed);
+        Motor_Right(R_speed);
+        Motor_Left(-L_speed);
         limit = 100;
     }else
     if(step == 1)
     {
-        Motor_Right(-speed);
-        Motor_Left(speed);
-        limit = 100;
-    }else
+        Motor_Right(0);
+        Motor_Left(0);
+        limit = 30;
+    }
+    else
     if(step == 2)
     {
         /* PSDセンサの処理を追加 */
-        Motor_Right(-speed);
-        Motor_Left(speed);
-        limit = 100;
+        Motor_Right(-R_speed);
+        Motor_Left(L_speed);
+        limit = 200;
     }else
     if(step == 3)
     {
-        Motor_Right(speed);
-        Motor_Left(-speed);
-        limit = 100;
-    }else
+        Motor_Right(0);
+        Motor_Left(0);
+        limit = 30;
+    }
+    else
     if(step == 4)
     {
-        let->place++;
-        Motor_Right(speed);
-        Motor_Left(speed);
-        limit = 100;
+        Motor_Right(R_speed);
+        Motor_Left(-L_speed);
+        limit = 120;
     }else
     if(step == 5)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        limit = 50;
+    }else
+    if(step == 6)
+    {
+        let->place++;
+        Motor_Right(200);
+        Motor_Left(193);
+        limit = 100;
+    }else
+    if(step == 7)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        limit = 30;
+    }else
+    if(step == 8)
     {
         step = 0;
         count = 0;
@@ -203,8 +224,9 @@ void Line_Trace(Let *let,uint8 mode){
         p2 = p1;
         p1 = p0;
         p0 = p;
-        dif += 13.5 * (p0-p1);//speed=200のとき
-        //dif += 13.5 * (p0-p1) + 0.1 * p0 + 2.4 *((p0-p1) - (p1-p2));
+        //dif += 13.5 * (p0-p1);//speed=200のとき
+        dif += 13.5 * (p0-p1) + 2.4 *((p0-p1) - (p1-p2));
+        //0.01 * p0 
         if(dif > let->speed)
         {
             dif = let->speed;

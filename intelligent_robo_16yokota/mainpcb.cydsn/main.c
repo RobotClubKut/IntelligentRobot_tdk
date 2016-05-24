@@ -83,9 +83,9 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    Motor_Right(let.speed);
-    Motor_Left(let.speed);
-    CyDelay(700);
+    Motor_Right(200);
+    Motor_Left(193);
+    CyDelay(1000);
     for(;;)
     {
         /* Place your application code here. */
