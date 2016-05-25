@@ -42,8 +42,8 @@ int main()
     let.area = 0;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_DEBUG;
+    let.mode = MODE_LINE_TRACE;
+    //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -61,7 +61,7 @@ int main()
         for(;;)
         {
             PSD_Sensor(&let); 
-            Ball_Seek(&let);
+            //Ball_Seek(&let);
         }
     }
     /* アームの初期化 */
@@ -84,9 +84,11 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    Motor_Right(200);
-    Motor_Left(193);
-    CyDelay(700);
+    //Motor_Right(200);
+    //Motor_Left(193);
+    Motor_Right(100);
+    Motor_Left(90);
+    CyDelay(10000);//700
     for(;;)
     {
         /* Place your application code here. */

@@ -4,7 +4,7 @@
 
 void approach(Let *let)
 {
-        
+    
     
     
 }
@@ -31,7 +31,7 @@ void Ball_Seek(Let *let)
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
-    uint8 speed = 70;
+    uint8 speed = 80;
     
     if(step == 0)
     {
@@ -39,7 +39,7 @@ void Ball_Seek(Let *let)
         PSD_Sensor(let);
         Motor_Right(speed);
         Motor_Left(-speed);
-        limit = 160;
+        limit = 100;
     }else
     if(step == 1)
     {
@@ -54,7 +54,7 @@ void Ball_Seek(Let *let)
         PSD_Sensor(let);
         Motor_Right(-speed);
         Motor_Left(speed);
-        limit = 280;
+        limit = 200;
     }else
     if(step == 3)
     {
@@ -67,7 +67,7 @@ void Ball_Seek(Let *let)
     {
         Motor_Right(speed);
         Motor_Left(-speed);
-        limit = 300;
+        limit = 100;
     }else
     if(step == 5)
     {
@@ -80,8 +80,8 @@ void Ball_Seek(Let *let)
     {
         let->place++;
         Motor_Right(180);
-        Motor_Left(174);
-        limit = 100;
+        Motor_Left(175);
+        limit = 110;
     }else
     if(step == 7)
     {
@@ -96,8 +96,7 @@ void Ball_Seek(Let *let)
         return;
     }
     /* ボールを見つけた時の処理 */
-    /*
-    if(let->d[1] < 130)
+    if(let->d[1] > 100)
     {
         Motor_Right(0);
         Motor_Left(0);
@@ -106,13 +105,14 @@ void Ball_Seek(Let *let)
         step = 0;
         return;
     }
-    */
+    
     if(limit == count)
     {
         count = 0;
         step++;
         return;
     }
+    
     count++;
 }
 
