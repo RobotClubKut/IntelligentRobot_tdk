@@ -36,14 +36,14 @@ int main()
     Let let;
     
     /* 構造体の初期化 */
-    let.speed = 200;
+    let.speed = 180;
     let.number = 0;
     let.place = 0;
     let.area = 0;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    let.mode = MODE_LINE_TRACE;
-    //let.mode = MODE_DEBUG;
+    //let.mode = MODE_LINE_TRACE;
+    let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -58,14 +58,14 @@ int main()
     /* デバッグモード */
     if(let.mode == MODE_DEBUG)
     {
-        PWM_Servo_Start();
         for(;;)
         {
-            PWM_Servo(UPDOWN,DOWN);
             PSD_Sensor(&let); 
+            Ball_Seek(&let);
         }
     }
     /* アームの初期化 */
+    /*
     PWM_Servo_Start();
     CyDelay(200);
     for(j=DOWN;j<UP;j++)
@@ -73,6 +73,7 @@ int main()
         PWM_Servo(UPDOWN,j);
         CyDelay(8);
     }
+    */
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
@@ -85,7 +86,7 @@ int main()
     CyDelay(400);
     Motor_Right(200);
     Motor_Left(193);
-    CyDelay(1000);
+    CyDelay(700);
     for(;;)
     {
         /* Place your application code here. */

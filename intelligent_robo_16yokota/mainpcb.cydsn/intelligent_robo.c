@@ -12,7 +12,7 @@ void approach(Let *let)
 void move(Let *let)
 {
     static uint16 count = 0;
-    uint16 limit = 50;
+    uint16 limit = 300;
     
     if(let->place > 0)
     {
@@ -31,54 +31,56 @@ void Ball_Seek(Let *let)
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
-    uint8 R_speed = 70;
-    uint8 L_speed = 70;
+    uint8 speed = 70;
     
     if(step == 0)
     {
         /* PSDセンサの処理を追加 */
-        Motor_Right(R_speed);
-        Motor_Left(-L_speed);
-        limit = 100;
+        PSD_Sensor(let);
+        Motor_Right(speed);
+        Motor_Left(-speed);
+        limit = 160;
     }else
     if(step == 1)
     {
         Motor_Right(0);
         Motor_Left(0);
-        limit = 30;
+        limit = 20;
     }
     else
     if(step == 2)
     {
         /* PSDセンサの処理を追加 */
-        Motor_Right(-R_speed);
-        Motor_Left(L_speed);
-        limit = 200;
+        PSD_Sensor(let);
+        Motor_Right(-speed);
+        Motor_Left(speed);
+        limit = 280;
     }else
     if(step == 3)
     {
         Motor_Right(0);
         Motor_Left(0);
-        limit = 30;
+        limit = 20;
     }
     else
     if(step == 4)
     {
-        Motor_Right(R_speed);
-        Motor_Left(-L_speed);
-        limit = 120;
+        Motor_Right(speed);
+        Motor_Left(-speed);
+        limit = 300;
     }else
     if(step == 5)
     {
         Motor_Right(0);
         Motor_Left(0);
         limit = 50;
-    }else
-    if(step == 6)
+    }
+    /* ボールが見つからなかった時の処理 */
+    else if(step == 6)
     {
         let->place++;
-        Motor_Right(200);
-        Motor_Left(193);
+        Motor_Right(180);
+        Motor_Left(174);
         limit = 100;
     }else
     if(step == 7)
@@ -93,6 +95,18 @@ void Ball_Seek(Let *let)
         count = 0;
         return;
     }
+    /* ボールを見つけた時の処理 */
+    /*
+    if(let->d[1] < 130)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        let->mode = MODE_APPROACH;
+        count = 0;
+        step = 0;
+        return;
+    }
+    */
     if(limit == count)
     {
         count = 0;
@@ -128,7 +142,7 @@ void Go_Ball_Area(Let *let){
         {
             Motor_Right(-150);
             Motor_Left(-150);
-            limit = 80;
+            limit = 100;
         }else
         if(step == 2)
         {
@@ -223,9 +237,9 @@ void Line_Trace(Let *let,uint8 mode){
         p/=(double)s;
         p2 = p1;
         p1 = p0;
-        p0 = p;
-        //dif += 13.5 * (p0-p1);//speed=200のとき
-        dif += 13.5 * (p0-p1) + 2.4 *((p0-p1) - (p1-p2));
+        p0 = p;//13.6
+        //dif += 13.6 * (p0-p1);//speed=200のとき
+        dif += 13.6 * (p0-p1) +0.01 * p0 + 1.8 *((p0-p1) - (p1-p2));
         //0.01 * p0 
         if(dif > let->speed)
         {
