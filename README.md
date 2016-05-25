@@ -1,6 +1,6 @@
 # Intelligent_robo_tdk
 ##知能ロボ2016多田機
-![](yokotan.jpg)
+![](yokotan.JPG)
 
 ###進捗メモ　　
 ライントレース速度落としたらうまく行った  
