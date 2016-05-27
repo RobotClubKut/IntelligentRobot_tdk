@@ -2,6 +2,39 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
+void PID(Let *let)
+{
+    int16 dif_R,def1_R,def2_R,def3_R,operation_R;
+    int16 dif_L,def1_L,def2_L,def3_L,operation_L;
+    int16 count_Right;
+    int16 count_Left;
+    char value[20];
+    
+    count_Right = -QuadDec_Right_GetCounter();
+    QuadDec_Right_SetCounter(0);
+    count_Left = QuadDec_Left_GetCounter();
+    QuadDec_Left_SetCounter(0);
+    sprintf(value, "R=%4d L=%4d", count_Right, count_Left);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+    UART_Line_Sensor_PutString(value);
+    
+    def1_R = let->speed - count_Right;
+    dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.3) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.3));
+    operation_R = operation_R + dif_R;
+    def3_R = def2_R;
+    def2_R = def1_R;
+    
+    def1_L = let->speed - count_Left;
+    dif_L = (int16)(((def1_L - def2_L) * 0.3) + (def1_L * 0.3) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.3));
+    operation_L = operation_L + dif_L;
+    def3_L = def2_L;
+    def2_L = def1_L;
+    
+    Motor_Right(operation_R);
+    Motor_Left(operation_L);
+}
+
 void approach(Let *let)
 {
     
@@ -178,7 +211,7 @@ void Shooting_tennis_ball(Let *let){
         {
             Motor_Right(150);
             Motor_Left(-20);
-            limit = 100;
+            limit = 120;
         }else 
         if(step == 1)
         {
@@ -186,15 +219,20 @@ void Shooting_tennis_ball(Let *let){
             Motor_Left(0);
             let->updown = DOWN;
             let->grab = RELEASE;
-            limit = 100;
+            limit = 10;
         }else
         if(step == 2)
+        {
+            let->updown = DOWN;
+            limit = 100;
+        }else
+        if(step == 3)
         {
             let->updown = 470 + ((int)2.3 * count );
             Motor_Right(-150);
             limit = 100;
         }else
-        if(step == 3)
+        if(step == 4)
         {
             Motor_Right(0);
             Motor_Left(0);
@@ -432,14 +470,32 @@ void PWM_Servo(uint8 id, uint16 value){
 
 void Motor_Right(int16 speed){
     
-    if((0<speed)&&(speed<255))
+    int16 dif_R,def1_R,def2_R,def3_R,operation_R;
+    int16 count_Right;
+    char value[20];
+    
+    count_Right = -QuadDec_Right_GetCounter();
+    QuadDec_Right_SetCounter(0);
+    /*
+    sprintf(value, "R=%4d L=%4d", count_Right, count_Left);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+    UART_Line_Sensor_PutString(value);
+    */
+    def1_R = speed - count_Right;
+    dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.3) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.3));
+    operation_R = operation_R + dif_R;
+    def3_R = def2_R;
+    def2_R = def1_R;
+    
+    if((0<operation_R)&&(operation_R<255))
     {
         PWM_Motor_a_WriteCompare1(0);
-        PWM_Motor_a_WriteCompare2(speed);   
+        PWM_Motor_a_WriteCompare2(operation_R);
     }
-    else if((-255<speed)&&(speed<0))
+    else if((-255<operation_R)&&(operation_R<0))
     {
-        PWM_Motor_a_WriteCompare1(-speed);
+        PWM_Motor_a_WriteCompare1(-operation_R);
         PWM_Motor_a_WriteCompare2(0);
     }
     else
@@ -450,15 +506,34 @@ void Motor_Right(int16 speed){
 }
 
 void Motor_Left(int16 speed){
+
+    int16 dif_L,def1_L,def2_L,def3_L,operation_L;
+    int16 count_Left;
+    char value[20];
+
+    count_Left = QuadDec_Left_GetCounter();
+    QuadDec_Left_SetCounter(0);
+    /*
+    sprintf(value, "R=%4d L=%4d", count_Right, count_Left);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+    UART_Line_Sensor_PutString(value);
+    */
     
-    if((0<speed)&&(speed<255))
+    def1_L = speed - count_Left;
+    dif_L = (int16)(((def1_L - def2_L) * 0.3) + (def1_L * 0.3) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.3));
+    operation_L = operation_L + dif_L;
+    def3_L = def2_L;
+    def2_L = def1_L;
+    
+    if((0<operation_L)&&(operation_L<255))
     {
         PWM_Motor_b_WriteCompare1(0);
-        PWM_Motor_b_WriteCompare2(speed);   
+        PWM_Motor_b_WriteCompare2(operation_L);   
     }
-    else if((-255<speed)&&(speed<0))
+    else if((-255<operation_L)&&(operation_L<0))
     {
-        PWM_Motor_b_WriteCompare1(-speed);
+        PWM_Motor_b_WriteCompare1(-operation_L);
         PWM_Motor_b_WriteCompare2(0);
     }
     else
@@ -512,6 +587,8 @@ void I2C_LCD_Init(void)
 
 void init(void)
 {
+    QuadDec_Right_Start();
+    QuadDec_Left_Start();
     PWM_Motor_a_Start();
     PWM_Motor_b_Start();    
     Motor_Right(0);

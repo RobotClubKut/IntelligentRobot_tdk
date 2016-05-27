@@ -32,20 +32,19 @@ CY_ISR(clock_isr)
 
 int main()
 {
-    int16 count;
     uint16 j = 0;
     char value[20];
     Let let;
     
     /* 構造体の初期化 */
-    let.speed = 180;
+    let.speed = 200;
     let.number = 0;
     let.place = 0;
     let.area = 0;
     
-    //let.mode = MODE_SHOOTING_TENNIS_BALL;
+    let.mode = MODE_SHOOTING_TENNIS_BALL;
     //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_DEBUG;
+    //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -53,7 +52,6 @@ int main()
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
     init();
-    QuadDec_Right_Start();
     isr_1_StartEx(clock_isr);
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
@@ -61,20 +59,21 @@ int main()
     /* デバッグモード */
     if(let.mode == MODE_DEBUG)
     {
+        PWM_Motor_a_Start();
+        PWM_Motor_b_Start();
         for(;;)
         {
             //PSD_Sensor(&let); 
             //Ball_Seek(&let);
-            count = QuadDec_Right_GetCounter();
-            QuadDec_Right_SetCounter(0);
-            sprintf(value, "%4d",count);
-            I2C_LCD_Position(1u,0u);
-            I2C_LCD_1_PrintString(value);
-            
+            if(g_timerFlag == 1)
+            {
+                PID(&let);
+                g_timerFlag = 0;
+            }
         }
     }
     /* アームの初期化 */
-    /*
+    
     PWM_Servo_Start();
     CyDelay(200);
     for(j=DOWN;j<UP;j++)
@@ -82,7 +81,7 @@ int main()
         PWM_Servo(UPDOWN,j);
         CyDelay(8);
     }
-    */
+    
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
@@ -93,8 +92,10 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    //Motor_Right(200);
-    //Motor_Left(193);
+    PWM_Motor_a_WriteCompare1(0);
+    PWM_Motor_a_WriteCompare2(200);
+    PWM_Motor_b_WriteCompare1(0);
+    PWM_Motor_b_WriteCompare2(200);
     CyDelay(700);
     for(;;)
     {
