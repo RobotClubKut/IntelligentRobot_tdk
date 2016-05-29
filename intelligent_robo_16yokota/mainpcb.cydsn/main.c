@@ -37,7 +37,7 @@ int main()
     Let let;
     
     /* 構造体の初期化 */
-    let.speed = 200;
+    let.speed = 220;
     let.number = 0;
     let.place = 0;
     let.area = 0;
