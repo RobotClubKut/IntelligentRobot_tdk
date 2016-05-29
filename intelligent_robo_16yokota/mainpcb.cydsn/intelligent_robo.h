@@ -71,7 +71,7 @@ void move(Let *let);
 void Ball_Seek(Let *let);
 void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);
-void Catch_Ball(void);
+void Catch_Ball(Let *let);
 void Line_Trace(Let *let,uint8 mode);
 /* センサー系 */
 void Color_Sensor(Let *let);

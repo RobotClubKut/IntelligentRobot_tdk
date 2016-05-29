@@ -37,9 +37,17 @@ void PID(Let *let)
 
 void approach(Let *let)
 {
+    uint8 speed = 80;    
     
-    
-    
+    PSD_Sensor(let);
+    Motor_Right(speed);
+    Motor_Left(speed);
+    if(let->d[1]>160)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        let->mode = MODE_CATCH;
+    }
 }
 
 void move(Let *let)
@@ -63,6 +71,7 @@ void Ball_Seek(Let *let)
 {
     static uint8 step = 0;
     static uint16 count = 0;
+    static uint16 d_count = 0;
     static uint16 limit = 1;
     uint8 speed = 80;
     
@@ -129,13 +138,20 @@ void Ball_Seek(Let *let)
         return;
     }
     /* ボールを見つけた時の処理 */
-    if(let->d[1] > 100)
+    if(let->d[1] > 60)
     {
-        Motor_Right(0);
-        Motor_Left(0);
-        let->mode = MODE_APPROACH;
-        count = 0;
-        step = 0;
+        limit = 7;
+            if(limit == d_count)
+            {
+                Motor_Right(0);
+                Motor_Left(0);
+                let->mode = MODE_APPROACH;
+                count = 0;
+                d_count = 0;
+                step = 0;
+                return;
+            }
+        d_count++;
         return;
     }
     
@@ -408,31 +424,37 @@ void PSD_Sensor(Let *let){//0が右端
 }
 
 //改良する予定
-void Catch_Ball(void){
+void Catch_Ball(Let *let){
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
     
     if(step == 0)
     {
-        PWM_Servo(GRAB_BALL,RELEASE);//450~1050
-        PWM_Servo(UPDOWN,600);
+        let->grab = RELEASE;
+        let->updown = UP;
+        //PWM_Servo(GRAB_BALL,RELEASE);//450~1050
+        //PWM_Servo(UPDOWN,600);
         limit = 100;
     }else
     if(step == 1)
     {
-        PWM_Servo(UPDOWN,600-(int)(2.6*count));
-        limit = 50;
+        let->updown = UP-(int)(2.3*count);
+        //PWM_Servo(UPDOWN,600-(int)(2.6*count));
+        limit = 100;
     }else
     if(step == 2)
     {
-        PWM_Servo(GRAB_BALL,1100);
+        let->grab = GRAB;
+        //PWM_Servo(GRAB_BALL,1100);
         limit = 100;
     }else
     if(step == 3)
     {
-        PWM_Servo(UPDOWN,470+(int)(2.6*count));
-        limit = 50;
+        //カラーセンサーの処理を追加予定
+        let->updown = DOWN+(int)(2.4*count);
+        //PWM_Servo(UPDOWN,470+(int)(2.6*count));
+        limit = 100;
     }else
     if(step == 4)
     {
@@ -442,6 +464,7 @@ void Catch_Ball(void){
     if(step == 5)
     {
         step = 0;
+        let->mode = MODE_SHOOT;
         return;
     }
     if(limit == count)
