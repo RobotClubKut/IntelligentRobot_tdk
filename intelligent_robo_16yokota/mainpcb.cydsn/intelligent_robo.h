@@ -54,7 +54,7 @@ typedef struct{
     union Slave slave;
     uint8 speed;//速度
     uint8 mode;//モード
-    uint8 area;//エリア
+    int8 area;//エリア
     uint8 line;//ライン
     uint8 number;//ボールの個数
     uint8 place;//SeekMode中の場所

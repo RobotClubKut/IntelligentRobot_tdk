@@ -37,17 +37,51 @@ void PID(Let *let)
 
 void approach(Let *let)
 {
-    uint8 speed = 80;    
+    uint8 speed = 85;
+    static uint8 flg = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
     
     PSD_Sensor(let);
-    Motor_Right(speed);
-    Motor_Left(speed);
-    if(let->d[1]>160)
+    if(let->d[0]<154){
+        Motor_Right(speed);
+        Motor_Left(speed);
+    }
+    else if((let->d[1]>154) && (let->d[1]<159))
     {
-        Motor_Right(0);
-        Motor_Left(0);
+        if(let->d[0]>120)
+        {
+            Motor_Right(-70);
+            Motor_Left(70);
+            //limit = 5;
+        }
+        else if(let->d[2]>70)
+        {
+            Motor_Right(70);
+            Motor_Left(-70);
+            //limit = 5;
+        }
+        //count++;
+        else //if(limit == count)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->mode = MODE_CATCH;
+            //limit = 0;
+            //count = 0;
+        }
+    }
+
+    /*
+    if(let->d[1] >= 159)
+    {
+        Motor_Right(-70);
+        Motor_Left(-70);
+
         let->mode = MODE_CATCH;
     }
+    */
+    
 }
 
 void move(Let *let)
@@ -73,7 +107,7 @@ void Ball_Seek(Let *let)
     static uint16 count = 0;
     static uint16 d_count = 0;
     static uint16 limit = 1;
-    uint8 speed = 80;
+    uint8 speed = 90;
     
     if(step == 0)
     {
@@ -123,7 +157,7 @@ void Ball_Seek(Let *let)
         let->place++;
         Motor_Right(180);
         Motor_Left(175);
-        limit = 110;
+        limit = 55;
     }else
     if(step == 7)
     {
@@ -138,9 +172,9 @@ void Ball_Seek(Let *let)
         return;
     }
     /* ボールを見つけた時の処理 */
-    if(let->d[1] > 50)
+    if(let->d[1] > 40)
     {
-        limit = 7;
+        limit = 1;
             if(limit == d_count)
             {
                 Motor_Right(0);
@@ -286,38 +320,39 @@ void Line_Trace(Let *let,uint8 mode){
     s = let->slave.status.h + let->slave.status.g + let->slave.status.f + let->slave.status.e + 
     let->slave.status.d + let->slave.status.c + let->slave.status.b + let->slave.status.a;
     
-    if(s!=0)
-    {
-        p/=(double)s;
-        p2 = p1;
-        p1 = p0;
-        p0 = p;//13.6
-        //dif += 13.6 * (p0-p1);//speed=200のとき
-        dif += 13.6 * (p0-p1) +0.01 * p0 + 1.8 *((p0-p1) - (p1-p2));
-        //0.01 * p0 
-        if(dif > let->speed)
+        if(s!=0)
         {
-            dif = let->speed;
+            p/=(double)s;
+            p2 = p1;
+            p1 = p0;
+            p0 = p;//13.6
+            //dif += 18.0 * (p0-p1);
+            dif += 15.6 * (p0-p1) +0.1 * p0 + 2.5 *((p0-p1) - (p1-p2));
+            //0.01 * p0 
+            if(dif > let->speed)
+            {
+                dif = let->speed;
+            }
+            else if(dif < -let->speed)
+            {
+                dif = -let->speed;
+            }
+            Motor_Right(let->speed - (int)dif);
+            Motor_Left(let->speed + (int)dif);
+            /*
+            if(dif>0)
+            {
+                I2C_LCD_Position(1u,7u);
+                I2C_LCD_1_PrintString("right");
+            }
+            else if(dif<0)
+            {
+                I2C_LCD_Position(1u,7u);
+                I2C_LCD_1_PrintString("left");
+            }
+            */
         }
-        else if(dif < -let->speed)
-        {
-            dif = -let->speed;
-        }
-        Motor_Right(let->speed - (int)dif);
-        Motor_Left(let->speed + (int)dif);
-        /*
-        if(dif>0)
-        {
-            I2C_LCD_Position(1u,7u);
-            I2C_LCD_1_PrintString("right");
-        }
-        else if(dif<0)
-        {
-            I2C_LCD_Position(1u,7u);
-            I2C_LCD_1_PrintString("left");
-        }
-        */
-    }
+    
 
     //直した
     if(AreaFlag == 0)
@@ -356,6 +391,7 @@ void Line_Trace(Let *let,uint8 mode){
         AreaFlag = 0;
         count = 0;
     }
+    I2C_LCD_1_Clear();
     sprintf(value, "Area=%d",let->area);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
@@ -429,6 +465,8 @@ void Catch_Ball(Let *let){
     static uint16 count = 0;
     static uint16 limit = 1;
     
+    Motor_Right(0);
+    Motor_Left(0);
     if(step == 0)
     {
         let->grab = RELEASE;

@@ -44,7 +44,8 @@ int main()
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
     //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_DEBUG;
+    let.mode = MODE_SEEK;
+    //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -61,18 +62,17 @@ int main()
     {
         for(;;)
         {
-            PSD_Sensor(&let); 
+            PSD_Sensor(&let);
             //Ball_Seek(&let);
             if(g_timerFlag == 1)
             {
-                
-                //PID(&let);
+
                 g_timerFlag = 0;
             }
         }
     }
     /* アームの初期化 */
-    
+    /*
     PWM_Servo_Start();
     CyDelay(200);
     for(j=DOWN;j<UP;j++)
@@ -80,7 +80,7 @@ int main()
         PWM_Servo(UPDOWN,j);
         CyDelay(8);
     }
-    
+    */
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
@@ -91,13 +91,14 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    
+    /*
     PWM_Motor_a_WriteCompare1(0);
     PWM_Motor_a_WriteCompare2(200);
     PWM_Motor_b_WriteCompare1(0);
     PWM_Motor_b_WriteCompare2(200);
     
     CyDelay(700);
+    */
     for(;;)
     {
         /* Place your application code here. */
@@ -126,11 +127,16 @@ int main()
             }
             else if(let.mode == MODE_CATCH)
             {
-                Catch_Ball(&let);
+                //Catch_Ball(&let);
+                PSD_Sensor(&let);
             }
             else if(let.mode == MODE_MOVE)
             {
                 move(&let);
+            }
+            else if(let.mode == MODE_SHOOT)
+            {
+                    
             }
             //Catch_Ball();
             //Color_Sensor(&let);
