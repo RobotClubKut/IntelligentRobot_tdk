@@ -21,7 +21,7 @@ void isr_fifo_empty(){
 
 // start transfer
 void transfer_LEDdriver(){
-    unsigned char len;
+        unsigned char len;
     if(current_led+3<LED_LENGTH){
         WS2812driver_1_write2fifo((unsigned char*)&rgb[current_led], 9);
         current_led += 3;

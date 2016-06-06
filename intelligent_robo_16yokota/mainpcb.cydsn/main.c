@@ -43,8 +43,8 @@ int main()
     let.area = 0;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    let.mode = MODE_LINE_TRACE;
-    //let.mode = MODE_DEBUG;
+    //let.mode = MODE_LINE_TRACE;
+    let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);

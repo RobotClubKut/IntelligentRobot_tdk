@@ -138,7 +138,7 @@ void Ball_Seek(Let *let)
         return;
     }
     /* ボールを見つけた時の処理 */
-    if(let->d[1] > 60)
+    if(let->d[1] > 50)
     {
         limit = 7;
             if(limit == d_count)
