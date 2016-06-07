@@ -12,7 +12,7 @@ void Return(Let *let)
     {
         Motor_Right(-150);
         Motor_Left(-150);
-        limit = (int)(let->count*0.4);
+        limit = (int)(let->count*0.3)+let->place*40;
     }else
     if(step == 2)
     {
@@ -29,29 +29,49 @@ void Return(Let *let)
             limit = -(int)(let->count_r*0.7);
         }
     }else
-    if(step == 6)
+    if(step == 3)
     {
         Motor_Right(-150);
         Motor_Left(20);
         limit = 100;
-        let->area = 3;
     }
     else
-    if(step == 3)
+    if(step == 4)
     {
+        Motor_Right(0);
+        Motor_Left(0);
         let->count = 0;
         let->count_r = 0;
-        Line_Trace(let,MODE_BACKWARD);
-        
+        limit = 30;
+    }else
+    if(step == 5)
+    {
+        Motor_Right(200);
+        Motor_Left(200);
+        UART_Line_Sensor_ClearRxBuffer();
+        PID_init(let);
+        limit = 50;
+    }else
+    if(step == 6)
+    {
+        Line_Trace(let, MODE_BACKWARD);    
+        limit = 0;
+    }
+    if(let->area == 2)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        count = 0;
+        let->mode = MODE_SHOOT;
     }
     
+    count++;
     if(limit == count)
     {
         count = 0;
         step++;
         return;
     }
-    count++;
     
 }
 
@@ -223,7 +243,6 @@ void Ball_Seek(Let *let)
     /* ボールが見つからなかった時の処理 */
     else if(step == 6)
     {
-        let->place++;
         Motor_Right(180);
         Motor_Left(175);
         limit = 55;
@@ -239,6 +258,7 @@ void Ball_Seek(Let *let)
         step = 0;
         count = 0;
         let->count_r = 0;
+        let->place++;
         return;
     }
     /* ボールを見つけた時の処理 */
@@ -389,41 +409,50 @@ void Line_Trace(Let *let,uint8 mode){
     let->slave.status.d*(1)+let->slave.status.c*(2)+let->slave.status.b*(3)+let->slave.status.a*(4));
     s = let->slave.status.h + let->slave.status.g + let->slave.status.f + let->slave.status.e + 
     let->slave.status.d + let->slave.status.c + let->slave.status.b + let->slave.status.a;
-    
-        if(s!=0)
+    /*
+    if(let->mode == MODE_CATCH)
+    {
+        s = 0;
+        p = 0;
+        p0 = 0;
+        p1 = 0;
+        p2 = 0;
+        dif = 0;
+    }
+    */
+    if(s!=0)
+    {
+        p/=(double)s;
+        p2 = p1;
+        p1 = p0;
+        p0 = p;//13.6
+        //dif += 18.0 * (p0-p1);
+        dif += 13.6 * (p0-p1) +0.05 * p0 + 2.5 *((p0-p1) - (p1-p2));
+        //0.01 * p0 
+        if(dif > let->speed)
         {
-            p/=(double)s;
-            p2 = p1;
-            p1 = p0;
-            p0 = p;//13.6
-            //dif += 18.0 * (p0-p1);
-            dif += 13.6 * (p0-p1) +0.1 * p0 + 2.5 *((p0-p1) - (p1-p2));
-            //0.01 * p0 
-            if(dif > let->speed)
-            {
-                dif = let->speed;
-            }
-            else if(dif < -let->speed)
-            {
-                dif = -let->speed;
-            }
-            Motor_Right(let->speed - (int)dif);
-            Motor_Left(let->speed + (int)dif);
-            /*
-            if(dif>0)
-            {
-                I2C_LCD_Position(1u,7u);
-                I2C_LCD_1_PrintString("right");
-            }
-            else if(dif<0)
-            {
-                I2C_LCD_Position(1u,7u);
-                I2C_LCD_1_PrintString("left");
-            }
-            */
+            dif = let->speed;
         }
+        else if(dif < -let->speed)
+        {
+            dif = -let->speed;
+        }
+        Motor_Right(let->speed - (int)dif);
+        Motor_Left(let->speed + (int)dif);
+        /*
+        if(dif>0)
+        {
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("right");
+        }
+        else if(dif<0)
+        {
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("left");
+        }
+        */
+    }
     
-
     //直した
     if(AreaFlag == 0)
     {
@@ -673,6 +702,15 @@ void Motor_Left(int16 speed){
         PWM_Motor_b_WriteCompare1(0);
         PWM_Motor_b_WriteCompare2(0);
     }
+}
+
+void PID_init(Let *let)
+{
+    let->status.p = 0;
+    let->status.p0 = 0;
+    let->status.p1 = 0;
+    let->status.p2 = 0;
+    let->status.dif = 0;
 }
 
 void I2C_Color_init(void)

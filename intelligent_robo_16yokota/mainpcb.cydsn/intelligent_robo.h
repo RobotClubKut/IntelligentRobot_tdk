@@ -46,13 +46,23 @@ union Slave{
     }status;
 };
 
+
 typedef struct{
     union Slave slave;
 }Line;
 
+typedef struct{
+    double p;
+    double p0;
+    double p1;
+    double p2;
+    double dif;
+}Status;
+
 /* 構造体で管理 */
 typedef struct{
     union Slave slave;
+    Status status;
     uint8 speed;//速度
     uint8 mode;//モード
     int8 area;//エリア
@@ -70,7 +80,6 @@ typedef struct{
 /* 大会用 */
 void Ball_Shoot(Let *let);
 void Return(Let *let);
-void PID(Let *let);
 void approach(Let *let);
 void move(Let *let);
 void Ball_Seek(Let *let);
@@ -85,6 +94,8 @@ void PSD_Sensor(Let *let);
 void Motor_Right(int16 speed);
 void Motor_Left(int16 speed);
 void PWM_Servo(uint8 id,uint16 value);
+void PID(Let *let);
+void PID_init(Let *let);
 /* 通信とか */
 void init(void);
 void I2C_Color_init(void);

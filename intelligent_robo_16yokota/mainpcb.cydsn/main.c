@@ -42,11 +42,11 @@ int main()
     let.place = 0;
     let.area = 0;
     let.count = 0;
-    let.count = 0;
+    let.count_r = 0;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_SEEK;
+    let.mode = MODE_LINE_TRACE;
+    //let.mode = MODE_SEEK;
     //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
@@ -98,6 +98,7 @@ int main()
     PWM_Motor_b_WriteCompare1(0);
     PWM_Motor_b_WriteCompare2(200);
     CyDelay(700);
+    
     for(;;)
     {
         /* Place your application code here. */
@@ -127,8 +128,8 @@ int main()
             else if(let.mode == MODE_CATCH)
             {
                 Catch_Ball(&let);
-                Color_Sensor(&let);
-                //PSD_Sensor(&let);
+                //Color_Sensor(&let);
+                PSD_Sensor(&let);
             }
             else if(let.mode == MODE_MOVE)
             {
