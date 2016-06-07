@@ -43,13 +43,13 @@ void approach(Let *let)
     static uint16 limit = 1;
     
     PSD_Sensor(let);
-    if(let->d[0]<154){
+    if(let->d[1]<154){
         Motor_Right(speed);
         Motor_Left(speed);
     }
     else if((let->d[1]>154) && (let->d[1]<159))
     {
-        if(let->d[0]>120)
+        if(let->d[0]>115)
         {
             Motor_Right(-70);
             Motor_Left(70);
@@ -71,6 +71,41 @@ void approach(Let *let)
             //count = 0;
         }
     }
+    else if(let->d[1] >= 159)
+    {        
+        if(let->d[0]>115)
+        {
+            Motor_Right(-70);
+            Motor_Left(70);
+            //limit = 5;
+        }
+        else if(let->d[2]>70)
+        {
+            Motor_Right(70);
+            Motor_Left(-70);
+            //limit = 5;
+        }
+        //count++;
+        else //if(limit == count)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->mode = MODE_CATCH;
+            //limit = 0;
+            //count = 0;
+        }
+    }
+    if(let->d[2] > 150)
+    {
+        Motor_Right(70);
+        Motor_Left(-70);
+    }
+    if(let->d[0] > 150)
+    {
+        Motor_Right(-70);
+        Motor_Left(70);
+    }
+        
 
     /*
     if(let->d[1] >= 159)

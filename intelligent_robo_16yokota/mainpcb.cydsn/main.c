@@ -72,7 +72,7 @@ int main()
         }
     }
     /* アームの初期化 */
-    /*
+    
     PWM_Servo_Start();
     CyDelay(200);
     for(j=DOWN;j<UP;j++)
@@ -80,7 +80,7 @@ int main()
         PWM_Servo(UPDOWN,j);
         CyDelay(8);
     }
-    */
+    
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
@@ -127,7 +127,7 @@ int main()
             }
             else if(let.mode == MODE_CATCH)
             {
-                //Catch_Ball(&let);
+                Catch_Ball(&let);
                 PSD_Sensor(&let);
             }
             else if(let.mode == MODE_MOVE)
