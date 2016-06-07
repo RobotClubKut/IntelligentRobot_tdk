@@ -15,11 +15,12 @@
 #define MODE_DEBUG                  8
 #define MODE_BACKWARD               9
 #define MODE_FORWARD                10
+#define MODE_RETURN                 11
     
 /* Color */
-#define RED                         11
-#define GREEN                       12
-#define BLUE                        13
+#define RED                         12
+#define GREEN                       13
+#define BLUE                        14
     
 /* Servo */
 #define UPDOWN                      0
@@ -62,9 +63,13 @@ typedef struct{
     uint8 d[3];//PSDセンサーの値
     uint16 grab;
     uint16 updown;
+    uint16 count;
+    int16 count_r;
 }Let;
 
 /* 大会用 */
+void Ball_Shoot(Let *let);
+void Return(Let *let);
 void PID(Let *let);
 void approach(Let *let);
 void move(Let *let);

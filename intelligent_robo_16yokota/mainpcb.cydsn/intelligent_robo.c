@@ -2,6 +2,59 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
+void Return(Let *let)
+{
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;        
+    
+    if(step == 1)
+    {
+        Motor_Right(-150);
+        Motor_Left(-150);
+        limit = (int)(let->count*0.4);
+    }else
+    if(step == 2)
+    {
+        if(let->count_r>0)
+        {
+            Motor_Right(120);
+            Motor_Left(-120);
+            limit = (int)(let->count_r*0.7);
+        }
+        else if(let->count_r<0)
+        {
+            Motor_Right(-120);
+            Motor_Left(120);
+            limit = -(int)(let->count_r*0.7);
+        }
+    }else
+    if(step == 6)
+    {
+        Motor_Right(-150);
+        Motor_Left(20);
+        limit = 100;
+        let->area = 3;
+    }
+    else
+    if(step == 3)
+    {
+        let->count = 0;
+        let->count_r = 0;
+        Line_Trace(let,MODE_BACKWARD);
+        
+    }
+    
+    if(limit == count)
+    {
+        count = 0;
+        step++;
+        return;
+    }
+    count++;
+    
+}
+
 void PID(Let *let)
 {
     int16 dif_R,def1_R,def2_R,def3_R,operation_R;
@@ -39,84 +92,63 @@ void approach(Let *let)
 {
     uint8 speed = 85;
     static uint8 flg = 0;
+    static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
     
     PSD_Sensor(let);
-    if(let->d[1]<154){
-        Motor_Right(speed);
-        Motor_Left(speed);
-    }
-    else if((let->d[1]>154) && (let->d[1]<159))
-    {
-        if(let->d[0]>115)
-        {
-            Motor_Right(-70);
-            Motor_Left(70);
-            //limit = 5;
+    if(flg == 0){    
+        if(let->d[1]<154){
+            Motor_Right(speed);
+            Motor_Left(speed);
+            let->count++;
         }
-        else if(let->d[2]>70)
+        else if((let->d[1]>154) && (let->d[1]<159))
         {
-            Motor_Right(70);
-            Motor_Left(-70);
-            //limit = 5;
+            if(let->d[0]>115)
+            {
+                Motor_Right(-70);
+                Motor_Left(70);
+            }
+            else if(let->d[2]>80)
+            {
+                Motor_Right(70);
+                Motor_Left(-70);
+            }
+            else 
+            {
+                Motor_Right(0);
+                Motor_Left(0);
+                let->mode = MODE_CATCH;
+            }
         }
-        //count++;
-        else //if(limit == count)
-        {
-            Motor_Right(0);
-            Motor_Left(0);
-            let->mode = MODE_CATCH;
-            //limit = 0;
-            //count = 0;
+        else if(let->d[1] >= 159)
+        {        
+            flg = 1;
         }
-    }
-    else if(let->d[1] >= 159)
-    {        
-        if(let->d[0]>115)
-        {
-            Motor_Right(-70);
-            Motor_Left(70);
-            //limit = 5;
-        }
-        else if(let->d[2]>70)
+        if(let->d[2] > 150)
         {
             Motor_Right(70);
             Motor_Left(-70);
-            //limit = 5;
         }
-        //count++;
-        else //if(limit == count)
+        if(let->d[0] > 150)
+        {
+            Motor_Right(-70);
+            Motor_Left(70);
+        }
+    }
+    else if(flg == 1)
+    {
+        Motor_Right(-70);
+        Motor_Left(-70);
+        if(let->d[1] < 158)
         {
             Motor_Right(0);
             Motor_Left(0);
+            flg = 0;
             let->mode = MODE_CATCH;
-            //limit = 0;
-            //count = 0;
         }
     }
-    if(let->d[2] > 150)
-    {
-        Motor_Right(70);
-        Motor_Left(-70);
-    }
-    if(let->d[0] > 150)
-    {
-        Motor_Right(-70);
-        Motor_Left(70);
-    }
-        
-
-    /*
-    if(let->d[1] >= 159)
-    {
-        Motor_Right(-70);
-        Motor_Left(-70);
-
-        let->mode = MODE_CATCH;
-    }
-    */
-    
 }
 
 void move(Let *let)
@@ -151,6 +183,7 @@ void Ball_Seek(Let *let)
         Motor_Right(speed);
         Motor_Left(-speed);
         limit = 100;
+        let->count_r--;
     }else
     if(step == 1)
     {
@@ -166,6 +199,7 @@ void Ball_Seek(Let *let)
         Motor_Right(-speed);
         Motor_Left(speed);
         limit = 200;
+        let->count_r++;
     }else
     if(step == 3)
     {
@@ -204,6 +238,7 @@ void Ball_Seek(Let *let)
     {
         step = 0;
         count = 0;
+        let->count_r = 0;
         return;
     }
     /* ボールを見つけた時の処理 */
@@ -362,7 +397,7 @@ void Line_Trace(Let *let,uint8 mode){
             p1 = p0;
             p0 = p;//13.6
             //dif += 18.0 * (p0-p1);
-            dif += 15.6 * (p0-p1) +0.1 * p0 + 2.5 *((p0-p1) - (p1-p2));
+            dif += 13.6 * (p0-p1) +0.1 * p0 + 2.5 *((p0-p1) - (p1-p2));
             //0.01 * p0 
             if(dif > let->speed)
             {
@@ -482,7 +517,7 @@ void PSD_Sensor(Let *let){//0が右端
         let->d[i] = ADC_DelSig_Distance_GetResult8();
         ADC_DelSig_Distance_StopConvert();
     }
-    
+    /*
     I2C_LCD_1_Clear();
     sprintf(value, "1=%3d 2=%3d",let->d[0],let->d[1]);
     I2C_LCD_Position(0u,0u);
@@ -490,6 +525,7 @@ void PSD_Sensor(Let *let){//0が右端
     sprintf(value, "3=%3d",let->d[2]);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
+    */
     sprintf(value,"1=%3d 2=%3d 3=%3d\n", let->d[0], let->d[1], let->d[2]);
     UART_Line_Sensor_PutString(value);
 }
@@ -531,13 +567,13 @@ void Catch_Ball(Let *let){
     }else
     if(step == 4)
     {
-        limit = 200;
+        limit = 50;
     }
     else
     if(step == 5)
     {
         step = 0;
-        let->mode = MODE_SHOOT;
+        let->mode = MODE_RETURN;
         return;
     }
     if(limit == count)
