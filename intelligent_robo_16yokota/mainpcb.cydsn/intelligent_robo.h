@@ -25,8 +25,8 @@
 /* Servo */
 #define UPDOWN                      0
 #define GRAB_BALL                   1
-#define UP                          700
-#define DOWN                        470
+#define UP                          5500
+#define DOWN                        7300
 #define GRAB                        1050
 #define RELEASE                     500
     

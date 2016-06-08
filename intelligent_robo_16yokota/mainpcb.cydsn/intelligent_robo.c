@@ -417,7 +417,7 @@ void Shooting_tennis_ball(Let *let){
         }else
         if(step == 3)
         {
-            let->updown = 470 + ((int)2.3 * count );
+            let->updown = UP;
             Motor_Right(-150);
             limit = 100;
         }else
@@ -616,7 +616,7 @@ void Catch_Ball(Let *let){
     }else
     if(step == 1)
     {
-        let->updown = UP-(int)(2.3*count);
+        let->updown = DOWN;
         //PWM_Servo(UPDOWN,600-(int)(2.6*count));
         limit = 100;
     }else
@@ -629,7 +629,7 @@ void Catch_Ball(Let *let){
     if(step == 3)
     {
         //カラーセンサーの処理を追加予定
-        let->updown = DOWN+(int)(2.4*count);
+        let->updown = UP;
         //PWM_Servo(UPDOWN,470+(int)(2.6*count));
         limit = 100;
     }else

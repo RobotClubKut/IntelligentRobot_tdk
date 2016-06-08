@@ -12,6 +12,7 @@
 #include <project.h>
 #include <stdio.h>
 #include "intelligent_robo.h"
+#include "Servo.h"
 
 uint8 g_timerFlag = 0;
 uint16 g_count = 0;
@@ -32,6 +33,9 @@ CY_ISR(clock_isr)
 
 int main()
 {
+    uint16 pos;
+    unsigned char tx[4], rx[6];
+    uint8 i=0;
     uint16 j = 0;
     char value[20];
     Let let;
@@ -55,37 +59,45 @@ int main()
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
     init();
+    UART_servo_Start();
     isr_1_StartEx(clock_isr);
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
     /* デバッグモード */
+    //7500が中心+に動かすと下へ
+    
     if(let.mode == MODE_DEBUG)
     {
         for(;;)
         {
-            PSD_Sensor(&let);
-            //Ball_Seek(&let);
+            pos = UP;
+            sprintf(value,"pos = %5d", pos);
+            I2C_LCD_Position(1u,0u);
+            I2C_LCD_1_PrintString(value);
+                
             if(g_timerFlag == 1)
             {
+                //PSD_Sensor(&let);
+                //Ball_Seek(&let);
                 g_timerFlag = 0;
             }
         }
     }
-    /* アームの初期化 */
     
+    /* アームの初期化 */
     PWM_Servo_Start();
     CyDelay(200);
-    for(j=DOWN;j<UP;j++)
+    for(j=DOWN;j>UP;j--)
     {
-        PWM_Servo(UPDOWN,j);
-        CyDelay(8);
+        angle_keep(j);
+        CyDelayUs(50);
     }
     
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
-        PWM_Servo(UPDOWN,UP);
+        angle_keep(UP);
         PWM_Servo(GRAB_BALL,GRAB);
     }
     let.grab = GRAB;
@@ -106,7 +118,7 @@ int main()
         if(g_timerFlag == 1)
         {
             /* PWMServoへの命令 */
-            PWM_Servo(UPDOWN,let.updown);
+            angle_keep(let.updown);
             PWM_Servo(GRAB_BALL,let.grab);
             /* モードによって処理を管理 */
             if(let.mode == MODE_SHOOTING_TENNIS_BALL)
