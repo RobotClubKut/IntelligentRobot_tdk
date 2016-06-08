@@ -2,6 +2,55 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
+void Ball_Shoot(Let *let)
+{
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    if(step == 0)
+    {
+        Motor_Right(-20);
+        Motor_Left(150);
+        limit = 120;
+    }else 
+    if(step == 1)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        let->updown = DOWN;
+        let->grab = RELEASE;
+        limit = 10;
+    }else
+    if(step == 2)
+    {
+        let->updown = DOWN;
+        limit = 100;
+    }else
+    if(step == 3)
+    {
+        let->updown = 470 + ((int)2.3 * count );
+        Motor_Right(150);
+        Motor_Left(-150);
+        limit = 100;
+    }else
+    if(step == 4)
+    {
+        Motor_Right(0);
+        Motor_Left(0);
+        limit = 0;
+    }
+    
+    if(limit == count)
+    {
+        count = 0;
+        step++;
+        return;
+    }
+    count++;        
+    
+}
+
 void Return(Let *let)
 {
     static uint8 step = 0;
@@ -54,7 +103,7 @@ void Return(Let *let)
     }else
     if(step == 6)
     {
-        Line_Trace(let, MODE_BACKWARD);    
+        Line_Trace(let, MODE_BACKWARD);
         limit = 0;
     }
     if(let->area == 2)
@@ -409,25 +458,15 @@ void Line_Trace(Let *let,uint8 mode){
     let->slave.status.d*(1)+let->slave.status.c*(2)+let->slave.status.b*(3)+let->slave.status.a*(4));
     s = let->slave.status.h + let->slave.status.g + let->slave.status.f + let->slave.status.e + 
     let->slave.status.d + let->slave.status.c + let->slave.status.b + let->slave.status.a;
-    /*
-    if(let->mode == MODE_CATCH)
-    {
-        s = 0;
-        p = 0;
-        p0 = 0;
-        p1 = 0;
-        p2 = 0;
-        dif = 0;
-    }
-    */
+
     if(s!=0)
     {
         p/=(double)s;
         p2 = p1;
         p1 = p0;
         p0 = p;//13.6
-        //dif += 18.0 * (p0-p1);
-        dif += 13.6 * (p0-p1) +0.05 * p0 + 2.5 *((p0-p1) - (p1-p2));
+        dif += 18.0 * (p0-p1);
+        //dif += 13.6 * (p0-p1) +0.05 * p0 + 2.5 *((p0-p1) - (p1-p2));
         //0.01 * p0 
         if(dif > let->speed)
         {

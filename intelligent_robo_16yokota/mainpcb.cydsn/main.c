@@ -44,8 +44,8 @@ int main()
     let.count = 0;
     let.count_r = 0;
     
-    //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    let.mode = MODE_LINE_TRACE;
+    let.mode = MODE_SHOOTING_TENNIS_BALL;
+    //let.mode = MODE_LINE_TRACE;
     //let.mode = MODE_SEEK;
     //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
@@ -137,7 +137,7 @@ int main()
             }
             else if(let.mode == MODE_SHOOT)
             {
-                //Ball_Shoot(&let);
+                Ball_Shoot(&let);
             }
             else if(let.mode == MODE_RETURN)
             {
