@@ -64,7 +64,7 @@ typedef struct{
 typedef struct{
     union Slave slave;
     Status status;
-    uint8 speed;//速度
+    uint16 speed;//速度
     uint8 mode;//モード
     int8 area;//エリア
     uint8 line;//ライン
@@ -92,10 +92,11 @@ void Line_Trace(Let *let,uint8 mode);
 void Color_Sensor(Let *let);
 void PSD_Sensor(Let *let);
 /* アクチュエータ系 */
+void PID_Motor_Right(int16 pos);
+void PID_Motor_Left(int16 pos);
 void Motor_Right(int16 pos);
 void Motor_Left(int16 pos);
 void PWM_Servo(uint8 id,uint16 value);
-void PID(Let *let);
 void PID_init(Let *let);
 /* 通信とか */
 void init(void);

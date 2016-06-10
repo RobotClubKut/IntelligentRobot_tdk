@@ -32,15 +32,12 @@ CY_ISR(clock_isr)
 
 int main()
 {
-    int16 count_Right, count_Left;
     uint16 j = 0;
-    double rps;
-    double speed;
     char value[50];
     Let let;
     
     /* 構造体の初期化 */
-    let.speed = 220;
+    let.speed = 9000;
     let.number = 0;
     let.place = 0;
     let.area = 0;
@@ -48,9 +45,9 @@ int main()
     let.count_r = 0;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    //let.mode = MODE_LINE_TRACE;
+    let.mode = MODE_LINE_TRACE;
     //let.mode = MODE_SEEK;
-    let.mode = MODE_DEBUG;
+    //let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -71,8 +68,7 @@ int main()
 
             if(g_timerFlag == 1)
             {
-                Motor_Right(300);
-                Motor_Left(300);
+                Line_Trace(&let,MODE_FORWARD);
                 //PSD_Sensor(&let);
                 //Ball_Seek(&let);
                 //Color_Sensor(&let);
@@ -80,7 +76,6 @@ int main()
             }
         }
     }
-    
     /* アームの初期化 */
     PWM_Servo_Start();
     CyDelay(200);
@@ -100,13 +95,13 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    /*
+    
     PWM_Motor_a_WriteCompare1(0);
-    PWM_Motor_a_WriteCompare2(200);
+    PWM_Motor_a_WriteCompare2(10000);
     PWM_Motor_b_WriteCompare1(0);
-    PWM_Motor_b_WriteCompare2(200);
+    PWM_Motor_b_WriteCompare2(10000);
     CyDelay(700);
-    */
+    
     for(;;)
     {
         /* Place your application code here. */
