@@ -737,8 +737,9 @@ void PWM_Servo(uint8 id, uint16 value){
     }
 }
 
-void Motor_Right(int16 speed){
-    
+void Motor_Right(int16 pos){
+    double rps;
+    double speed;
     static int16 dif_R = 0;
     static int16 def1_R = 0;
     static int16 def2_R = 0;
@@ -749,27 +750,36 @@ void Motor_Right(int16 speed){
     
     count_Right = -QuadDec_Right_GetCounter();
     QuadDec_Right_SetCounter(0);
-    
-    
-    def1_R = speed - count_Right;
-    //dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.01) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.3));
-    dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.01) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.01));
+    rps = (100.0/1024.0)*count_Right;
+    speed = rps * 188.4955592;
+    def1_R = pos - speed;
+    dif_R = (int16)(((def1_R - def2_R) * 17.0) + (def1_R * 3.0) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.5));
     operation_R = operation_R + dif_R;
     def3_R = def2_R;
     def2_R = def1_R;
-     
-    sprintf(value,"R=%4d opeR=%d\n",count_Right,operation_R);
+    
+    sprintf(value,"R=%4d speed=%d opeR=%d\n",count_Right,(int)speed,operation_R);
     UART_Line_Sensor_PutString(value);
 
-    if((0<operation_R)&&(operation_R<255))
+    if((0<operation_R)&&(operation_R<10000))
     {
         PWM_Motor_a_WriteCompare1(0);
         PWM_Motor_a_WriteCompare2(operation_R);
     }
-    else if((-255<operation_R)&&(operation_R<0))
+    else if((-10000<operation_R)&&(operation_R<0))
     {
         PWM_Motor_a_WriteCompare1(-operation_R);
         PWM_Motor_a_WriteCompare2(0);
+    }
+    else if(operation_R >= 10000)
+    {
+        PWM_Motor_a_WriteCompare1(0);
+        PWM_Motor_a_WriteCompare2(10000);   
+    }
+    else if(operation_R <= -10000)
+    {
+        PWM_Motor_a_WriteCompare1(10000);
+        PWM_Motor_a_WriteCompare2(0);    
     }
     else
     {
@@ -794,26 +804,34 @@ void Motor_Left(int16 pos){
     count_Left = QuadDec_Left_GetCounter();
     QuadDec_Left_SetCounter(0);
     rps = (100.0/1024.0)*count_Left;
-    speed = rps * 376.9911;
+    speed = rps * 188.4955592;
     def1_L = pos - speed;
-    dif_L = (int16)(((def1_L - def2_L) * 0.3) + (def1_L * 0.3) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.3));
-    //dif_L = (int16)(((def1_L - def2_L) * 1.5) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.5));
+    dif_L = (int16)(((def1_L - def2_L) * 17.0) + (def1_L * 3.0) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.5));
     operation_L = operation_L + dif_L;
     def3_L = def2_L;
     def2_L = def1_L;
-    rps = rps * 10.0;
-    sprintf(value,"L=%4d rps=%d opeL=%d\n", count_Left, (int)rps,operation_L);
+    sprintf(value,"L=%4d speed=%d opeL=%d\n", count_Left,(int)speed,operation_L);
     UART_Line_Sensor_PutString(value);
 
-    if((0<operation_L)&&(operation_L<1000))
+    if((0<operation_L)&&(operation_L<10000))
     {
         PWM_Motor_b_WriteCompare1(0);
         PWM_Motor_b_WriteCompare2(operation_L);   
     }
-    else if((-1000<operation_L)&&(operation_L<0))
+    else if((-10000<operation_L)&&(operation_L<0))
     {
         PWM_Motor_b_WriteCompare1(-operation_L);
         PWM_Motor_b_WriteCompare2(0);
+    }
+    else if(operation_L >= 10000)
+    {
+        PWM_Motor_b_WriteCompare1(0);
+        PWM_Motor_b_WriteCompare2(10000);   
+    }
+    else if(operation_L <= -10000)
+    {
+        PWM_Motor_b_WriteCompare1(10000);
+        PWM_Motor_b_WriteCompare2(0);   
     }
     else
     {

@@ -71,35 +71,12 @@ int main()
 
             if(g_timerFlag == 1)
             {
-                PWM_Motor_b_WriteCompare1(0);
-                PWM_Motor_b_WriteCompare2(10000);
-                PWM_Motor_a_WriteCompare1(0);
-                PWM_Motor_a_WriteCompare2(10000);
-                //Motor_Right(100);
-                //Motor_Left(5000);
-                count_Left = QuadDec_Left_GetCounter();
-                QuadDec_Left_SetCounter(0);
-                count_Right = -QuadDec_Right_GetCounter();
-                QuadDec_Right_SetCounter(0);
-                rps = (100.0/1024.0)*count_Left;
-                speed = rps * 188.4955592;
-                rps = rps * 10;
-                sprintf(value,"L=%4d rps=%d speed=%d\n", count_Left, (int)rps,(int)speed);
-                UART_Line_Sensor_PutString(value);
+                Motor_Right(300);
+                Motor_Left(300);
                 //PSD_Sensor(&let);
                 //Ball_Seek(&let);
                 //Color_Sensor(&let);
-                j++;
                 g_timerFlag = 0;
-                if(j == 100)
-                {
-                    for(;;){
-                        PWM_Motor_b_WriteCompare1(0);
-                        PWM_Motor_b_WriteCompare2(0);
-                        PWM_Motor_a_WriteCompare1(0);
-                        PWM_Motor_a_WriteCompare2(0);
-                    }
-                }
             }
         }
     }
