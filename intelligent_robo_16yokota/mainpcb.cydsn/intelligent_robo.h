@@ -3,7 +3,7 @@
 
 #include <project.h>
 #include <stdio.h>
-
+    
 /* Mode */
 #define MODE_SHOOTING_TENNIS_BALL   1
 #define MODE_LINE_TRACE             2
@@ -19,8 +19,9 @@
     
 /* Color */
 #define RED                         12
-#define GREEN                       13
+#define YELLO                       13
 #define BLUE                        14
+#define MISS                        15
     
 /* Servo */
 #define UPDOWN                      0
@@ -91,8 +92,8 @@ void Line_Trace(Let *let,uint8 mode);
 void Color_Sensor(Let *let);
 void PSD_Sensor(Let *let);
 /* アクチュエータ系 */
-void Motor_Right(int16 speed);
-void Motor_Left(int16 speed);
+void Motor_Right(int16 pos);
+void Motor_Left(int16 pos);
 void PWM_Servo(uint8 id,uint16 value);
 void PID(Let *let);
 void PID_init(Let *let);

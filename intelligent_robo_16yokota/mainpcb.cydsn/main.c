@@ -13,9 +13,8 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 #include "Servo.h"
-
-uint8 g_timerFlag = 0;
-uint16 g_count = 0;
+ 
+uint8 g_timerFlag = 0;  
 
 /* Mode */
 #define MODE_SHOOTING_TENNIS_BALL   1
@@ -33,11 +32,11 @@ CY_ISR(clock_isr)
 
 int main()
 {
-    uint16 pos;
-    unsigned char tx[4], rx[6];
-    uint8 i=0;
+    int16 count_Right, count_Left;
     uint16 j = 0;
-    char value[20];
+    double rps;
+    double speed;
+    char value[50];
     Let let;
     
     /* 構造体の初期化 */
@@ -48,10 +47,10 @@ int main()
     let.count = 0;
     let.count_r = 0;
     
-    let.mode = MODE_SHOOTING_TENNIS_BALL;
+    //let.mode = MODE_SHOOTING_TENNIS_BALL;
     //let.mode = MODE_LINE_TRACE;
     //let.mode = MODE_SEEK;
-    //let.mode = MODE_DEBUG;
+    let.mode = MODE_DEBUG;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -65,22 +64,42 @@ int main()
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString("PSoC5 Start");
     /* デバッグモード */
-    //7500が中心+に動かすと下へ
-    
     if(let.mode == MODE_DEBUG)
     {
         for(;;)
         {
-            pos = UP;
-            sprintf(value,"pos = %5d", pos);
-            I2C_LCD_Position(1u,0u);
-            I2C_LCD_1_PrintString(value);
-                
+
             if(g_timerFlag == 1)
             {
+                PWM_Motor_b_WriteCompare1(0);
+                PWM_Motor_b_WriteCompare2(10000);
+                PWM_Motor_a_WriteCompare1(0);
+                PWM_Motor_a_WriteCompare2(10000);
+                //Motor_Right(100);
+                //Motor_Left(5000);
+                count_Left = QuadDec_Left_GetCounter();
+                QuadDec_Left_SetCounter(0);
+                count_Right = -QuadDec_Right_GetCounter();
+                QuadDec_Right_SetCounter(0);
+                rps = (100.0/1024.0)*count_Left;
+                speed = rps * 188.4955592;
+                rps = rps * 10;
+                sprintf(value,"L=%4d rps=%d speed=%d\n", count_Left, (int)rps,(int)speed);
+                UART_Line_Sensor_PutString(value);
                 //PSD_Sensor(&let);
                 //Ball_Seek(&let);
+                //Color_Sensor(&let);
+                j++;
                 g_timerFlag = 0;
+                if(j == 100)
+                {
+                    for(;;){
+                        PWM_Motor_b_WriteCompare1(0);
+                        PWM_Motor_b_WriteCompare2(0);
+                        PWM_Motor_a_WriteCompare1(0);
+                        PWM_Motor_a_WriteCompare2(0);
+                    }
+                }
             }
         }
     }
@@ -88,7 +107,7 @@ int main()
     /* アームの初期化 */
     PWM_Servo_Start();
     CyDelay(200);
-    for(j=DOWN;j>UP;j--)
+    for(j=DOWN;j>UP;j--)//7500が中心+に動かすと下へ
     {
         angle_keep(j);
         CyDelayUs(50);
@@ -104,17 +123,17 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    
+    /*
     PWM_Motor_a_WriteCompare1(0);
     PWM_Motor_a_WriteCompare2(200);
     PWM_Motor_b_WriteCompare1(0);
     PWM_Motor_b_WriteCompare2(200);
     CyDelay(700);
-    
+    */
     for(;;)
     {
         /* Place your application code here. */
-        Debug_LED_Write(1);
+        //Debug_LED_Write(1);
         if(g_timerFlag == 1)
         {
             /* PWMServoへの命令 */
@@ -153,7 +172,7 @@ int main()
             }
             else if(let.mode == MODE_RETURN)
             {
-                Return(&let);
+                //Return(&let);
             }
             g_timerFlag = 0;
         }

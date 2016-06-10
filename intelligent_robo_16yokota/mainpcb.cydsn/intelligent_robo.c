@@ -2,6 +2,91 @@
 #include <stdio.h>
 #include "intelligent_robo.h"
 
+
+void Color_Sensor(Let *let)
+{
+    uint8 r=0,g=0,b=0,x=0;
+    unsigned char txReadStatus = 0x03;
+    unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
+    char value[20];
+    //Debug_LED_Write(1);
+    Sensor_LED_Write(1);
+    I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
+    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT));
+    /*
+    {
+        if(g_timerFlag==1){
+            x++;
+        }
+        if(x>50){
+            Debug_LED_Write(1);
+            I2C_Color_init();
+            x = 0;
+            break;
+        }
+        g_timerFlag=0;
+    }*/
+    I2C_1_MasterClearStatus();
+    I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
+    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
+    /*
+    {
+        if(g_timerFlag==1){
+            x++;
+        }
+        if(x>50){
+            Debug_LED_Write(1);
+            I2C_Color_init();
+            x = 0;
+            break;
+        }
+        g_timerFlag=0;
+    }
+    */
+    I2C_1_MasterClearStatus();
+    r = rxBuf[0]<< 8|rxBuf[1];
+    g = rxBuf[2]<< 8|rxBuf[3];
+    b = rxBuf[4]<< 8|rxBuf[5];
+    
+    I2C_LCD_1_Clear();
+    //色判断して構造体に格納
+    if((r > b) && (g > b))
+    {
+        if(r < g)
+        {
+            let->color = YELLO;
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("YELLO");
+        }
+        else if(r > g)
+        {
+            let->color = RED;
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("RED");
+        }
+        else if(r < 40)
+        {
+            let->color = MISS;
+            I2C_LCD_Position(1u,7u);
+            I2C_LCD_1_PrintString("MISS");
+        }
+    }
+    else if((g > b) && (b > r))
+    {
+        let->color = BLUE;
+        I2C_LCD_Position(1u,7u);
+        I2C_LCD_1_PrintString("BLUE");
+    }
+    
+    sprintf(value, "r=%3d g=%3d",r,g);
+    I2C_LCD_Position(0u,0u);
+    I2C_LCD_1_PrintString(value);
+     sprintf(value, "b=%3d",b);
+    I2C_LCD_Position(1u,0u);
+    I2C_LCD_1_PrintString(value);
+}
+
+
 void Ball_Shoot(Let *let)
 {
     static uint8 step = 0;
@@ -47,8 +132,7 @@ void Ball_Shoot(Let *let)
         step++;
         return;
     }
-    count++;        
-    
+    count++;
 }
 
 void Return(Let *let)
@@ -97,6 +181,7 @@ void Return(Let *let)
     {
         Motor_Right(200);
         Motor_Left(200);
+        let->area = 3;
         UART_Line_Sensor_ClearRxBuffer();
         PID_init(let);
         limit = 50;
@@ -106,12 +191,35 @@ void Return(Let *let)
         Line_Trace(let, MODE_BACKWARD);
         limit = 0;
     }
-    if(let->area == 2)
+    if(let->color == RED)
     {
-        Motor_Right(0);
-        Motor_Left(0);
-        count = 0;
-        let->mode = MODE_SHOOT;
+        if(let->area == 0)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            count = 0;
+            let->mode = MODE_SHOOT;
+        }
+    }
+    else if(let->color == YELLO)
+    {
+        if(let->area == 1)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            count = 0;
+            let->mode = MODE_SHOOT;
+        }
+    }
+    else if(let->color == BLUE)
+    {
+        if(let->area == 2)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            count = 0;
+            let->mode = MODE_SHOOT;
+        }
     }
     
     count++;
@@ -121,7 +229,6 @@ void Return(Let *let)
         step++;
         return;
     }
-    
 }
 
 void PID(Let *let)
@@ -159,7 +266,7 @@ void PID(Let *let)
 
 void approach(Let *let)
 {
-    uint8 speed = 85;
+    uint8 speed = 90;
     static uint8 flg = 0;
     static uint8 step = 0;
     static uint16 count = 0;
@@ -167,19 +274,19 @@ void approach(Let *let)
     
     PSD_Sensor(let);
     if(flg == 0){    
-        if(let->d[1]<154){
+        if(let->d[1]<150){
             Motor_Right(speed);
             Motor_Left(speed);
             let->count++;
         }
-        else if((let->d[1]>154) && (let->d[1]<159))
+        else if((let->d[1]>150) && (let->d[1]<155))
         {
-            if(let->d[0]>115)
+            if(let->d[0]>120)
             {
                 Motor_Right(-70);
                 Motor_Left(70);
             }
-            else if(let->d[2]>80)
+            else if(let->d[2]>120)
             {
                 Motor_Right(70);
                 Motor_Left(-70);
@@ -195,12 +302,12 @@ void approach(Let *let)
         {        
             flg = 1;
         }
-        if(let->d[2] > 150)
+        if(let->d[2] > 120)
         {
             Motor_Right(70);
             Motor_Left(-70);
         }
-        if(let->d[0] > 150)
+        if(let->d[0] > 120)
         {
             Motor_Right(-70);
             Motor_Left(70);
@@ -210,7 +317,7 @@ void approach(Let *let)
     {
         Motor_Right(-70);
         Motor_Left(-70);
-        if(let->d[1] < 158)
+        if(let->d[1] < 150)
         {
             Motor_Right(0);
             Motor_Left(0);
@@ -243,7 +350,7 @@ void Ball_Seek(Let *let)
     static uint16 count = 0;
     static uint16 d_count = 0;
     static uint16 limit = 1;
-    uint8 speed = 90;
+    uint8 speed = 100;
     
     if(step == 0)
     {
@@ -535,45 +642,6 @@ void Line_Trace(Let *let,uint8 mode){
     I2C_LCD_1_PrintString(value);
 }
 
-void Color_Sensor(Let *let)
-{
-    uint8 r=0,g=0,b=0;
-    unsigned char txReadStatus = 0x03;
-    unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
-    char value[20];
-    //Debug_LED_Write(1);
-    Sensor_LED_Write(1);
-    I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
-    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT)){
-//        Debug_LED_Write(0);
-//        if(g_timerFlag==1){
-//            x++;
-//        }
-//        if(x>50){
-//            break;
-//        }
-//        g_timerFlag=0;
-    }
-    I2C_1_MasterClearStatus();
-    I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
-    while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
-    I2C_1_MasterClearStatus();
-    r = rxBuf[0]<< 8|rxBuf[1];
-    g = rxBuf[2]<< 8|rxBuf[3];
-    b = rxBuf[4]<< 8|rxBuf[5];
-    
-    I2C_LCD_1_Clear();
-    sprintf(value, "r=%3d g=%3d",r,g);
-    I2C_LCD_Position(0u,0u);
-    I2C_LCD_1_PrintString(value);
-     sprintf(value, "b=%3d",b);
-    I2C_LCD_Position(1u,0u);
-    I2C_LCD_1_PrintString(value);
-    //色判断して構造体に格納
-    
-    //let->color = BLUE;
-    //みたいな
-}
 void PSD_Sensor(Let *let){//0が右端
     uint8 i;
     char value[30];
@@ -585,7 +653,7 @@ void PSD_Sensor(Let *let){//0が右端
         let->d[i] = ADC_DelSig_Distance_GetResult8();
         ADC_DelSig_Distance_StopConvert();
     }
-    /*
+    
     I2C_LCD_1_Clear();
     sprintf(value, "1=%3d 2=%3d",let->d[0],let->d[1]);
     I2C_LCD_Position(0u,0u);
@@ -593,7 +661,7 @@ void PSD_Sensor(Let *let){//0が右端
     sprintf(value, "3=%3d",let->d[2]);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
-    */
+    
     sprintf(value,"1=%3d 2=%3d 3=%3d\n", let->d[0], let->d[1], let->d[2]);
     UART_Line_Sensor_PutString(value);
 }
@@ -635,6 +703,7 @@ void Catch_Ball(Let *let){
     }else
     if(step == 4)
     {
+        Color_Sensor(let);
         limit = 50;
     }
     else
@@ -670,24 +739,28 @@ void PWM_Servo(uint8 id, uint16 value){
 
 void Motor_Right(int16 speed){
     
-    int16 dif_R,def1_R,def2_R,def3_R,operation_R;
+    static int16 dif_R = 0;
+    static int16 def1_R = 0;
+    static int16 def2_R = 0;
+    static int16 def3_R = 0;
+    static int16 operation_R = 0;
     int16 count_Right;
     char value[20];
     
     count_Right = -QuadDec_Right_GetCounter();
     QuadDec_Right_SetCounter(0);
-    /*
-    sprintf(value, "R=%4d L=%4d", count_Right, count_Left);
-    I2C_LCD_Position(1u,0u);
-    I2C_LCD_1_PrintString(value);
-    UART_Line_Sensor_PutString(value);
-    */
+    
+    
     def1_R = speed - count_Right;
-    dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.3) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.3));
+    //dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.01) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.3));
+    dif_R = (int16)(((def1_R - def2_R) * 0.3) + (def1_R * 0.01) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.01));
     operation_R = operation_R + dif_R;
     def3_R = def2_R;
     def2_R = def1_R;
-    
+     
+    sprintf(value,"R=%4d opeR=%d\n",count_Right,operation_R);
+    UART_Line_Sensor_PutString(value);
+
     if((0<operation_R)&&(operation_R<255))
     {
         PWM_Motor_a_WriteCompare1(0);
@@ -703,35 +776,41 @@ void Motor_Right(int16 speed){
         PWM_Motor_a_WriteCompare1(0);
         PWM_Motor_a_WriteCompare2(0);
     }
+    return;
 }
 
-void Motor_Left(int16 speed){
+void Motor_Left(int16 pos){
 
-    int16 dif_L,def1_L,def2_L,def3_L,operation_L;
+    static int16 dif_L = 0;
+    static int16 def1_L = 0;
+    static int16 def2_L = 0;
+    static int16 def3_L = 0;
+    static int16 operation_L = 0;
     int16 count_Left;
-    char value[20];
+    double rps = 0;
+    double speed = 0;
+    char value[50];
 
     count_Left = QuadDec_Left_GetCounter();
     QuadDec_Left_SetCounter(0);
-    /*
-    sprintf(value, "R=%4d L=%4d", count_Right, count_Left);
-    I2C_LCD_Position(1u,0u);
-    I2C_LCD_1_PrintString(value);
-    UART_Line_Sensor_PutString(value);
-    */
-    
-    def1_L = speed - count_Left;
+    rps = (100.0/1024.0)*count_Left;
+    speed = rps * 376.9911;
+    def1_L = pos - speed;
     dif_L = (int16)(((def1_L - def2_L) * 0.3) + (def1_L * 0.3) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.3));
+    //dif_L = (int16)(((def1_L - def2_L) * 1.5) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.5));
     operation_L = operation_L + dif_L;
     def3_L = def2_L;
     def2_L = def1_L;
-    
-    if((0<operation_L)&&(operation_L<255))
+    rps = rps * 10.0;
+    sprintf(value,"L=%4d rps=%d opeL=%d\n", count_Left, (int)rps,operation_L);
+    UART_Line_Sensor_PutString(value);
+
+    if((0<operation_L)&&(operation_L<1000))
     {
         PWM_Motor_b_WriteCompare1(0);
         PWM_Motor_b_WriteCompare2(operation_L);   
     }
-    else if((-255<operation_L)&&(operation_L<0))
+    else if((-1000<operation_L)&&(operation_L<0))
     {
         PWM_Motor_b_WriteCompare1(-operation_L);
         PWM_Motor_b_WriteCompare2(0);
@@ -741,6 +820,7 @@ void Motor_Left(int16 speed){
         PWM_Motor_b_WriteCompare1(0);
         PWM_Motor_b_WriteCompare2(0);
     }
+    return;
 }
 
 void PID_init(Let *let)
