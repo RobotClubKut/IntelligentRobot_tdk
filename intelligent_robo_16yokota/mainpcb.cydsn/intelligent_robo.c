@@ -93,37 +93,71 @@ void Ball_Shoot(Let *let)
     static uint16 count = 0;
     static uint16 limit = 1;
     
-    if(step == 0)
+    if(let->color == BLUE)
+    { 
+        if(step == 0)
+        {
+            Motor_Right(0);
+            Motor_Left(0);   
+            let->updown = 4000;
+            limit = 50;
+        }else 
+        if(step == 1)
+        {        
+            let->updown = DOWN;
+            let->grab = RELEASE;
+            limit = 100;
+        }else
+        if(step == 2)
+        {
+            let->updown = UP;
+            PID_Motor_Right(-150);
+            PID_Motor_Left(150);
+            limit = 110;
+        }else
+        if(step == 3)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 0;
+            step = 0;
+            let->area++;
+            let->mode = MODE_LINE_TRACE;
+        }
+    }
+    else
     {
-        PID_Motor_Right(150);
-        PID_Motor_Left(150);
-        limit = 120;
-    }else 
-    if(step == 1)
-    {
-        Motor_Right(0);
-        Motor_Left(0);
-        let->updown = DOWN;
-        let->grab = RELEASE;
-        limit = 10;
-    }else
-    if(step == 2)
-    {
-        let->updown = DOWN;
-        limit = 100;
-    }else
-    if(step == 3)
-    {
-        let->updown = UP;
-        PID_Motor_Right(150);
-        PID_Motor_Left(-150);
-        limit = 100;
-    }else
-    if(step == 4)
-    {
-        Motor_Right(0);
-        Motor_Left(0);
-        limit = 0;
+        if(step == 0)
+        {
+            PID_Motor_Right(-150);
+            PID_Motor_Left(150);
+            limit = 70;
+        }else 
+        if(step == 1)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->updown = DOWN;
+            let->grab = RELEASE;
+            limit = 100;
+        }else
+        if(step == 2)
+        {
+            let->updown = UP;
+            PID_Motor_Right(-150);
+            PID_Motor_Left(150);
+            limit = 60;
+        }else
+        if(step == 3)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 0;
+            step = 0;
+            let->area++;
+            let->mode = MODE_LINE_TRACE;
+        }
+        
     }
     
     if(limit == count)
@@ -140,7 +174,7 @@ void Return(Let *let)
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;        
-    
+    /*
     if(step == 1)
     {
         PID_Motor_Right(-150);
@@ -181,16 +215,18 @@ void Return(Let *let)
     {
         PID_Motor_Right(200);
         PID_Motor_Left(200);
-        let->area = 3;
+        //let->area = 3;
         UART_Line_Sensor_ClearRxBuffer();
         PID_init(let);
         limit = 50;
     }else
     if(step == 6)
     {
-        Line_Trace(let, MODE_BACKWARD);
+        
         limit = 0;
     }
+    */
+    Line_Trace(let, MODE_BACKWARD);
     if(let->color == RED)
     {
         if(let->area == 0)
@@ -221,7 +257,7 @@ void Return(Let *let)
             let->mode = MODE_SHOOT;
         }
     }
-    
+    /*
     count++;
     if(limit == count)
     {
@@ -229,6 +265,7 @@ void Return(Let *let)
         step++;
         return;
     }
+    */
 }
 
 void approach(Let *let)
@@ -368,7 +405,7 @@ void Ball_Seek(Let *let)
     {
         PID_Motor_Right(220);
         PID_Motor_Left(220);
-        limit = 55;
+        limit = 65;
     }else
     if(step == 7)
     {

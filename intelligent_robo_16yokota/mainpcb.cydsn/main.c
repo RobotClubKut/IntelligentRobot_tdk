@@ -40,15 +40,16 @@ int main()
     let.speed = 9000;
     let.number = 0;
     let.place = 0;
-    let.area = 0;
+    let.area = 4;
     let.count = 0;
     let.count_r = 0;
+    let.color = BLUE;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
     //let.mode = MODE_LINE_TRACE;
     //let.mode = MODE_SEEK;
-    let.mode = MODE_DEBUG;
-    //let.mode = MODE_RETURN;
+    //let.mode = MODE_DEBUG;
+    let.mode = MODE_RETURN;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -69,13 +70,7 @@ int main()
 
             if(g_timerFlag == 1)
             {
-                PID_Motor_Left(350);
-                PID_Motor_Right(-350);
-                //PID_Motor_Right(200);
-                //PID_Motor_Left(200);
-                //PSD_Sensor(&let);
-                //Ball_Seek(&let);
-                //Color_Sensor(&let);
+                Ball_Shoot(&let);
                 g_timerFlag = 0;
             }
         }
