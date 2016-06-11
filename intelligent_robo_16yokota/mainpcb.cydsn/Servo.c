@@ -37,7 +37,7 @@ void EEPROM_rx(Servo_Data* servo){
     UART_servo_ClearRxBuffer();
     for(i = 4; i < 68; i++){
         sprintf(buf, "%3d:0x%x\n", (int)(i - 3), (int)rx[i]);
-        UART_PC_PutString(buf);
+        //UART_PC_PutString(buf);
     }
 }
 
@@ -59,7 +59,7 @@ void read_ID(void){
         if(count > 500){
             count = 0;
             sprintf(buf, "error: read_ID\n");
-            UART_PC_PutString(buf);
+            //UART_PC_PutString(buf);
         }
         CyDelayUs(1);
     }
@@ -69,7 +69,7 @@ void read_ID(void){
     CyDelay(500);
     id = (uint16) rx[4] & 0x1F;
     sprintf(buf, "id:%d\n", (int)id);
-    UART_PC_PutString(buf);
+    //UART_PC_PutString(buf);
     UART_servo_ClearRxBuffer();
 }
 
@@ -157,7 +157,7 @@ void angle_get(uint8 id) {
     angle = ((int16)pos - 7500) / 29.6296296296296296f;
     if((angle >= -135) && (angle <= 135)) {
         sprintf(buf, "%d\n", (int)angle);
-        UART_PC_PutString(buf);
+        //UART_PC_PutString(buf);
     }
 }
 

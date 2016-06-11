@@ -233,7 +233,7 @@ void Return(Let *let)
 
 void approach(Let *let)
 {
-    uint8 speed = 90;
+    uint16 speed = 100;
     static uint8 flg = 0;
     static uint8 step = 0;
     static uint16 count = 0;
@@ -248,15 +248,15 @@ void approach(Let *let)
         }
         else if((let->d[1]>150) && (let->d[1]<155))
         {
-            if(let->d[0]>120)
+            if(let->d[0]>110)
             {
-                PID_Motor_Right(-70);
-                PID_Motor_Left(70);
+                PID_Motor_Right(-50);
+                PID_Motor_Left(50);
             }
             else if(let->d[2]>120)
             {
-                PID_Motor_Right(70);
-                PID_Motor_Left(-70);
+                PID_Motor_Right(50);
+                PID_Motor_Left(-50);
             }
             else 
             {
@@ -271,19 +271,19 @@ void approach(Let *let)
         }
         if(let->d[2] > 120)
         {
-            PID_Motor_Right(70);
-            PID_Motor_Left(-70);
+            PID_Motor_Right(50);
+            PID_Motor_Left(-50);
         }
-        if(let->d[0] > 120)
+        if(let->d[0] > 110)
         {
-            PID_Motor_Right(-70);
-            PID_Motor_Left(70);
+            PID_Motor_Right(-50);
+            PID_Motor_Left(50);
         }
     }
     else if(flg == 1)
     {
-        PID_Motor_Right(-70);
-        PID_Motor_Left(-70);
+        PID_Motor_Right(-50);
+        PID_Motor_Left(-50);
         if(let->d[1] < 150)
         {
             Motor_Right(0);
@@ -317,7 +317,7 @@ void Ball_Seek(Let *let)
     static uint16 count = 0;
     static uint16 d_count = 0;
     static uint16 limit = 1;
-    uint8 speed = 100;
+    uint8 speed = 60;
     
     if(step == 0)
     {
@@ -366,8 +366,8 @@ void Ball_Seek(Let *let)
     /* ボールが見つからなかった時の処理 */
     else if(step == 6)
     {
-        PID_Motor_Right(180);
-        PID_Motor_Left(175);
+        PID_Motor_Right(220);
+        PID_Motor_Left(220);
         limit = 55;
     }else
     if(step == 7)
@@ -390,8 +390,8 @@ void Ball_Seek(Let *let)
         limit = 1;
             if(limit == d_count)
             {
-                Motor_Right(0);
-                Motor_Left(0);
+                PID_Motor_Right(0);
+                PID_Motor_Left(0);
                 let->mode = MODE_APPROACH;
                 count = 0;
                 d_count = 0;
@@ -432,18 +432,29 @@ void Go_Ball_Area(Let *let){
         {
             Motor_Right(0);
             Motor_Left(0);
-            limit = 100;
+            limit = 50;
         }else
-        if(step == 1)
-        {
-            PID_Motor_Right(-150);
-            PID_Motor_Left(-150);
-            limit = 100;
-        }else
+        if(step == 1){
+            PID_Motor_Left(0);
+            PID_Motor_Right(0);
+            limit = 50;
+        }
+        else
         if(step == 2)
         {
+            PID_Motor_Right(-200);
+            PID_Motor_Left(-200);
+            limit = 100;
+        }else
+        if(step == 3)
+        {
             Motor_Right(0);
-            Motor_Left(0);
+            Motor_Left(0);   
+            limit = 100;
+        }
+        else
+        if(step == 4)
+        {
             let->mode = MODE_SEEK;
             step = 0;
             return;
@@ -472,9 +483,9 @@ void Shooting_tennis_ball(Let *let){
     {
         if(step == 0)
         {
-            PID_Motor_Right(150);
+            PID_Motor_Right(300);
             PID_Motor_Left(-20);
-            limit = 120;
+            limit = 65;
         }else 
         if(step == 1)
         {
@@ -492,8 +503,8 @@ void Shooting_tennis_ball(Let *let){
         if(step == 3)
         {
             let->updown = UP;
-            PID_Motor_Right(-150);
-            limit = 100;
+            PID_Motor_Right(-300);
+            limit = 65;
         }else
         if(step == 4)
         {
@@ -540,7 +551,7 @@ void Line_Trace(Let *let,uint8 mode){
         p1 = p0;
         p0 = p;//13.6
         //dif += 29.0 * (p0-p1);
-        dif += 29.0 * (p0-p1) +0.1 * p0 + 2.5 *((p0-p1) - (p1-p2));
+        dif += 27.0 * (p0-p1) +0.1 * p0 + 2.5 *((p0-p1) - (p1-p2));
         //0.01 * p0 
         if(dif > let->speed)
         {
@@ -550,8 +561,8 @@ void Line_Trace(Let *let,uint8 mode){
         {
             dif = -let->speed;
         }
-        Motor_Right(let->speed - (int)(dif*50));
-        Motor_Left(let->speed + (int)(dif*50));
+        Motor_Right(let->speed - (int)(dif*60));
+        Motor_Left(let->speed + (int)(dif*60));
         /*
         sprintf(value,"dif=%4d\n",(int)dif);
         UART_Line_Sensor_PutString(value);
@@ -697,13 +708,14 @@ void PWM_Servo(uint8 id, uint16 value){
 }
 
 void PID_Motor_Right(int16 pos){
-    double rps;
-    double speed;
+    
     static int16 dif_R = 0;
     static int16 def1_R = 0;
     static int16 def2_R = 0;
     static int16 def3_R = 0;
     static int16 operation_R = 0;
+    double rps;
+    double speed;
     int16 count_Right;
     char value[20];
     
@@ -711,24 +723,23 @@ void PID_Motor_Right(int16 pos){
     QuadDec_Right_SetCounter(0);
     rps = 0.09765625f*count_Right;
     speed = rps * 188.4955592;
-    operation_R = pos;
     
     def1_R = pos - speed;
-    dif_R = (int16)(((def1_R - def2_R) * 17.0) + (def1_R * 3.0) + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.5));
+    dif_R = (int16)(((def1_R - def2_R) *17.0) + (def1_R * 3.0)
+    + (((def1_R - def2_R) - (def2_R - def3_R)) * 0.5));
     operation_R = operation_R + dif_R;
     def3_R = def2_R;
     def2_R = def1_R;
-     
     /*
     sprintf(value,"R=%4d speed=%d opeR=%d\n",count_Right,(int)speed,operation_R);
     UART_Line_Sensor_PutString(value);
     */
-    if((0<operation_R)&&(operation_R<10000))
+    if((0 < operation_R)&&(operation_R < 10000))
     {
         PWM_Motor_a_WriteCompare1(0);
         PWM_Motor_a_WriteCompare2(operation_R);
     }
-    else if((-10000<operation_R)&&(operation_R<0))
+    else if((-10000 < operation_R)&&(operation_R < 0))
     {
         PWM_Motor_a_WriteCompare1(-operation_R);
         PWM_Motor_a_WriteCompare2(0);
@@ -767,10 +778,10 @@ void PID_Motor_Left(int16 pos){
     QuadDec_Left_SetCounter(0);
     rps = 0.09765625f*count_Left;
     speed = rps * 188.4955592;
-    operation_L = pos;
     
     def1_L = pos - speed;
-    dif_L = (int16)(((def1_L - def2_L) *17.0) + (def1_L * 3.0) + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.5));
+    dif_L = (int16)(((def1_L - def2_L) *17.0) + (def1_L * 3.0)
+    + (((def1_L - def2_L) - (def2_L - def3_L)) * 0.5));
     operation_L = operation_L + dif_L;
     def3_L = def2_L;
     def2_L = def1_L;
@@ -779,12 +790,12 @@ void PID_Motor_Left(int16 pos){
     sprintf(value,"L=%4d speed=%d opeL=%d\n", count_Left,(int)speed,operation_L);
     UART_Line_Sensor_PutString(value);
     */
-    if((0<operation_L)&&(operation_L<10000))
+    if((0 < operation_L)&&(operation_L < 10000))
     {
         PWM_Motor_b_WriteCompare1(0);
         PWM_Motor_b_WriteCompare2(operation_L);   
     }
-    else if((-10000<operation_L)&&(operation_L<0))
+    else if((-10000 < operation_L)&&(operation_L < 0))
     {
         PWM_Motor_b_WriteCompare1(-operation_L);
         PWM_Motor_b_WriteCompare2(0);
@@ -833,6 +844,7 @@ void Motor_Right(int16 pos){
     {
         PWM_Motor_a_WriteCompare1(0);
         PWM_Motor_a_WriteCompare2(0);
+        QuadDec_Right_SetCounter(0);
     }
     return;
 }
@@ -863,6 +875,7 @@ void Motor_Left(int16 pos){
     {
         PWM_Motor_b_WriteCompare1(0);
         PWM_Motor_b_WriteCompare2(0);
+        QuadDec_Left_SetCounter(0);
     }
     return;
 }

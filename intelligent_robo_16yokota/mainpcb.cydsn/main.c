@@ -45,9 +45,10 @@ int main()
     let.count_r = 0;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    let.mode = MODE_LINE_TRACE;
+    //let.mode = MODE_LINE_TRACE;
     //let.mode = MODE_SEEK;
-    //let.mode = MODE_DEBUG;
+    let.mode = MODE_DEBUG;
+    //let.mode = MODE_RETURN;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -68,7 +69,10 @@ int main()
 
             if(g_timerFlag == 1)
             {
-                Line_Trace(&let,MODE_FORWARD);
+                PID_Motor_Left(350);
+                PID_Motor_Right(-350);
+                //PID_Motor_Right(200);
+                //PID_Motor_Left(200);
                 //PSD_Sensor(&let);
                 //Ball_Seek(&let);
                 //Color_Sensor(&let);
@@ -95,13 +99,13 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    
+    /*
     PWM_Motor_a_WriteCompare1(0);
-    PWM_Motor_a_WriteCompare2(10000);
+    PWM_Motor_a_WriteCompare2(9000);
     PWM_Motor_b_WriteCompare1(0);
-    PWM_Motor_b_WriteCompare2(10000);
+    PWM_Motor_b_WriteCompare2(9000);
     CyDelay(700);
-    
+    */
     for(;;)
     {
         /* Place your application code here. */
@@ -132,7 +136,6 @@ int main()
             {
                 Catch_Ball(&let);
                 //Color_Sensor(&let);
-                PSD_Sensor(&let);
             }
             else if(let.mode == MODE_MOVE)
             {
@@ -144,7 +147,7 @@ int main()
             }
             else if(let.mode == MODE_RETURN)
             {
-                //Return(&let);
+                Return(&let);
             }
             g_timerFlag = 0;
         }
