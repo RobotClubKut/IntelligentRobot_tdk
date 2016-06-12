@@ -32,6 +32,10 @@ CY_ISR(clock_isr)
 
 int main()
 {
+    uint8 step = 0;
+    uint16 count = 0;
+    uint16 limit = 1;
+    
     uint16 j = 0;
     char value[50];
     Let let;
@@ -43,13 +47,14 @@ int main()
     let.area = 4;
     let.count = 0;
     let.count_r = 0;
-    let.color = BLUE;
+    let.d[1] = 0;
+    let.color = MISS;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
     //let.mode = MODE_LINE_TRACE;
-    //let.mode = MODE_SEEK;
+    let.mode = MODE_SEEK;
     //let.mode = MODE_DEBUG;
-    let.mode = MODE_RETURN;
+    //let.mode = MODE_CATCH;
     /* Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -58,6 +63,7 @@ int main()
     
     init();
     UART_servo_Start();
+    PWM_Servo_Start();
     isr_1_StartEx(clock_isr);
     CyDelay(500);
     I2C_LCD_Position(0u,0u);
@@ -67,10 +73,12 @@ int main()
     {
         for(;;)
         {
-
+            angle_keep(3600);
+            PWM_Servo(GRAB_BALL,970);
             if(g_timerFlag == 1)
             {
-                Ball_Shoot(&let);
+                //Color_Sensor(&let);
+                
                 g_timerFlag = 0;
             }
         }

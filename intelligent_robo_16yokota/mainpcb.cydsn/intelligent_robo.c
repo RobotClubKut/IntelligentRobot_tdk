@@ -8,7 +8,7 @@ void Color_Sensor(Let *let)
     uint8 r=0,g=0,b=0,x=0;
     unsigned char txReadStatus = 0x03;
     unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
-    char value[20];
+    char value[40];
     //Debug_LED_Write(1);
     Sensor_LED_Write(1);
     I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
@@ -64,12 +64,6 @@ void Color_Sensor(Let *let)
             I2C_LCD_Position(1u,7u);
             I2C_LCD_1_PrintString("RED");
         }
-        else if(r < 40)
-        {
-            let->color = MISS;
-            I2C_LCD_Position(1u,7u);
-            I2C_LCD_1_PrintString("MISS");
-        }
     }
     else if((g > b) && (b > r))
     {
@@ -77,13 +71,23 @@ void Color_Sensor(Let *let)
         I2C_LCD_Position(1u,7u);
         I2C_LCD_1_PrintString("BLUE");
     }
+    if(((45<r)&&(r<70))&&((70<g)&&(g<98))&&((20<b)&&(b<40)))
+    {
+        let->color = MISS;
+        I2C_LCD_Position(1u,7u);
+        I2C_LCD_1_PrintString("MISS");
+    }
     
     sprintf(value, "r=%3d g=%3d",r,g);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString(value);
-     sprintf(value, "b=%3d",b);
+    sprintf(value, "b=%3d",b);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
+    
+    sprintf(value, "r=%3d g=%3d b=%3d\n",r,g,b);
+    UART_Line_Sensor_PutString(value);
+    return;
 }
 
 
@@ -270,7 +274,7 @@ void Return(Let *let)
 
 void approach(Let *let)
 {
-    uint16 speed = 100;
+    const uint16 speed = 90;
     static uint8 flg = 0;
     static uint8 step = 0;
     static uint16 count = 0;
@@ -278,19 +282,19 @@ void approach(Let *let)
     
     PSD_Sensor(let);
     if(flg == 0){    
-        if(let->d[1]<150){
+        if(let->d[1]<145){
             PID_Motor_Right(speed);
             PID_Motor_Left(speed);
             let->count++;
         }
-        else if((let->d[1]>150) && (let->d[1]<155))
+        else if((let->d[1]>145) && (let->d[1]<155))
         {
             if(let->d[0]>110)
             {
-                PID_Motor_Right(-50);
-                PID_Motor_Left(50);
+                PID_Motor_Right(-30);
+                PID_Motor_Left(30);
             }
-            else if(let->d[2]>120)
+            else if(let->d[2]>110)
             {
                 PID_Motor_Right(50);
                 PID_Motor_Left(-50);
@@ -299,33 +303,37 @@ void approach(Let *let)
             {
                 Motor_Right(0);
                 Motor_Left(0);
+                let->d[1] = 0;
                 let->mode = MODE_CATCH;
             }
         }
-        else if(let->d[1] >= 159)
+        
+        else if(let->d[1] >= 155)
         {        
             flg = 1;
         }
-        if(let->d[2] > 120)
+        if(let->d[2] > 110)
         {
-            PID_Motor_Right(50);
-            PID_Motor_Left(-50);
+            PID_Motor_Right(30);
+            PID_Motor_Left(-30);
         }
-        if(let->d[0] > 110)
+        else if(let->d[0] > 120)
         {
-            PID_Motor_Right(-50);
-            PID_Motor_Left(50);
+            PID_Motor_Right(-40);
+            PID_Motor_Left(40);
         }
+        
     }
     else if(flg == 1)
     {
         PID_Motor_Right(-50);
         PID_Motor_Left(-50);
-        if(let->d[1] < 150)
+        if(let->d[1] < 155)
         {
             Motor_Right(0);
             Motor_Left(0);
             flg = 0;
+            let->d[1] = 0;
             let->mode = MODE_CATCH;
         }
     }
@@ -352,91 +360,89 @@ void Ball_Seek(Let *let)
 {
     static uint8 step = 0;
     static uint16 count = 0;
-    static uint16 d_count = 0;
     static uint16 limit = 1;
     uint8 speed = 60;
     
-    if(step == 0)
-    {
-        /* PSDセンサの処理を追加 */
-        PSD_Sensor(let);
-        PID_Motor_Right(speed);
-        PID_Motor_Left(-speed);
-        limit = 100;
-        let->count_r--;
-    }else
-    if(step == 1)
-    {
-        Motor_Right(0);
-        Motor_Left(0);
-        limit = 20;
-    }
-    else
-    if(step == 2)
-    {
-        /* PSDセンサの処理を追加 */
-        PSD_Sensor(let);
-        PID_Motor_Right(-speed);
-        PID_Motor_Left(speed);
-        limit = 200;
-        let->count_r++;
-    }else
-    if(step == 3)
-    {
-        Motor_Right(0);
-        Motor_Left(0);
-        limit = 20;
-    }
-    else
-    if(step == 4)
-    {
-        PID_Motor_Right(speed);
-        PID_Motor_Left(-speed);
-        limit = 100;
-    }else
-    if(step == 5)
-    {
-        Motor_Right(0);
-        Motor_Left(0);
-        limit = 50;
-    }
-    /* ボールが見つからなかった時の処理 */
-    else if(step == 6)
-    {
-        PID_Motor_Right(220);
-        PID_Motor_Left(220);
-        limit = 65;
-    }else
-    if(step == 7)
-    {
-        Motor_Right(0);
-        Motor_Left(0);
-        limit = 30;
-    }else
-    if(step == 8)
-    {
-        step = 0;
-        count = 0;
-        let->count_r = 0;
-        let->place++;
-        return;
-    }
     /* ボールを見つけた時の処理 */
     if(let->d[1] > 40)
     {
-        limit = 1;
-            if(limit == d_count)
-            {
-                PID_Motor_Right(0);
-                PID_Motor_Left(0);
-                let->mode = MODE_APPROACH;
-                count = 0;
-                d_count = 0;
-                step = 0;
-                return;
-            }
-        d_count++;
+        Motor_Right(0);
+        Motor_Left(0);
+        PID_Motor_Right(0);
+        PID_Motor_Left(0);
+        let->mode = MODE_APPROACH;
+        count = 0;
+        step = 0;
+        let->d[1] = 0;
         return;
+    }
+    else
+    {
+        if(step == 0)
+        {
+            /* PSDセンサの処理を追加 */
+            PID_Motor_Right(speed);
+            PID_Motor_Left(-speed);
+            limit = 100;
+            let->count_r--;
+            PSD_Sensor(let);
+        }else
+        if(step == 1)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 20;
+        }
+        else
+        if(step == 2)
+        {
+            /* PSDセンサの処理を追加 */
+            PID_Motor_Right(-speed);
+            PID_Motor_Left(speed);
+            limit = 220;
+            let->count_r++;
+             PSD_Sensor(let);
+        }else
+        if(step == 3)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 20;
+        }
+        else
+        if(step == 4)
+        {
+            PID_Motor_Right(speed);
+            PID_Motor_Left(-speed);
+            limit = 120;
+        }else
+        if(step == 5)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 50;
+        }
+        /* ボールが見つからなかった時の処理 */
+        else if(step == 6)
+        {
+            PID_Motor_Right(220);
+            PID_Motor_Left(220);
+            limit = 65;
+        }else
+        if(step == 7)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            limit = 30;
+        }else
+        if(step == 8)
+        {
+            step = 0;
+            count = 0;
+            let->count_r = 0;
+            let->place++;
+            return;
+        }
     }
     
     if(limit == count)
@@ -668,9 +674,10 @@ void PSD_Sensor(Let *let){//0が右端
     sprintf(value, "3=%3d",let->d[2]);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
-    
+    /*
     sprintf(value,"1=%3d 2=%3d 3=%3d\n", let->d[0], let->d[1], let->d[2]);
     UART_Line_Sensor_PutString(value);
+    */
 }
 
 //改良する予定
@@ -704,29 +711,41 @@ void Catch_Ball(Let *let){
     if(step == 3)
     {
         //カラーセンサーの処理を追加予定
-        let->updown = UP;
+        let->updown = 3600;
         //PWM_Servo(UPDOWN,470+(int)(2.6*count));
         limit = 100;
     }else
     if(step == 4)
     {
-        Color_Sensor(let);
-        limit = 50;
+        let->grab = 970;
+        limit = 10;
+    }else
+    if(step == 5)
+    {
+        let->grab = 1050;    
+        limit = 10;
     }
     else
-    if(step == 5)
+    if(step == 6)
+    {
+        Color_Sensor(let);
+        limit = 20;
+    }
+    else
+    if(step == 7)
     {
         step = 0;
         let->mode = MODE_RETURN;
         return;
     }
+    count++;
     if(limit == count)
     {
         count = 0;
         step++;
         return;
     }
-    count++;
+    
 }
 
 void PWM_Servo(uint8 id, uint16 value){
