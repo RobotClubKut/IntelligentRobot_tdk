@@ -79,6 +79,7 @@ typedef struct{
 }Let;
 
 /* 大会用 */
+void approach_2(Let *let);
 void Ball_Shoot(Let *let);
 void Return(Let *let);
 void approach(Let *let);

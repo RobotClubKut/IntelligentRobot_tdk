@@ -44,7 +44,7 @@ int main()
     let.speed = 9000;
     let.number = 0;
     let.place = 0;
-    let.area = 4;
+    let.area = 0;
     let.count = 0;
     let.count_r = 0;
     let.d[1] = 0;
@@ -77,8 +77,27 @@ int main()
             PWM_Servo(GRAB_BALL,970);
             if(g_timerFlag == 1)
             {
-                //Color_Sensor(&let);
                 
+                if(step == 0)
+                {
+                    Motor_Right(5000);
+                    Motor_Left(5000);
+                    limit = 500;
+                }else
+                if(step == 1)
+                {
+                    PID_Motor_Right(300);
+                    PID_Motor_Left(300);
+                    limit = 500;
+                }
+                PSD_Sensor(&let);
+                //Color_Sensor(&let);
+                if(limit == count)
+                {
+                    count = 0;
+                    step++;
+                }
+                count++;
                 g_timerFlag = 0;
             }
         }
@@ -102,13 +121,13 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    /*
+    
     PWM_Motor_a_WriteCompare1(0);
     PWM_Motor_a_WriteCompare2(9000);
     PWM_Motor_b_WriteCompare1(0);
     PWM_Motor_b_WriteCompare2(9000);
     CyDelay(700);
-    */
+    
     for(;;)
     {
         /* Place your application code here. */
@@ -129,11 +148,13 @@ int main()
             }
             else if(let.mode == MODE_SEEK)
             {
+                PSD_Sensor(&let);
                 Ball_Seek(&let);
             }
             else if(let.mode == MODE_APPROACH)
             {
-                approach(&let);
+                //approach(&let);
+                approach_2(&let);
             }
             else if(let.mode == MODE_CATCH)
             {

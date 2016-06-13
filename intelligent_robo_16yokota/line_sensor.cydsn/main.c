@@ -16,7 +16,6 @@
 #define WHITE   0
 
 
-
 uint8 g_timeerFlag = 0;
 
 union Slave{
