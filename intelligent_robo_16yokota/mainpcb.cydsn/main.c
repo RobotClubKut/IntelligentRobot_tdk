@@ -51,8 +51,8 @@ int main()
     let.color = MISS;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_SEEK;
+    let.mode = MODE_LINE_TRACE;
+    //let.mode = MODE_SEEK;
     //let.mode = MODE_DEBUG;
     //let.mode = MODE_CATCH;
     /* Enable global interrupts. */
@@ -153,8 +153,9 @@ int main()
             }
             else if(let.mode == MODE_APPROACH)
             {
-                //approach(&let);
-                approach_2(&let);
+                PSD_Sensor(&let);
+                approach(&let);
+                //approach_2(&let);
             }
             else if(let.mode == MODE_CATCH)
             {

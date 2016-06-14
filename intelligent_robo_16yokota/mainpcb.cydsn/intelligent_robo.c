@@ -290,24 +290,23 @@ void approach(Let *let)
     static uint16 count = 0;
     static uint16 limit = 1;
     
-    PSD_Sensor(let);
     if(flg == 0){    
         if(let->d[1]<145){
-            PID_Motor_Right(speed);
-            PID_Motor_Left(speed);
+            Motor_Right(3500);
+            Motor_Left(3500);
             let->count++;
         }
         else if((let->d[1]>145) && (let->d[1]<155))
         {
             if(let->d[0]>110)
             {
-                PID_Motor_Right(-30);
-                PID_Motor_Left(30);
+                Motor_Right(-2000);
+                Motor_Left(2000);
             }
             else if(let->d[2]>110)
             {
-                PID_Motor_Right(50);
-                PID_Motor_Left(-50);
+                Motor_Right(2000);
+                Motor_Left(-2000);
             }
             else 
             {
@@ -317,27 +316,25 @@ void approach(Let *let)
                 let->mode = MODE_CATCH;
             }
         }
-        
         else if(let->d[1] >= 155)
         {        
             flg = 1;
         }
         if(let->d[2] > 115)
         {
-            PID_Motor_Right(30);
-            PID_Motor_Left(-30);
+            Motor_Right(2000);
+            Motor_Left(-2000);
         }
         else if(let->d[0] > 125)
         {
-            PID_Motor_Right(-40);
-            PID_Motor_Left(40);
-        }
-        
+            Motor_Right(-2000);
+            Motor_Left(2000);
+        }   
     }
     else if(flg == 1)
     {
-        PID_Motor_Right(-50);
-        PID_Motor_Left(-50);
+        Motor_Right(-3000);
+        Motor_Left(-3000);
         if(let->d[1] < 155)
         {
             Motor_Right(0);
@@ -365,21 +362,18 @@ void move(Let *let)
         let->mode = MODE_SEEK;
     }
 }
-
 void Ball_Seek(Let *let)
 {
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
-    uint8 speed = 60;
+    uint16 speed = 3000;
     
     /* ボールを見つけた時の処理 */
     if((let->d[1] > 40) &&(let->d[1] < 255))
     {
         Motor_Right(0);
         Motor_Left(0);
-        PID_Motor_Right(0);
-        PID_Motor_Left(0);
         let->mode = MODE_APPROACH;
         count = 0;
         step = 0;
@@ -391,9 +385,9 @@ void Ball_Seek(Let *let)
         if(step == 0)
         {
             /* PSDセンサの処理を追加 */
-            PID_Motor_Right(speed);
-            PID_Motor_Left(-speed);
-            limit = 100;
+            Motor_Right(speed);
+            Motor_Left(-speed);
+            limit = 80;
             let->count_r--;
             //PSD_Sensor(let);
         }else
@@ -407,9 +401,10 @@ void Ball_Seek(Let *let)
         if(step == 2)
         {
             /* PSDセンサの処理を追加 */
-            PID_Motor_Right(-speed);
-            PID_Motor_Left(speed);
-            limit = 200;
+            Motor_Right(-speed);
+            Motor_Left(speed);
+            
+            limit = 150;
             let->count_r++;
             //PSD_Sensor(let);
         }else
@@ -417,33 +412,37 @@ void Ball_Seek(Let *let)
         {
             Motor_Right(0);
             Motor_Left(0);
+            //PID_Motor(0,0);
             limit = 20;
         }
         else
         if(step == 4)
         {
-            PID_Motor_Right(speed);
-            PID_Motor_Left(-speed);
-            limit = 120;
+            Motor_Right(speed);
+            Motor_Left(-speed);
+            //PID_Motor(speed,-speed);
+            limit = 80;
         }else
         if(step == 5)
         {
-            PID_Motor_Right(0);
-            PID_Motor_Left(0);
+            Motor_Right(0);
+            Motor_Left(0);
             limit = 50;
         }
         /* ボールが見つからなかった時の処理 */
         else if(step == 6)
         {
-            PID_Motor_Right(220);
-            PID_Motor_Left(220);
+            Motor_Right(7000);
+            Motor_Left(7000);
+            //PID_Motor(220,220);
             limit = 65;
         }else
         if(step == 7)
         {
-            PID_Motor_Right(0);
-            PID_Motor_Left(0);
-            limit = 30;
+            Motor_Right(0);
+            Motor_Left(0);
+            //PID_Motor(0,0);
+            limit = 40;
         }else
         if(step == 8)
         {
@@ -495,8 +494,8 @@ void Go_Ball_Area(Let *let){
         else
         if(step == 2)
         {
-            PID_Motor_Right(-250);
-            PID_Motor_Left(-250);
+            Motor_Right(-7000);
+            Motor_Left(-7000);
             limit = 60;
         }else
         if(step == 3)
@@ -536,9 +535,9 @@ void Shooting_tennis_ball(Let *let){
     {
         if(step == 0)
         {
-            PID_Motor_Right(300);
-            PID_Motor_Left(-20);
-            limit = 65;
+            Motor_Right(7000);
+            Motor_Left(-200);
+            limit = 80;
         }else 
         if(step == 1)
         {
@@ -556,8 +555,8 @@ void Shooting_tennis_ball(Let *let){
         if(step == 3)
         {
             let->updown = UP;
-            PID_Motor_Right(-300);
-            limit = 65;
+            Motor_Right(-7000);
+            limit = 75;
         }else
         if(step == 4)
         {
@@ -565,7 +564,6 @@ void Shooting_tennis_ball(Let *let){
             Motor_Left(0);
             let->mode = MODE_LINE_TRACE;
         }
-           
         if(limit == count)
         {
             count = 0;
