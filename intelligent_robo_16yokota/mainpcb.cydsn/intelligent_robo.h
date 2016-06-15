@@ -16,12 +16,13 @@
 #define MODE_BACKWARD               9
 #define MODE_FORWARD                10
 #define MODE_RETURN                 11
+#define MODE_START                  12
     
 /* Color */
-#define RED                         12
-#define YELLO                       13
-#define BLUE                        14
-#define MISS                        15
+#define RED                         13
+#define YELLO                       14
+#define BLUE                        15
+#define MISS                        16
     
 /* Servo */
 #define UPDOWN                      0
@@ -92,6 +93,7 @@ void Line_Trace(Let *let,uint8 mode);
 void Color_Sensor(Let *let);
 void PSD_Sensor(Let *let);
 /* アクチュエータ系 */
+void Start(Let *let);
 void PID_Motor_Right(int16 pos);
 void PID_Motor_Left(int16 pos);
 void Motor_Right(int16 pos);

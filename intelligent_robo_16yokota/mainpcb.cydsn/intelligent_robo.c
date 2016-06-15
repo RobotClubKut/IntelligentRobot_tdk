@@ -242,7 +242,7 @@ void Return(Let *let)
             let->area = 3;
             UART_Line_Sensor_ClearRxBuffer();
             PID_init(let);
-            limit = 100;
+            limit = 50;
         }else
         if(step == 6)
         {
@@ -658,6 +658,11 @@ void Line_Trace(Let *let,uint8 mode){
         UART_Line_Sensor_PutString(value);
         */
     }
+    else
+    {
+        Motor_Right(8000);
+        Motor_Left(8000);
+    }
     
     //直した
     if(AreaFlag == 0)
@@ -759,7 +764,7 @@ void Catch_Ball(Let *let){
     if(step == 4)
     {
         let->grab = 970;
-        limit = 10;
+        limit = 50;
     }else
     if(step == 5)
     {
@@ -787,6 +792,57 @@ void Catch_Ball(Let *let){
         return;
     }
 }
+
+void Start(Let *let)
+{
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    if(step == 0)
+    {
+        Motor_Right(8000);
+        Motor_Left(8000);
+        limit = 100;    
+    }else
+    if(step == 1)
+    {
+        Motor_Right(8000);
+        Motor_Left(8000);
+        if(UART_Line_Sensor_GetRxBufferSize())
+        {
+            let->slave.Trans = (uint8)UART_Line_Sensor_GetChar();
+        }
+        limit = 0;
+        if(let->slave.Trans)
+        {            
+            let->mode = MODE_LINE_TRACE;
+            step++;
+            count = 0;
+            return;
+        }
+    }else
+    if(step == 2)
+    {
+        Motor_Right(8000);
+        Motor_Left(8000);
+        limit = 50;
+    }else
+    if(step == 3)
+    {
+        let->mode = MODE_LINE_TRACE;    
+        limit = 0;
+        return;
+    }
+    if(limit == count)
+    {
+        step++;
+        count = 0;
+        return;
+    }
+    count++;
+}
+
 
 void PWM_Servo(uint8 id, uint16 value){
     if(value>1100){
