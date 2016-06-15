@@ -76,7 +76,7 @@ void Color_Sensor(Let *let)
         I2C_LCD_Position(1u,7u);
         I2C_LCD_1_PrintString("MISS");
     }
-    
+    /*
     sprintf(value, "r=%3d g=%3d",r,g);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString(value);
@@ -86,6 +86,7 @@ void Color_Sensor(Let *let)
     
     sprintf(value, "r=%3d g=%3d b=%3d\n",r,g,b);
     UART_Line_Sensor_PutString(value);
+    */
     return;
 }
 
@@ -106,7 +107,7 @@ void Ball_Shoot(Let *let)
             limit = 50;
         }else 
         if(step == 1)
-        {        
+        {
             let->updown = DOWN;
             let->grab = RELEASE;
             limit = 100;
@@ -176,61 +177,72 @@ void Return(Let *let)
 {
     static uint8 step = 0;
     static uint16 count = 0;
-    static uint16 limit = 1;        
+    static uint16 limit = 1;
+    Sensor_LED_Write(0);
     if(let->place == 0)
     {
-        if(step == 1)
+        if(step == 0)
         {
-            PID_Motor_Right(-150);
-            PID_Motor_Left(-150);
-            limit = (int)(let->count*0.7)+let->place*40;
+            Motor_Right(-3500);
+            Motor_Left(-3500);
+            //limit = let->count + let->place*40;
+            limit = let->count;
         }else
-        if(step == 2)
+        if(step == 1)
         {
             if(let->count_r>0)
             {
-                PID_Motor_Right(-180);
-                PID_Motor_Left(20);
-                limit = (int)(let->count_r*0.3);
+                
+                Motor_Right(-3000);
+                Motor_Left(3000);
+                limit = let->count_r;
             }
-            if(let->count_r<0)
+            if(let->count_r<=0)
             {
-                PID_Motor_Right(-180);
-                PID_Motor_Left(20);
-                limit = -(int)(let->count_r*0.7);
+                Motor_Right(-3000);
+                Motor_Left(3000);
+                limit = -let->count_r;
+                //limit = 100;
+            }
+        }else
+        if(step == 2)
+        {
+            if((Switch_L_Read() == 1) && (Switch_R_Read() == 1))
+            {
+                step++;
+                Motor_Right(0);
+                Motor_Left(0);
+                count = 0;
+                return;
+            }
+            else
+            {
+                Motor_Right(-4000);
+                Motor_Left(-4000);
+                limit = 0;
             }
         }else
         if(step == 3)
         {
-            PID_Motor_Right(-180);
-            PID_Motor_Left(-180);
-            limit = 100;
-        }
-        else
+            Motor_Right(7000);
+            Motor_Left(0);
+            limit = 80;
+        }else
         if(step == 4)
         {
-            Motor_Right(0);
-            Motor_Left(0);
-            let->count = 0;
-            let->count_r = 0;
-            limit = 30;
-        }else
-        if(step == 5)
-        {
-            PID_Motor_Right(200);
-            PID_Motor_Left(200);
+            Motor_Right(4000);
+            Motor_Left(4000);
             let->area = 3;
             UART_Line_Sensor_ClearRxBuffer();
             PID_init(let);
-            limit = 50;
+            limit = 200;
         }else
-        if(step == 6)
+        if(step == 5)
         {
+            Line_Trace(let,MODE_BACKWARD);
             limit = 0;
         }
     }
-    
-    Line_Trace(let, MODE_BACKWARD);
     if(let->color == RED)
     {
         if(let->area == 0)
@@ -272,14 +284,6 @@ void Return(Let *let)
         step++;
         return;
     }
-    
-}
-void approach_2(Let *let)
-{
-    
-    
-    
-    
 }
 
 void approach(Let *let)
@@ -370,7 +374,7 @@ void Ball_Seek(Let *let)
     uint16 speed = 3000;
     
     /* ボールを見つけた時の処理 */
-    if((let->d[1] > 40) &&(let->d[1] < 255))
+    if((let->d[1] > 55) &&(let->d[1] < 255))
     {
         Motor_Right(0);
         Motor_Left(0);
@@ -435,7 +439,7 @@ void Ball_Seek(Let *let)
             Motor_Right(7000);
             Motor_Left(7000);
             //PID_Motor(220,220);
-            limit = 65;
+            limit = 40;
         }else
         if(step == 7)
         {
