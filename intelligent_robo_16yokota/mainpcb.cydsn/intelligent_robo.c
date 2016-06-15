@@ -115,9 +115,9 @@ void Ball_Shoot(Let *let)
         if(step == 2)
         {
             let->updown = UP;
-            PID_Motor_Right(-150);
-            PID_Motor_Left(150);
-            limit = 110;
+            Motor_Right(-7000);
+            Motor_Left(7000);
+            limit = 80;
         }else
         if(step == 3)
         {
@@ -126,6 +126,7 @@ void Ball_Shoot(Let *let)
             limit = 0;
             step = 0;
             let->color = MISS;
+            let->number++;
             let->area++;
             let->mode = MODE_LINE_TRACE;
         }
@@ -134,9 +135,9 @@ void Ball_Shoot(Let *let)
     {
         if(step == 0)
         {
-            PID_Motor_Right(-150);
-            PID_Motor_Left(150);
-            limit = 70;
+            Motor_Right(-7000);
+            Motor_Left(7000);
+            limit = 40;
         }else 
         if(step == 1)
         {
@@ -149,9 +150,9 @@ void Ball_Shoot(Let *let)
         if(step == 2)
         {
             let->updown = UP;
-            PID_Motor_Right(-150);
-            PID_Motor_Left(150);
-            limit = 60;
+            Motor_Right(-7000);
+            Motor_Left(7000);
+            limit = 40;
         }else
         if(step == 3)
         {
@@ -159,6 +160,7 @@ void Ball_Shoot(Let *let)
             Motor_Left(0);
             limit = 0;
             step = 0;
+            let->number++;
             let->area++;
             let->mode = MODE_LINE_TRACE;
         }
@@ -179,30 +181,28 @@ void Return(Let *let)
     static uint16 count = 0;
     static uint16 limit = 1;
     Sensor_LED_Write(0);
-    if(let->place == 0)
+    if(let->place < 2)
     {
         if(step == 0)
         {
-            Motor_Right(-3500);
-            Motor_Left(-3500);
+            Motor_Right(-7000);
+            Motor_Left(-7000);
             //limit = let->count + let->place*40;
-            limit = let->count;
+            limit = (int)(let->count*0.3);
         }else
         if(step == 1)
         {
-            if(let->count_r>0)
+            if(let->count_r > 0)
             {
-                
-                Motor_Right(-3000);
-                Motor_Left(3000);
-                limit = let->count_r;
+                Motor_Right(7000);
+                Motor_Left(-7000);
+                limit = (int)(let->count_r*0.3);
             }
-            if(let->count_r<=0)
+            if(let->count_r <= 0)
             {
-                Motor_Right(-3000);
-                Motor_Left(3000);
-                limit = -let->count_r;
-                //limit = 100;
+                Motor_Right(-7000);
+                Motor_Left(7000);
+                limit = -(int)(let->count_r * 0.5);
             }
         }else
         if(step == 2)
@@ -217,31 +217,67 @@ void Return(Let *let)
             }
             else
             {
-                Motor_Right(-4000);
-                Motor_Left(-4000);
+                Motor_Right(-7000);
+                Motor_Left(-7000);
                 limit = 0;
             }
         }else
         if(step == 3)
         {
             Motor_Right(7000);
-            Motor_Left(0);
-            limit = 80;
-        }else
+            Motor_Left(7000);
+            limit = 40;
+        }
+        else
         if(step == 4)
         {
-            Motor_Right(4000);
-            Motor_Left(4000);
+            Motor_Right(0);
+            Motor_Left(7000);
+            limit = 60;
+        }else
+        if(step == 5)
+        {
+            Motor_Right(7000);
+            Motor_Left(7000);
             let->area = 3;
             UART_Line_Sensor_ClearRxBuffer();
             PID_init(let);
-            limit = 200;
+            limit = 100;
         }else
-        if(step == 5)
+        if(step == 6)
         {
             Line_Trace(let,MODE_BACKWARD);
             limit = 0;
         }
+    }
+    else
+    {
+        if(step == 0)
+        {
+            Motor_Right(-3500);
+            Motor_Left(-3500);
+            limit = let->count;
+        }else
+        if(step == 1)
+        {
+            if(let->count_r > 0)
+            {    
+                Motor_Right(-6000);
+                Motor_Left(6000);
+                limit = (int)let->count_r * 0.5 + 170;
+            }
+            if(let->count_r <= 0)
+            {
+                Motor_Right(-6000);
+                Motor_Left(6000);
+                limit = (int)(-let->count_r*0.5) + 170;
+                //limit = 100;
+            }
+        }else
+        if(step == 2)
+        {
+            limit = 0;
+        }   
     }
     if(let->color == RED)
     {
@@ -276,7 +312,6 @@ void Return(Let *let)
             let->mode = MODE_SHOOT;
         }
     }
-    
     count++;
     if(limit == count)
     {
@@ -506,7 +541,7 @@ void Go_Ball_Area(Let *let){
         {
             Motor_Right(0);
             Motor_Left(0);   
-            limit = 50;
+            limit = 20;
         }
         else
         if(step == 4)
@@ -656,7 +691,7 @@ void Line_Trace(Let *let,uint8 mode){
     {
         count++;
     }
-    if(count == 15)
+    if(count == 30)
     {
         AreaFlag = 0;
         count = 0;

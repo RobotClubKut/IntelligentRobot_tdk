@@ -89,16 +89,15 @@ int main()
                 }
             }
          
-            if(tx==txold){            
+            if(tx!=txold){            
                 UART_2_UartPutChar(tx);
                 txold = tx;
             }
             
-            /*
             //デバッグ
+            /*
             for(i=0;i<8;i++)
             { 
-            //i = 2;
                 sprintf(value, "%d=%lu x=%d\n", i,val[i],tx);            
                 UART_2_UartPutString(value);
             }

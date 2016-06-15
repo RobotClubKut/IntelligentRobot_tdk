@@ -40,15 +40,15 @@ int main()
     let.speed = 9000;
     let.number = 0;
     let.place = 0;
-    let.area = 4;
+    let.area = 0;
     let.count = 0;
     let.count_r = 0;
     let.d[1] = 0;
     let.color = MISS;
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
-    //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_SEEK;
+    let.mode = MODE_LINE_TRACE;
+    //let.mode = MODE_SEEK;
     //let.mode = MODE_DEBUG;
     //let.mode = MODE_CATCH;
     /* Enable global interrupts. */
@@ -73,15 +73,10 @@ int main()
             PWM_Servo(GRAB_BALL,970);
             if(g_timerFlag == 1)
             {
-                if((Switch_L_Read() == 1) && (Switch_R_Read() == 1))
-                {
-                    Debug_LED_Write(1);
-                }
-                else
-                {
-                    Debug_LED_Write(0);
-                }
-                PSD_Sensor(&let);   
+                let.slave.Trans = (uint8)UART_Line_Sensor_GetChar();
+                sprintf(value, "%d", let.slave.Trans);
+                I2C_LCD_Position(1u,0u);
+                I2C_LCD_1_PrintString(value);
                 g_timerFlag = 0;
             }
         }
@@ -105,13 +100,13 @@ int main()
     let.updown = UP;
     I2C_LCD_1_Clear();
     CyDelay(400);
-    /*
+    
     PWM_Motor_a_WriteCompare1(0);
     PWM_Motor_a_WriteCompare2(9000);
     PWM_Motor_b_WriteCompare1(0);
     PWM_Motor_b_WriteCompare2(9000);
-    CyDelay(700);
-    */
+    CyDelay(900);
+    
     for(;;)
     {
         /* Place your application code here. */
