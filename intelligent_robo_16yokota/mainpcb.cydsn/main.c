@@ -39,11 +39,10 @@ int main()
     Let let;
     Color color;
     
-    
     /* 構造体の初期化 */
     let.speed = 9000;
     let.number = 0;
-    let.place = 0;
+    let.place = 4;
     let.area = -1;
     let.count = 0;
     let.count_r = 0;
@@ -54,9 +53,9 @@ int main()
     
     //let.mode = MODE_SHOOTING_TENNIS_BALL;
     //let.mode = MODE_LINE_TRACE;
-    let.mode = MODE_SEEK;
+    //let.mode = MODE_SEEK;
     //let.mode = MODE_DEBUG;
-    //let.mode = MODE_START;
+    let.mode = MODE_START;
     /*  Enable global interrupts. */
     CyGlobalIntEnable;
     CyDelay(500);
@@ -90,12 +89,21 @@ int main()
     {
         for(;;)
         {
-            angle_keep(3000);
-            PWM_Servo(GRAB_BALL,970);
+            angle_keep(UP);
+            PWM_Servo(GRAB_BALL,RELEASE);
             if(g_timerFlag == 1)
             {
-                Motor_Right(1200);//反時計
-                Motor_Left(-1200);
+                
+                Motor_Right(5000);//反時計
+                Motor_Left(-5000);
+                j++;
+                if(j == 100)
+                {
+                    Motor_Right(0);
+                    Motor_Left(0);
+                    for(;;);
+                }
+                //Catch_Ball(&let, &color);
                 PSD_Sensor(&let);
                 g_timerFlag = 0;
             }
@@ -145,7 +153,6 @@ int main()
             {
                 PSD_Sensor(&let);
                 Ball_Seek(&let);
-                Debug_LED_Write(1);
             }
             else if(let.mode == MODE_APPROACH)
             {

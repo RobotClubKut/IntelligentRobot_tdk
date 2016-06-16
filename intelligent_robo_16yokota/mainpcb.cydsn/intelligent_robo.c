@@ -7,7 +7,6 @@ void Color_Sensor(Let *let, Color *color)
     unsigned char txReadStatus = 0x03;
     unsigned char rxBuf[8] = {1,0,0,0,0,0,0,0};
     char value[40];
-    //Debug_LED_Write(1);
     Sensor_LED_Write(1);
     I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
     while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT));
@@ -96,15 +95,14 @@ void Ball_Shoot(Let *let)
         {
             let->updown = DOWN;
             let->grab = RELEASE;
-            Debug_LED_Write(1);
             limit = 100;
         }else
         if(step == 2)
         {
             let->updown = UP;
-            Motor_Right(-7000);
-            Motor_Left(7000);
-            limit = 80;
+            Motor_Right(-5000);
+            Motor_Left(5000);
+            limit = 100;
         }else
         if(step == 3)
         {
@@ -133,7 +131,6 @@ void Ball_Shoot(Let *let)
             Motor_Left(0);
             let->updown = DOWN;
             let->grab = RELEASE;
-            Debug_LED_Write(0);
             limit = 100;
         }else
         if(step == 2)
@@ -172,7 +169,7 @@ void Return(Let *let)
     static uint16 count = 0;
     static uint16 limit = 1;
     Sensor_LED_Write(0);
-    if(let->place < 2)
+    if(let->place < 3)
     {
         if(step == 0)
         {
@@ -185,15 +182,15 @@ void Return(Let *let)
         {
             if(let->count_r > 0)
             {
-                Motor_Right(3000);
+                Motor_Right(3000);//反時計
                 Motor_Left(-3000);
-                limit = let->count_r;
+                limit = (int)(let->count_r);
             }
             else if(let->count_r <= 0)
             {
                 Motor_Right(-3000);
                 Motor_Left(3000);
-                limit = -let->count_r;
+                limit = (int)(-let->count_r);
             }
         }else
         if(step == 2)
@@ -228,7 +225,7 @@ void Return(Let *let)
         {
             Motor_Right(7000);
             Motor_Left(7000);
-            limit = 40;
+            limit = 35;
         }
         else
         if(step == 4)
@@ -245,7 +242,7 @@ void Return(Let *let)
             PID_init(let);
             UART_Line_Sensor_ClearRxBuffer();
             let->slave.Trans = 0;
-            limit = 50;
+            limit = 40;
         }else
         if(step == 6)
         {
@@ -253,28 +250,42 @@ void Return(Let *let)
             limit = 0;
         }
     }
-    else
+    else if(let->place >= 3)
     {
         if(step == 0)
         {
             Motor_Right(-3500);
             Motor_Left(-3500);
-            limit = let->count;
+            limit = 0;
+            if(UART_Line_Sensor_GetRxBufferSize())
+            {
+                let->slave.Trans = (uint8)UART_Line_Sensor_GetChar();
+            }
+            if(let->slave.status.e)
+            {
+                step = 1;
+                count = 0;
+                Debug_LED_Write(1);
+                return;
+                
+            }
         }else
         if(step == 1)
         {
             if(let->count_r > 0)
             {
-                Motor_Right(3000);
+                Motor_Right(3000);//反時計
                 Motor_Left(-3000);
-                limit = let->count_r;
+                limit = (int)(let->count_r + 20);
             }
             else if(let->count_r <= 0)
             {
                 Motor_Right(-3000);
                 Motor_Left(3000);
-                limit = -let->count_r;
+                limit = (int)(-let->count_r);
             }
+            UART_Line_Sensor_ClearRxBuffer();
+            let->slave.Trans = 0;
         }else
         if(step == 2)
         {      
@@ -289,15 +300,45 @@ void Return(Let *let)
                 let->mode = MODE_SEEK;
                 return;
             }
+            if((Switch_L_Read() == 1) && (Switch_R_Read() == 1))
+            {
+                step++;
+                Motor_Right(0);
+                Motor_Left(0);
+                count = 0;
+                return;
+            }
+            else
+            {
+                Motor_Right(-7000);
+                Motor_Left(-7000);
+                limit = 0;
+            }
+        }else
+        if(step == 3)
+        {
             Motor_Right(7000);
-            Motor_Left(-7000);
+            Motor_Left(7000);
+            limit = 35;
+        }
+        else
+        if(step == 4)
+        {
+            Motor_Right(0);
+            Motor_Left(7000);
+            limit = 60;
+        }else
+        if(step == 5)
+        {
+            Motor_Right(7000);
+            Motor_Left(7000);
             let->area = 3;
             PID_init(let);
             UART_Line_Sensor_ClearRxBuffer();
             let->slave.Trans = 0;
-            limit = 80;
+            limit = 40;
         }else
-        if(step == 3)
+        if(step == 6)
         {
             Line_Trace(let,MODE_BACKWARD);
             limit = 0;
@@ -356,7 +397,7 @@ void approach_2(Let *let)
         Motor_Right(3500);
         Motor_Left(3500);
         let->count++;
-        if((let->d[0] > 140) || (let->d[1] > 140) || (let->d[2] > 140))
+        if((let->d[0] > 130) || (let->d[1] > 145) || (let->d[2] > 130))
         {
             step++;
         }
@@ -374,8 +415,9 @@ void approach_2(Let *let)
     }else
     if(step == 2)
     {
-        Motor_Right(-1200);
+        Motor_Right(-1200);//時計回り
         Motor_Left(1200);
+        let->count_r = let->count_r + 0.3;
         if(let->d[0] < 110)
         {
             step = 4;
@@ -385,6 +427,7 @@ void approach_2(Let *let)
     {
         Motor_Right(1200);
         Motor_Left(-1200);
+        let->count_r = let->count_r - 0.3;
         if(let->d[2] < 115)
         {
             step = 4;
@@ -392,11 +435,11 @@ void approach_2(Let *let)
     }else
     if(step == 4)
     {
-        if(let->d[1] > 138)
+        if(let->d[1] > 135)
         {
             step = 5;
         }
-        else if(let->d[1] < 138)
+        else if(let->d[1] <= 135)
         {
             step = 6;
         }
@@ -405,12 +448,14 @@ void approach_2(Let *let)
     {
         Motor_Right(-1200);
         Motor_Left(-1200);
-        if(let->d[1] < 138)
+        if(let->d[1] < 135)
         {
             Motor_Right(0);
             Motor_Left(0);
             let->mode = MODE_CATCH;
             step = 0;
+            UART_Line_Sensor_ClearRxBuffer();
+            let->slave.Trans = 0;
             return;
         }
     }else
@@ -418,12 +463,14 @@ void approach_2(Let *let)
     {
         Motor_Right(1200);
         Motor_Left(1200);
-        if(let->d[1] > 138)
+        if(let->d[1] > 133)
         {
             Motor_Right(0);
             Motor_Left(0);
             let->mode = MODE_CATCH;
             step = 0;
+            UART_Line_Sensor_ClearRxBuffer();
+            let->slave.Trans = 0;
             return;
         }
     }
@@ -497,9 +544,13 @@ void approach(Let *let)
 void move(Let *let)
 {
     static uint16 count = 0;
-    uint16 limit = 300;
-    
-    if(let->place > 0)
+    uint16 limit = 10;
+    if(let->place == 1)
+    {
+        let->mode = MODE_SEEK;    
+        return;
+    }
+    else if(let->place > 0)
     {
         Line_Trace(let,MODE_FORWARD);
     }
@@ -508,6 +559,7 @@ void move(Let *let)
     {
         count = 0;
         let->mode = MODE_SEEK;
+        return;
     }
 }
 void Ball_Seek(Let *let)
@@ -533,7 +585,7 @@ void Ball_Seek(Let *let)
         if(step == 0)
         {
             /* PSDセンサの処理を追加 */
-            Motor_Right(speed);
+            Motor_Right(speed);//反時計
             Motor_Left(-speed);
             limit = 80;
             let->count_r--;
@@ -596,6 +648,7 @@ void Ball_Seek(Let *let)
         {
             step = 0;
             count = 0;
+            limit = 0;
             let->count_r = 0;
             let->place++;
             return;
@@ -643,7 +696,7 @@ void Go_Ball_Area(Let *let){
         {
             Motor_Right(-7000);
             Motor_Left(-7000);
-            limit = 60;
+            limit = 40;
         }else
         if(step == 3)
         {
@@ -926,7 +979,8 @@ void Start(Let *let)
         limit = 0;
         if(let->slave.Trans)
         {            
-            let->mode = MODE_SHOOTING_TENNIS_BALL;
+            //let->mode = MODE_SHOOTING_TENNIS_BALL;
+            let->mode = MODE_LINE_TRACE;
             step++;
             count = 0;
             return;
@@ -940,7 +994,8 @@ void Start(Let *let)
     }else
     if(step == 3)
     {
-        let->mode = MODE_SHOOTING_TENNIS_BALL;    
+        //let->mode = MODE_SHOOTING_TENNIS_BALL;   
+        let->mode = MODE_LINE_TRACE;
         limit = 0;
         return;
     }

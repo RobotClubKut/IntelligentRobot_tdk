@@ -29,7 +29,7 @@
 #define UPDOWN                      0
 #define GRAB_BALL                   1
 #define UP                          5500
-#define DOWN                        7300
+#define DOWN                        7100
 #define GRAB                        1050
 #define RELEASE                     500
     
@@ -80,7 +80,7 @@ typedef struct{
     uint16 grab;
     uint16 updown;
     uint16 count;
-    int16 count_r;
+    double count_r;
 }Let;
 
 /* 大会用 */
