@@ -3,7 +3,8 @@
 void isr_systick(){
     tick++;
     if( (tick&0xf) == 0 ){
-        set_next_color();   // exec each 16ms
+        //set_next_color();   // exec each 16ms
+        WS2812driver_1_write2fifo((unsigned char*)&rgb[0], 6);//9bit送信できる、要するに3つづつ制御できるっぽい
     }
 }
 

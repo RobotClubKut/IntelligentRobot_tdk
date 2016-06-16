@@ -3,7 +3,7 @@
 
 #include <project.h>
 
-#define LED_LENGTH 256
+#define LED_LENGTH 2
 
 typedef struct _RGB_tag{
 	unsigned char g;

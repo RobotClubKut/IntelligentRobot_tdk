@@ -1,8 +1,7 @@
-#include <project.h>
-#include <stdio.h>
+
 #include "intelligent_robo.h"
 
-void Color_Sensor(Let *let)
+void Color_Sensor(Let *let, Color *color)
 {
     uint8 r=0,g=0,b=0,x=0;
     unsigned char txReadStatus = 0x03;
@@ -12,71 +11,58 @@ void Color_Sensor(Let *let)
     Sensor_LED_Write(1);
     I2C_1_MasterWriteBuf(0x2A,(uint8*)&txReadStatus,1,I2C_1_MODE_COMPLETE_XFER);
     while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_WR_CMPLT));
-    /*
-    {
-        if(g_timerFlag==1){
-            x++;
-        }
-        if(x>50){
-            Debug_LED_Write(1);
-            I2C_Color_init();
-            x = 0;
-            break;
-        }
-        g_timerFlag=0;
-    }*/
     I2C_1_MasterClearStatus();
     I2C_1_MasterReadBuf(0x2A,(uint8 *)&rxBuf,8,I2C_1_MODE_COMPLETE_XFER);
     while(0u==(I2C_1_MasterStatus() & I2C_1_MSTAT_RD_CMPLT));
-    /*
-    {
-        if(g_timerFlag==1){
-            x++;
-        }
-        if(x>50){
-            Debug_LED_Write(1);
-            I2C_Color_init();
-            x = 0;
-            break;
-        }
-        g_timerFlag=0;
-    }
-    */
     I2C_1_MasterClearStatus();
     r = rxBuf[0]<< 8|rxBuf[1];
     g = rxBuf[2]<< 8|rxBuf[3];
     b = rxBuf[4]<< 8|rxBuf[5];
-    
+    if((r < 10) || (g < 10) || (b < 10))
+    {
+        return;
+    }
+    if(g > color->g_max)
+    {
+        color->g_max = g;
+    }
+    if(g < color->g_min)
+    {
+        color->g_min = g;
+    }
     I2C_LCD_1_Clear();
     //色判断して構造体に格納
     if((r > b) && (g > b))
     {
-        if(r < g)
+        if((r > 90) && (g > 100))
         {
             let->color = YELLO;
             I2C_LCD_Position(1u,7u);
             I2C_LCD_1_PrintString("YELLO");
         }
-        else if(r > g)
+        else //if(r > g)
         {
             let->color = RED;
             I2C_LCD_Position(1u,7u);
             I2C_LCD_1_PrintString("RED");
+            rgb[0].r = 150;
+            rgb[1].r = 150;
         }
     }
-    else if((g > b) && (b > r))
+    else if((r < b) && (r < g))
     {
         let->color = BLUE;
         I2C_LCD_Position(1u,7u);
         I2C_LCD_1_PrintString("BLUE");
     }
-    if(((45<r)&&(r<70))&&((70<g)&&(g<98))&&((20<b)&&(b<40)))
+    if((color->g_max - color->g_min) > 15)
     {
         let->color = MISS;
         I2C_LCD_Position(1u,7u);
         I2C_LCD_1_PrintString("MISS");
     }
-    /*
+    
+    
     sprintf(value, "r=%3d g=%3d",r,g);
     I2C_LCD_Position(0u,0u);
     I2C_LCD_1_PrintString(value);
@@ -86,7 +72,7 @@ void Color_Sensor(Let *let)
     
     sprintf(value, "r=%3d g=%3d b=%3d\n",r,g,b);
     UART_Line_Sensor_PutString(value);
-    */
+    
     return;
 }
 
@@ -110,6 +96,7 @@ void Ball_Shoot(Let *let)
         {
             let->updown = DOWN;
             let->grab = RELEASE;
+            Debug_LED_Write(1);
             limit = 100;
         }else
         if(step == 2)
@@ -129,6 +116,7 @@ void Ball_Shoot(Let *let)
             let->number++;
             let->area++;
             let->mode = MODE_LINE_TRACE;
+            return;
         }
     }
     else
@@ -145,6 +133,7 @@ void Ball_Shoot(Let *let)
             Motor_Left(0);
             let->updown = DOWN;
             let->grab = RELEASE;
+            Debug_LED_Write(0);
             limit = 100;
         }else
         if(step == 2)
@@ -162,7 +151,9 @@ void Ball_Shoot(Let *let)
             step = 0;
             let->number++;
             let->area++;
+            let->color = MISS;
             let->mode = MODE_LINE_TRACE;
+            return;
         }
     }
     
@@ -185,28 +176,39 @@ void Return(Let *let)
     {
         if(step == 0)
         {
-            Motor_Right(-7000);
-            Motor_Left(-7000);
+            Motor_Right(-3500);
+            Motor_Left(-3500);
             //limit = let->count + let->place*40;
-            limit = (int)(let->count*0.3);
+            limit = let->count;
         }else
         if(step == 1)
         {
             if(let->count_r > 0)
             {
-                Motor_Right(7000);
-                Motor_Left(-7000);
-                limit = (int)(let->count_r*0.3);
+                Motor_Right(3000);
+                Motor_Left(-3000);
+                limit = let->count_r;
             }
-            if(let->count_r <= 0)
+            else if(let->count_r <= 0)
             {
-                Motor_Right(-7000);
-                Motor_Left(7000);
-                limit = -(int)(let->count_r * 0.5);
+                Motor_Right(-3000);
+                Motor_Left(3000);
+                limit = -let->count_r;
             }
         }else
         if(step == 2)
         {
+            if(let->color == MISS)
+            {
+                Motor_Right(0);
+                Motor_Left(0);
+                step = 0;
+                count = 0;
+                let->count = 0;
+                let->count_r = 0;
+                let->mode = MODE_SEEK;
+                return;
+            }
             if((Switch_L_Read() == 1) && (Switch_R_Read() == 1))
             {
                 step++;
@@ -240,8 +242,9 @@ void Return(Let *let)
             Motor_Right(7000);
             Motor_Left(7000);
             let->area = 3;
-            UART_Line_Sensor_ClearRxBuffer();
             PID_init(let);
+            UART_Line_Sensor_ClearRxBuffer();
+            let->slave.Trans = 0;
             limit = 50;
         }else
         if(step == 6)
@@ -261,23 +264,44 @@ void Return(Let *let)
         if(step == 1)
         {
             if(let->count_r > 0)
-            {    
-                Motor_Right(-6000);
-                Motor_Left(6000);
-                limit = (int)let->count_r * 0.5 + 170;
-            }
-            if(let->count_r <= 0)
             {
-                Motor_Right(-6000);
-                Motor_Left(6000);
-                limit = (int)(-let->count_r*0.5) + 170;
-                //limit = 100;
+                Motor_Right(3000);
+                Motor_Left(-3000);
+                limit = let->count_r;
+            }
+            else if(let->count_r <= 0)
+            {
+                Motor_Right(-3000);
+                Motor_Left(3000);
+                limit = -let->count_r;
             }
         }else
         if(step == 2)
+        {      
+            if(let->color == MISS)
+            {
+                Motor_Right(0);
+                Motor_Left(0);
+                step = 0;
+                count = 0;
+                let->count = 0;
+                let->count_r = 0;
+                let->mode = MODE_SEEK;
+                return;
+            }
+            Motor_Right(7000);
+            Motor_Left(-7000);
+            let->area = 3;
+            PID_init(let);
+            UART_Line_Sensor_ClearRxBuffer();
+            let->slave.Trans = 0;
+            limit = 80;
+        }else
+        if(step == 3)
         {
+            Line_Trace(let,MODE_BACKWARD);
             limit = 0;
-        }   
+        }
     }
     if(let->color == RED)
     {
@@ -321,6 +345,91 @@ void Return(Let *let)
     }
 }
 
+void approach_2(Let *let)
+{
+    static uint8 step = 0;
+    static uint16 count = 0;
+    static uint16 limit = 1;
+    
+    if(step == 0)
+    {
+        Motor_Right(3500);
+        Motor_Left(3500);
+        let->count++;
+        if((let->d[0] > 140) || (let->d[1] > 140) || (let->d[2] > 140))
+        {
+            step++;
+        }
+    }else
+    if(step == 1)
+    {
+        if(let->d[0] > 120)
+        {
+            step = 2;
+        }
+        if(let->d[2] > 115)
+        {
+            step = 3;
+        }
+    }else
+    if(step == 2)
+    {
+        Motor_Right(-1200);
+        Motor_Left(1200);
+        if(let->d[0] < 110)
+        {
+            step = 4;
+        }
+    }else
+    if(step == 3)
+    {
+        Motor_Right(1200);
+        Motor_Left(-1200);
+        if(let->d[2] < 115)
+        {
+            step = 4;
+        }
+    }else
+    if(step == 4)
+    {
+        if(let->d[1] > 138)
+        {
+            step = 5;
+        }
+        else if(let->d[1] < 138)
+        {
+            step = 6;
+        }
+    }else
+    if(step == 5)
+    {
+        Motor_Right(-1200);
+        Motor_Left(-1200);
+        if(let->d[1] < 138)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->mode = MODE_CATCH;
+            step = 0;
+            return;
+        }
+    }else
+    if(step == 6)
+    {
+        Motor_Right(1200);
+        Motor_Left(1200);
+        if(let->d[1] > 138)
+        {
+            Motor_Right(0);
+            Motor_Left(0);
+            let->mode = MODE_CATCH;
+            step = 0;
+            return;
+        }
+    }
+}
+
+    
 void approach(Let *let)
 {
     const uint16 speed = 90;
@@ -337,12 +446,12 @@ void approach(Let *let)
         }
         else if((let->d[1]>145) && (let->d[1]<155))
         {
-            if(let->d[0]>110)
+            if(let->d[0]>120)
             {
                 Motor_Right(-2000);
                 Motor_Left(2000);
             }
-            else if(let->d[2]>110)
+            else if(let->d[2]>115)
             {
                 Motor_Right(2000);
                 Motor_Left(-2000);
@@ -492,7 +601,6 @@ void Ball_Seek(Let *let)
             return;
         }
     }
-    
     if(limit == count)
     {
         count = 0;
@@ -566,7 +674,7 @@ void Shooting_tennis_ball(Let *let){
     static uint16 count = 0;
     static uint16 limit = 1;
     
-    if(let->area == 0)
+    if(let->area <= 0)
     {
         Line_Trace(let, MODE_FORWARD);
     }
@@ -629,8 +737,8 @@ void Line_Trace(Let *let,uint8 mode){
     {
         let->slave.Trans = (uint8)UART_Line_Sensor_GetChar();
     }
-    p = (double)(let->slave.status.h*(-3)+let->slave.status.g*(-2)+let->slave.status.f*(-1)+let->slave.status.e*(0)+
-    let->slave.status.d*(1)+let->slave.status.c*(2)+let->slave.status.b*(3)+let->slave.status.a*(4));
+    p = (double)(let->slave.status.h*(-3.5)+let->slave.status.g*(-2.5)+let->slave.status.f*(-1.5)+let->slave.status.e*(-0.5)+
+    let->slave.status.d*(0.5)+let->slave.status.c*(1.5)+let->slave.status.b*(2.5)+let->slave.status.a*(3.5));
     s = let->slave.status.h + let->slave.status.g + let->slave.status.f + let->slave.status.e + 
     let->slave.status.d + let->slave.status.c + let->slave.status.b + let->slave.status.a;
 
@@ -733,7 +841,7 @@ void PSD_Sensor(Let *let){//0が右端
 }
 
 //完成
-void Catch_Ball(Let *let){
+void Catch_Ball(Let *let, Color *color){
     static uint8 step = 0;
     static uint16 count = 0;
     static uint16 limit = 1;
@@ -758,29 +866,31 @@ void Catch_Ball(Let *let){
     }else
     if(step == 3)
     {
-        let->updown = 3600;
+        let->updown = 3000;
         limit = 100;
     }else
     if(step == 4)
     {
-        let->grab = 970;
+        let->grab = 950;
         limit = 50;
     }else
     if(step == 5)
     {
-        let->grab = 1050;    
-        limit = 10;
+        let->grab = GRAB;    
+        limit = 50;
     }
     else
     if(step == 6)
     {
-        Color_Sensor(let);
+        Color_Sensor(let, color);
         limit = 20;
     }
     else
     if(step == 7)
     {
         step = 0;
+        color->g_max = 0;
+        color->g_min = 255;
         let->mode = MODE_RETURN;
         return;
     }
@@ -803,7 +913,7 @@ void Start(Let *let)
     {
         Motor_Right(8000);
         Motor_Left(8000);
-        limit = 100;    
+        limit = 50;    
     }else
     if(step == 1)
     {
@@ -816,7 +926,7 @@ void Start(Let *let)
         limit = 0;
         if(let->slave.Trans)
         {            
-            let->mode = MODE_LINE_TRACE;
+            let->mode = MODE_SHOOTING_TENNIS_BALL;
             step++;
             count = 0;
             return;
@@ -826,11 +936,11 @@ void Start(Let *let)
     {
         Motor_Right(8000);
         Motor_Left(8000);
-        limit = 50;
+        limit = 10;
     }else
     if(step == 3)
     {
-        let->mode = MODE_LINE_TRACE;    
+        let->mode = MODE_SHOOTING_TENNIS_BALL;    
         limit = 0;
         return;
     }

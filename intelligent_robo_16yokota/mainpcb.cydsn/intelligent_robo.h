@@ -3,6 +3,7 @@
 
 #include <project.h>
 #include <stdio.h>
+#include "WS2812driver.h"
     
 /* Mode */
 #define MODE_SHOOTING_TENNIS_BALL   1
@@ -60,7 +61,10 @@ typedef struct{
     double p2;
     double dif;
 }Status;
-
+typedef struct{
+    uint8 g_max;
+    uint8 g_min;
+}Color;
 /* 構造体で管理 */
 typedef struct{
     union Slave slave;
@@ -83,14 +87,15 @@ typedef struct{
 void Ball_Shoot(Let *let);
 void Return(Let *let);
 void approach(Let *let);
+void approach_2(Let *let);
 void move(Let *let);
 void Ball_Seek(Let *let);
 void Go_Ball_Area(Let *let);
 void Shooting_tennis_ball(Let *let);
-void Catch_Ball(Let *let);
+void Catch_Ball(Let *let, Color *color);
 void Line_Trace(Let *let,uint8 mode);
 /* センサー系 */
-void Color_Sensor(Let *let);
+void Color_Sensor(Let *let, Color *color);
 void PSD_Sensor(Let *let);
 /* アクチュエータ系 */
 void Start(Let *let);
