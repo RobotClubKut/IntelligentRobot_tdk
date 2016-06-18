@@ -42,7 +42,7 @@ int main()
     /* 構造体の初期化 */
     let.speed = 9000;
     let.number = 0;
-    let.place = 4;
+    let.place = 0;
     let.area = -1;
     let.count = 0;
     let.count_r = 0;
@@ -63,21 +63,16 @@ int main()
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     
     init();
-    /*
+    
     isr_fifo_empty_StartEx(isr_fifo_empty);
     isr_reset_done_StartEx(isr_reset);
         CyIntSetSysVector(15,isr_systick);
     if (SysTick_Config( (40000000) / 1000)) { 
             while (1);  //Capture error
     }
-    */
-    //Counter_reset_gen_Start();
-    rgb[0].b = 0;
-    rgb[0].g = 0;
-    rgb[0].r = 0;
-    rgb[1].r = 0;
-    rgb[1].g = 0;
-    rgb[1].b = 0;
+    Counter_reset_gen_Start();
+    
+    //set_color(&let);
     UART_servo_Start();
     PWM_Servo_Start();
     isr_1_StartEx(clock_isr);
@@ -94,17 +89,11 @@ int main()
             if(g_timerFlag == 1)
             {
                 
-                Motor_Right(5000);//反時計
-                Motor_Left(-5000);
-                j++;
-                if(j == 100)
-                {
-                    Motor_Right(0);
-                    Motor_Left(0);
-                    for(;;);
-                }
+                //Motor_Right(5000);//反時計
+                //Motor_Left(-5000);
                 //Catch_Ball(&let, &color);
-                PSD_Sensor(&let);
+                //PSD_Sensor(&let);
+                //Color_Sensor(&let, &color);
                 g_timerFlag = 0;
             }
         }
@@ -112,7 +101,7 @@ int main()
     /* アームの初期化 */
     PWM_Servo_Start();
     CyDelay(200);
-    for(j=DOWN;j>UP;j--)//7500が中心+に動かすと下へ
+    for(j=DOWN;j>4000;j--)//7500が中心+に動かすと下へ
     {
         angle_keep(j);
         CyDelayUs(50);
@@ -121,11 +110,11 @@ int main()
     while(Debug_Switch_Read()==1){//ボタン押したらスタート
         I2C_LCD_Position(1u,0u);
         I2C_LCD_1_PrintString("Are You Ready!!");
-        angle_keep(UP);
+        angle_keep(4000);
         PWM_Servo(GRAB_BALL,GRAB);
     }
     let.grab = GRAB;
-    let.updown = UP;
+    let.updown = 4000;
     I2C_LCD_1_Clear();
     CyDelay(400);
     

@@ -1,6 +1,48 @@
 
 #include "intelligent_robo.h"
 
+void set_color(Let *let)
+{
+    uint8 i;
+    
+    if(let->color == RED)
+    {
+        for(i = 0;i > LED_LENGTH;i++)
+        {
+            rgb[i].r = 100;
+            rgb[i].g = 0;
+            rgb[i].b = 0;
+        }
+    }
+    else if(let->color == BLUE)
+    {
+        for(i = 0;i < LED_LENGTH;i++)
+        {
+            rgb[i].r = 0;
+            rgb[i].g = 0;
+            rgb[i].b = 100;
+        }
+    }
+    else if(let->color == YELLO)
+    {
+        for(i = 0;i < LED_LENGTH;i++)
+        {
+            rgb[i].r = 0;
+            rgb[i].g = 50;
+            rgb[i].b = 50;
+        }
+    }
+    else if(let->color == MISS)
+    {        
+        for(i = 0;i < LED_LENGTH;i++)
+        {
+            rgb[i].r = 0;
+            rgb[i].g = 0;
+            rgb[i].b = 0;
+        }   
+    }
+}
+
 void Color_Sensor(Let *let, Color *color)
 {
     uint8 r=0,g=0,b=0,x=0;
@@ -44,8 +86,6 @@ void Color_Sensor(Let *let, Color *color)
             let->color = RED;
             I2C_LCD_Position(1u,7u);
             I2C_LCD_1_PrintString("RED");
-            rgb[0].r = 150;
-            rgb[1].r = 150;
         }
     }
     else if((r < b) && (r < g))
@@ -54,13 +94,12 @@ void Color_Sensor(Let *let, Color *color)
         I2C_LCD_Position(1u,7u);
         I2C_LCD_1_PrintString("BLUE");
     }
-    if((color->g_max - color->g_min) > 15)
+    if((color->g_max - color->g_min) > 30)
     {
         let->color = MISS;
         I2C_LCD_Position(1u,7u);
         I2C_LCD_1_PrintString("MISS");
     }
-    
     
     sprintf(value, "r=%3d g=%3d",r,g);
     I2C_LCD_Position(0u,0u);
@@ -68,10 +107,10 @@ void Color_Sensor(Let *let, Color *color)
     sprintf(value, "b=%3d",b);
     I2C_LCD_Position(1u,0u);
     I2C_LCD_1_PrintString(value);
-    
+    /*
     sprintf(value, "r=%3d g=%3d b=%3d\n",r,g,b);
     UART_Line_Sensor_PutString(value);
-    
+    */
     return;
 }
 
@@ -114,6 +153,7 @@ void Ball_Shoot(Let *let)
             let->number++;
             let->area++;
             let->mode = MODE_LINE_TRACE;
+            //set_color(let);
             return;
         }
     }
@@ -150,6 +190,7 @@ void Ball_Shoot(Let *let)
             let->area++;
             let->color = MISS;
             let->mode = MODE_LINE_TRACE;
+            //set_color(let);
             return;
         }
     }
@@ -242,7 +283,7 @@ void Return(Let *let)
             PID_init(let);
             UART_Line_Sensor_ClearRxBuffer();
             let->slave.Trans = 0;
-            limit = 40;
+            limit = 35;
         }else
         if(step == 6)
         {
@@ -336,7 +377,7 @@ void Return(Let *let)
             PID_init(let);
             UART_Line_Sensor_ClearRxBuffer();
             let->slave.Trans = 0;
-            limit = 40;
+            limit = 35;
         }else
         if(step == 6)
         {
@@ -418,7 +459,7 @@ void approach_2(Let *let)
         Motor_Right(-1200);//時計回り
         Motor_Left(1200);
         let->count_r = let->count_r + 0.3;
-        if(let->d[0] < 110)
+        if(let->d[0] < 105)
         {
             step = 4;
         }
@@ -428,7 +469,7 @@ void approach_2(Let *let)
         Motor_Right(1200);
         Motor_Left(-1200);
         let->count_r = let->count_r - 0.3;
-        if(let->d[2] < 115)
+        if(let->d[2] < 112)
         {
             step = 4;
         }
@@ -945,6 +986,7 @@ void Catch_Ball(Let *let, Color *color){
         color->g_max = 0;
         color->g_min = 255;
         let->mode = MODE_RETURN;
+        //set_color(let);
         return;
     }
     count++;
@@ -979,8 +1021,8 @@ void Start(Let *let)
         limit = 0;
         if(let->slave.Trans)
         {            
-            //let->mode = MODE_SHOOTING_TENNIS_BALL;
-            let->mode = MODE_LINE_TRACE;
+            let->mode = MODE_SHOOTING_TENNIS_BALL;
+            //let->mode = MODE_LINE_TRACE;
             step++;
             count = 0;
             return;
@@ -994,8 +1036,8 @@ void Start(Let *let)
     }else
     if(step == 3)
     {
-        //let->mode = MODE_SHOOTING_TENNIS_BALL;   
-        let->mode = MODE_LINE_TRACE;
+        let->mode = MODE_SHOOTING_TENNIS_BALL;   
+        //let->mode = MODE_LINE_TRACE;
         limit = 0;
         return;
     }

@@ -95,6 +95,7 @@ void Shooting_tennis_ball(Let *let);
 void Catch_Ball(Let *let, Color *color);
 void Line_Trace(Let *let,uint8 mode);
 /* センサー系 */
+void set_color(Let *let);
 void Color_Sensor(Let *let, Color *color);
 void PSD_Sensor(Let *let);
 /* アクチュエータ系 */

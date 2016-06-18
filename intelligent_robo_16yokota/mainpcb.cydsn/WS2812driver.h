@@ -3,7 +3,7 @@
 
 #include <project.h>
 
-#define LED_LENGTH 2
+#define LED_LENGTH 8
 
 typedef struct _RGB_tag{
 	unsigned char g;
@@ -19,5 +19,4 @@ void isr_reset();
 void isr_fifo_empty();
 void transfer_LEDdriver();
 void set_next_color();
-
 #endif /* WS2812DRIVER_H */

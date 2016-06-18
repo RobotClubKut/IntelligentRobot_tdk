@@ -3,14 +3,14 @@
 void isr_systick(){
     tick++;
     if( (tick&0xf) == 0 ){
-        //set_next_color();   // exec each 16ms
-        WS2812driver_1_write2fifo((unsigned char*)&rgb[0], 6);//9bit送信できる、要するに3つづつ制御できるっぽい
+        set_next_color();   // exec each 16ms
+        //WS2812driver_1_write2fifo((unsigned char*)&rgb[0], 6);//9bit送信できる、要するに3つづつ制御できるっぽい
     }
 }
 
 // transfer & reset done
 void isr_reset(){
-    //transfer_LEDdriver();
+    transfer_LEDdriver();
 }
 
 // fifo empty. fill fifo.
