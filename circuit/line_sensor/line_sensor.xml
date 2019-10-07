@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:/Users/Ringo/kiCad/intelligent_robo/line_sensor/line_sensor.sch</source>
+    <date>2016/02/20 15:50:59</date>
+    <tool>Eeschema (2015-01-16 BZR 5376)-product</tool>
+  </design>
+  <components>
+    <comp ref="U3">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56BE8E70</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56BEE0CC</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56BEE8E9</tstamp>
+    </comp>
+    <comp ref="U4">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5C88A</tstamp>
+    </comp>
+    <comp ref="R8">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5C890</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5C8B0</tstamp>
+    </comp>
+    <comp ref="U7">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5CCDC</tstamp>
+    </comp>
+    <comp ref="R15">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5CCE2</tstamp>
+    </comp>
+    <comp ref="R11">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5CD02</tstamp>
+    </comp>
+    <comp ref="U8">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5CD0A</tstamp>
+    </comp>
+    <comp ref="R16">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5CD10</tstamp>
+    </comp>
+    <comp ref="R12">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5CD30</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D155</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D15B</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D17B</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D183</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D189</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D1A9</tstamp>
+    </comp>
+    <comp ref="U5">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D1B1</tstamp>
+    </comp>
+    <comp ref="R13">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D1B7</tstamp>
+    </comp>
+    <comp ref="R9">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D1D7</tstamp>
+    </comp>
+    <comp ref="U6">
+      <value>LBR_127HLD</value>
+      <footprint>user_sensor:RPR-220</footprint>
+      <libsource lib="RoboKUT_sensor" part="LBR_127HLD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D1DF</tstamp>
+    </comp>
+    <comp ref="R14">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D1E5</tstamp>
+    </comp>
+    <comp ref="R10">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C5D205</tstamp>
+    </comp>
+    <comp ref="U9">
+      <value>CY8C4245AXI-483</value>
+      <footprint>Housings_QFP:LQFP-44_10x10mm_Pitch0.8mm</footprint>
+      <libsource lib="RoboKUT_uC" part="CY8C4245AXI-483"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C60BAA</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>0.1uF</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C61F5D</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C61FAE</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>0.1uF</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C628AF</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_1206</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C628B5</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C63499</tstamp>
+    </comp>
+    <comp ref="CN1">
+      <value>PSoC_SWD</value>
+      <footprint>user_conn:DF1E_5P</footprint>
+      <libsource lib="RoboKUT_conn" part="PSoC_SWD"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C637BB</tstamp>
+    </comp>
+    <comp ref="P1">
+      <value>CONN_4_KRP</value>
+      <footprint>user_conn:DF1E_4P</footprint>
+      <libsource lib="RoboKUT_conn_KRP" part="CONN_4_KRP"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C643DF</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C7144F</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>2200pF</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C7175D</tstamp>
+    </comp>
+    <comp ref="R17">
+      <value>R</value>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C812F1</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>LED</value>
+      <libsource lib="device" part="LED"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C8167E</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C_Small">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="LED">
+      <footprints>
+        <fp>LED-3MM</fp>
+        <fp>LED-5MM</fp>
+        <fp>LED-10MM</fp>
+        <fp>LED-0603</fp>
+        <fp>LED-0805</fp>
+        <fp>LED-1206</fp>
+        <fp>LEDV</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+        <fp>Resistor_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn" part="PSoC_SWD">
+      <description>Molex KKseries 5P PSoC SWD</description>
+      <fields>
+        <field name="Reference">CN</field>
+        <field name="Value">PSoC_SWD</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SDAT" type="output"/>
+        <pin num="2" name="SCLK" type="output"/>
+        <pin num="3" name="XRES" type="output"/>
+        <pin num="4" name="GND" type="power_out"/>
+        <pin num="5" name="VTARG" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn_KRP" part="CONN_4_KRP">
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_4_KRP</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PIN1" type="BiDi"/>
+        <pin num="2" name="PIN2" type="BiDi"/>
+        <pin num="3" name="PIN3" type="BiDi"/>
+        <pin num="4" name="PIN4" type="BiDi"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_sensor" part="LBR_127HLD">
+      <description>PhotoReflector</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LBR_127HLD</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="input"/>
+        <pin num="2" name="K" type="input"/>
+        <pin num="3" name="E" type="passive"/>
+        <pin num="4" name="C" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_uC" part="CY8C4245AXI-483">
+      <description>PSoC4</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">CY8C4245AXI-483</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VSS" type="BiDi"/>
+        <pin num="2" name="P2[0]" type="BiDi"/>
+        <pin num="3" name="P2[1]" type="BiDi"/>
+        <pin num="4" name="P2[2]" type="BiDi"/>
+        <pin num="5" name="P2[3]" type="BiDi"/>
+        <pin num="6" name="P2[4]" type="BiDi"/>
+        <pin num="7" name="P2[5]" type="BiDi"/>
+        <pin num="8" name="P2[6]" type="BiDi"/>
+        <pin num="9" name="P2[7]" type="BiDi"/>
+        <pin num="10" name="VSS" type="BiDi"/>
+        <pin num="11" name="P3[0]" type="BiDi"/>
+        <pin num="12" name="P3[1]" type="input"/>
+        <pin num="13" name="P3[2]_SWDIO" type="input"/>
+        <pin num="14" name="P3[3]_SWDCLK" type="input"/>
+        <pin num="15" name="P3[4]" type="input"/>
+        <pin num="16" name="P3[5]" type="input"/>
+        <pin num="17" name="P3[6]" type="input"/>
+        <pin num="18" name="P3[7]" type="BiDi"/>
+        <pin num="19" name="VDDD" type="input"/>
+        <pin num="20" name="P4[0]" type="input"/>
+        <pin num="21" name="P4[1]" type="input"/>
+        <pin num="22" name="P4[2]" type="input"/>
+        <pin num="23" name="P4[3]" type="input"/>
+        <pin num="24" name="P0[0]" type="input"/>
+        <pin num="25" name="P0[1]" type="input"/>
+        <pin num="26" name="P0[2]" type="input"/>
+        <pin num="27" name="P0[3]" type="input"/>
+        <pin num="28" name="P0[4]" type="input"/>
+        <pin num="29" name="P0[5]" type="input"/>
+        <pin num="30" name="P0[6]" type="input"/>
+        <pin num="31" name="P0[7]" type="input"/>
+        <pin num="32" name="XRES" type="passive"/>
+        <pin num="33" name="VCCD" type="passive"/>
+        <pin num="34" name="VDDD" type="BiDi"/>
+        <pin num="35" name="VDDA" type="BiDi"/>
+        <pin num="36" name="VSSA" type="BiDi"/>
+        <pin num="37" name="P1[0]" type="BiDi"/>
+        <pin num="38" name="P1[1]" type="BiDi"/>
+        <pin num="39" name="P1[2]" type="BiDi"/>
+        <pin num="40" name="p1[3]" type="BiDi"/>
+        <pin num="41" name="P1[4]" type="BiDi"/>
+        <pin num="42" name="P1[5]" type="BiDi"/>
+        <pin num="43" name="P1[6]" type="BiDi"/>
+        <pin num="44" name="P1[7]" type="BiDi"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="device">
+      <uri>C:\Program Files\KiCad\share\kicad\library\device.lib</uri>
+    </library>
+    <library logical="RoboKUT_conn">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_conn.lib</uri>
+    </library>
+    <library logical="RoboKUT_conn_KRP">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_conn_KRP.lib</uri>
+    </library>
+    <library logical="RoboKUT_sensor">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_sensor.lib</uri>
+    </library>
+    <library logical="RoboKUT_uC">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_uC.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(R14-Pad2)">
+      <node ref="R14" pin="2"/>
+      <node ref="U6" pin="1"/>
+    </net>
+    <net code="2" name="Net-(R13-Pad2)">
+      <node ref="R13" pin="2"/>
+      <node ref="U5" pin="1"/>
+    </net>
+    <net code="3" name="+5V">
+      <node ref="U1" pin="4"/>
+      <node ref="R5" pin="1"/>
+      <node ref="R16" pin="1"/>
+      <node ref="U8" pin="4"/>
+      <node ref="R6" pin="1"/>
+      <node ref="U2" pin="4"/>
+      <node ref="R8" pin="1"/>
+      <node ref="R17" pin="1"/>
+      <node ref="CN1" pin="5"/>
+      <node ref="P1" pin="1"/>
+      <node ref="U5" pin="4"/>
+      <node ref="U9" pin="19"/>
+      <node ref="U9" pin="34"/>
+      <node ref="U9" pin="33"/>
+      <node ref="R13" pin="1"/>
+      <node ref="U9" pin="35"/>
+      <node ref="R14" pin="1"/>
+      <node ref="U6" pin="4"/>
+      <node ref="R7" pin="1"/>
+      <node ref="U3" pin="4"/>
+      <node ref="U4" pin="4"/>
+      <node ref="R15" pin="1"/>
+      <node ref="U7" pin="4"/>
+      <node ref="C5" pin="2"/>
+      <node ref="C2" pin="1"/>
+      <node ref="C7" pin="1"/>
+      <node ref="C4" pin="2"/>
+      <node ref="C3" pin="1"/>
+    </net>
+    <net code="4" name="GND">
+      <node ref="C2" pin="2"/>
+      <node ref="R3" pin="2"/>
+      <node ref="U4" pin="2"/>
+      <node ref="U1" pin="2"/>
+      <node ref="R12" pin="2"/>
+      <node ref="C3" pin="2"/>
+      <node ref="C4" pin="1"/>
+      <node ref="U8" pin="2"/>
+      <node ref="R11" pin="2"/>
+      <node ref="R1" pin="2"/>
+      <node ref="C5" pin="1"/>
+      <node ref="U2" pin="2"/>
+      <node ref="U6" pin="2"/>
+      <node ref="U5" pin="2"/>
+      <node ref="R2" pin="2"/>
+      <node ref="R10" pin="2"/>
+      <node ref="U3" pin="2"/>
+      <node ref="C7" pin="2"/>
+      <node ref="U7" pin="2"/>
+      <node ref="R4" pin="2"/>
+      <node ref="U9" pin="10"/>
+      <node ref="U9" pin="1"/>
+      <node ref="R9" pin="2"/>
+      <node ref="CN1" pin="4"/>
+      <node ref="P1" pin="2"/>
+      <node ref="D1" pin="1"/>
+      <node ref="C6" pin="2"/>
+      <node ref="C1" pin="1"/>
+    </net>
+    <net code="5" name="Net-(R7-Pad2)">
+      <node ref="U3" pin="1"/>
+      <node ref="R7" pin="2"/>
+    </net>
+    <net code="6" name="Net-(U9-Pad39)">
+      <node ref="U9" pin="39"/>
+    </net>
+    <net code="7" name="Net-(R16-Pad2)">
+      <node ref="R16" pin="2"/>
+      <node ref="U8" pin="1"/>
+    </net>
+    <net code="8" name="Net-(R6-Pad2)">
+      <node ref="U2" pin="1"/>
+      <node ref="R6" pin="2"/>
+    </net>
+    <net code="9" name="Net-(R5-Pad2)">
+      <node ref="U1" pin="1"/>
+      <node ref="R5" pin="2"/>
+    </net>
+    <net code="10" name="Net-(R15-Pad2)">
+      <node ref="U7" pin="1"/>
+      <node ref="R15" pin="2"/>
+    </net>
+    <net code="11" name="Net-(R8-Pad2)">
+      <node ref="R8" pin="2"/>
+      <node ref="U4" pin="1"/>
+    </net>
+    <net code="12" name="Net-(U9-Pad18)">
+      <node ref="U9" pin="18"/>
+    </net>
+    <net code="13" name="Net-(U9-Pad12)">
+      <node ref="U9" pin="12"/>
+    </net>
+    <net code="14" name="Net-(U9-Pad15)">
+      <node ref="U9" pin="15"/>
+    </net>
+    <net code="15" name="Net-(U9-Pad16)">
+      <node ref="U9" pin="16"/>
+    </net>
+    <net code="16" name="Net-(U9-Pad17)">
+      <node ref="U9" pin="17"/>
+    </net>
+    <net code="17" name="Net-(U9-Pad20)">
+      <node ref="U9" pin="20"/>
+    </net>
+    <net code="18" name="Net-(U9-Pad21)">
+      <node ref="U9" pin="21"/>
+    </net>
+    <net code="19" name="Net-(U9-Pad23)">
+      <node ref="U9" pin="23"/>
+    </net>
+    <net code="20" name="Net-(U9-Pad24)">
+      <node ref="U9" pin="24"/>
+    </net>
+    <net code="21" name="Net-(U9-Pad25)">
+      <node ref="U9" pin="25"/>
+    </net>
+    <net code="22" name="Net-(U9-Pad26)">
+      <node ref="U9" pin="26"/>
+    </net>
+    <net code="23" name="Net-(U9-Pad27)">
+      <node ref="U9" pin="27"/>
+    </net>
+    <net code="24" name="Net-(U9-Pad30)">
+      <node ref="U9" pin="30"/>
+    </net>
+    <net code="25" name="Net-(U9-Pad31)">
+      <node ref="U9" pin="31"/>
+    </net>
+    <net code="26" name="Net-(U9-Pad36)">
+      <node ref="U9" pin="36"/>
+    </net>
+    <net code="27" name="Net-(D1-Pad2)">
+      <node ref="R17" pin="2"/>
+      <node ref="D1" pin="2"/>
+    </net>
+    <net code="28" name="Net-(U9-Pad37)">
+      <node ref="U9" pin="37"/>
+    </net>
+    <net code="29" name="Net-(C6-Pad1)">
+      <node ref="C6" pin="1"/>
+      <node ref="U9" pin="22"/>
+    </net>
+    <net code="30" name="Net-(U9-Pad38)">
+      <node ref="U9" pin="38"/>
+    </net>
+    <net code="31" name="Net-(U9-Pad40)">
+      <node ref="U9" pin="40"/>
+    </net>
+    <net code="32" name="Net-(U9-Pad41)">
+      <node ref="U9" pin="41"/>
+    </net>
+    <net code="33" name="Net-(U9-Pad42)">
+      <node ref="U9" pin="42"/>
+    </net>
+    <net code="34" name="Net-(U9-Pad43)">
+      <node ref="U9" pin="43"/>
+    </net>
+    <net code="35" name="Net-(U9-Pad11)">
+      <node ref="U9" pin="11"/>
+    </net>
+    <net code="36" name="UART/TX">
+      <node ref="U9" pin="29"/>
+      <node ref="P1" pin="4"/>
+    </net>
+    <net code="37" name="Net-(C1-Pad2)">
+      <node ref="U9" pin="44"/>
+      <node ref="C1" pin="2"/>
+    </net>
+    <net code="38" name="PIN_7">
+      <node ref="U5" pin="3"/>
+      <node ref="U9" pin="8"/>
+      <node ref="R9" pin="1"/>
+    </net>
+    <net code="39" name="PIN_8">
+      <node ref="U6" pin="3"/>
+      <node ref="R10" pin="1"/>
+      <node ref="U9" pin="9"/>
+    </net>
+    <net code="40" name="PIN_6">
+      <node ref="R12" pin="1"/>
+      <node ref="U8" pin="3"/>
+      <node ref="U9" pin="7"/>
+    </net>
+    <net code="41" name="PIN_5">
+      <node ref="U7" pin="3"/>
+      <node ref="R11" pin="1"/>
+      <node ref="U9" pin="6"/>
+    </net>
+    <net code="42" name="PIN_4">
+      <node ref="R2" pin="1"/>
+      <node ref="U2" pin="3"/>
+      <node ref="U9" pin="5"/>
+    </net>
+    <net code="43" name="PIN_3">
+      <node ref="R1" pin="1"/>
+      <node ref="U9" pin="4"/>
+      <node ref="U1" pin="3"/>
+    </net>
+    <net code="44" name="PIN_2">
+      <node ref="U4" pin="3"/>
+      <node ref="U9" pin="3"/>
+      <node ref="R4" pin="1"/>
+    </net>
+    <net code="45" name="PIN_1">
+      <node ref="U9" pin="2"/>
+      <node ref="U3" pin="3"/>
+      <node ref="R3" pin="1"/>
+    </net>
+    <net code="46" name="XRES">
+      <node ref="U9" pin="32"/>
+      <node ref="CN1" pin="3"/>
+    </net>
+    <net code="47" name="UART/RX">
+      <node ref="U9" pin="28"/>
+      <node ref="P1" pin="3"/>
+    </net>
+    <net code="48" name="SWDCLK">
+      <node ref="CN1" pin="2"/>
+      <node ref="U9" pin="14"/>
+    </net>
+    <net code="49" name="SWDIO">
+      <node ref="CN1" pin="1"/>
+      <node ref="U9" pin="13"/>
+    </net>
+  </nets>
+</export>

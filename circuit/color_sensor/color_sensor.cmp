@@ -1,0 +1,80 @@
+Cmp-Mod V01 Created by Cvpcb (2015-01-16 BZR 5376)-product   date = 2015/12/25 23:32:05
+
+BeginCmp
+TimeStamp = /5674E3E5;
+Reference = C1;
+ValeurCmp = 0.1μF;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /5674E2CB;
+Reference = color_sensor1;
+ValeurCmp = s11059-02DT;
+IdModule  = user_IC:S11059-02DT;
+EndCmp
+
+BeginCmp
+TimeStamp = /567601DB;
+Reference = D1;
+ValeurCmp = LED;
+IdModule  = user_IC:LED_SMD;
+EndCmp
+
+BeginCmp
+TimeStamp = /56760418;
+Reference = D2;
+ValeurCmp = LED;
+IdModule  = user_IC:LED_SMD;
+EndCmp
+
+BeginCmp
+TimeStamp = /56778473;
+Reference = P1;
+ValeurCmp = CONN_5_KRP;
+IdModule  = KRL_CONN:white_L_conn_5;
+EndCmp
+
+BeginCmp
+TimeStamp = /567791C1;
+Reference = Q1;
+ValeurCmp = Q_NMOS_GSD;
+IdModule  = user_IC:sot23_a;
+EndCmp
+
+BeginCmp
+TimeStamp = /5674E387;
+Reference = R1;
+ValeurCmp = 2.2kΩ;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /5674E309;
+Reference = R2;
+ValeurCmp = 2.2kΩ;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56760177;
+Reference = R3;
+ValeurCmp = 120Ω;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56760412;
+Reference = R4;
+ValeurCmp = 120Ω;
+IdModule  = Capacitors_SMD:C_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /567D3846;
+Reference = R5;
+ValeurCmp = 1kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+EndListe

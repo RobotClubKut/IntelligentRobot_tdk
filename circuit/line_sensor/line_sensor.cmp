@@ -1,0 +1,255 @@
+Cmp-Mod V01 Created by Cvpcb (2015-01-16 BZR 5376)-product   date = 2016/02/20 15:52:17
+
+BeginCmp
+TimeStamp = /56C7144F;
+Reference = C1;
+ValeurCmp = 1uF;
+IdModule  = Resistors_SMD:R_0805_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C61F5D;
+Reference = C2;
+ValeurCmp = 0.1uF;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C61FAE;
+Reference = C3;
+ValeurCmp = 1uF;
+IdModule  = Resistors_SMD:R_0805_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C628AF;
+Reference = C4;
+ValeurCmp = 0.1uF;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C628B5;
+Reference = C5;
+ValeurCmp = 1uF;
+IdModule  = Resistors_SMD:R_1206;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C7175D;
+Reference = C6;
+ValeurCmp = 2200pF;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C63499;
+Reference = C7;
+ValeurCmp = 1uF;
+IdModule  = Resistors_SMD:R_0805_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C637BB;
+Reference = CN1;
+ValeurCmp = PSoC_SWD;
+IdModule  = user_conn:DF1E_5P;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C8167E;
+Reference = D1;
+ValeurCmp = LED;
+IdModule  = user_IC:LED_3528;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C643DF;
+Reference = P1;
+ValeurCmp = CONN_4_KRP;
+IdModule  = user_conn:DF1E_4P;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D17B;
+Reference = R1;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D1A9;
+Reference = R2;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56BEE8E9;
+Reference = R3;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5C8B0;
+Reference = R4;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D15B;
+Reference = R5;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D189;
+Reference = R6;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56BEE0CC;
+Reference = R7;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5C890;
+Reference = R8;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D1D7;
+Reference = R9;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D205;
+Reference = R10;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5CD02;
+Reference = R11;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5CD30;
+Reference = R12;
+ValeurCmp = 4.7kΩ;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D1B7;
+Reference = R13;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D1E5;
+Reference = R14;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5CCE2;
+Reference = R15;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5CD10;
+Reference = R16;
+ValeurCmp = 120Ω;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C812F1;
+Reference = R17;
+ValeurCmp = R;
+IdModule  = Resistors_SMD:R_0603_HandSoldering;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D155;
+Reference = U1;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D183;
+Reference = U2;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56BE8E70;
+Reference = U3;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5C88A;
+Reference = U4;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D1B1;
+Reference = U5;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5D1DF;
+Reference = U6;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5CCDC;
+Reference = U7;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C5CD0A;
+Reference = U8;
+ValeurCmp = LBR_127HLD;
+IdModule  = user_sensor:RPR-220;
+EndCmp
+
+BeginCmp
+TimeStamp = /56C60BAA;
+Reference = U9;
+ValeurCmp = CY8C4245AXI-483;
+IdModule  = Housings_QFP:LQFP-44_10x10mm_Pitch0.8mm;
+EndCmp
+
+EndListe

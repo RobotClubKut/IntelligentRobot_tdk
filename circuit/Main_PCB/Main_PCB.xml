@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:\Users\Ringo\kiCad\intelligent_robo\Main_PCB\Main_PCB.sch</source>
+    <date>2016/03/04 22:17:25</date>
+    <tool>Eeschema (2015-01-16 BZR 5376)-product</tool>
+  </design>
+  <components>
+    <comp ref="U1">
+      <value>CY8CKIT-059_Target</value>
+      <footprint>user_IC:PSoC_5LP_Prototyping_Kit</footprint>
+      <libsource lib="RoboKUT_uC" part="CY8CKIT-059_Target"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>568012A5</tstamp>
+    </comp>
+    <comp ref="P3">
+      <value>DF1E_5P_DS</value>
+      <footprint>user_conn:DF1E_5P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF1E_5P_DS"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56801916</tstamp>
+    </comp>
+    <comp ref="CN1">
+      <value>DF22L-2P</value>
+      <footprint>user_conn:CONN_RED_2P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF22L-2P"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C89C0C</tstamp>
+    </comp>
+    <comp ref="P4">
+      <value>CONN_4_KRP</value>
+      <footprint>user_conn:DF1E_4P</footprint>
+      <libsource lib="RoboKUT_conn_KRP" part="CONN_4_KRP"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C98366</tstamp>
+    </comp>
+    <comp ref="P1">
+      <value>CONN_01X03</value>
+      <footprint>Pin_Headers:Pin_Header_Angled_1x03</footprint>
+      <libsource lib="conn" part="CONN_01X03"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C988EE</tstamp>
+    </comp>
+    <comp ref="P2">
+      <value>CONN_01X03</value>
+      <footprint>Pin_Headers:Pin_Header_Angled_1x03</footprint>
+      <libsource lib="conn" part="CONN_01X03"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C98968</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C98B98</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C98C29</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C98F7C</tstamp>
+    </comp>
+    <comp ref="CN2">
+      <value>DF22-2P</value>
+      <footprint>user_conn:CONN_RED_2P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF22-2P"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C9F2D4</tstamp>
+    </comp>
+    <comp ref="CN3">
+      <value>DF22-2P</value>
+      <footprint>user_conn:CONN_RED_2P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF22-2P"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56C9F3CC</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56CA29AA</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>4700uF</value>
+      <footprint>Capacitors_ThroughHole:Capacitor22x41RM10</footprint>
+      <libsource lib="device" part="CP"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56CA2A08</tstamp>
+    </comp>
+    <comp ref="P5">
+      <value>DF1E_3P_DS</value>
+      <footprint>user_conn:DF1E_3P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF1E_3P_DS"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56CDD32C</tstamp>
+    </comp>
+    <comp ref="P6">
+      <value>DF1E_3P_DS</value>
+      <footprint>user_conn:DF1E_3P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF1E_3P_DS"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56CDD6C1</tstamp>
+    </comp>
+    <comp ref="P7">
+      <value>CONN_01X04</value>
+      <footprint>Socket_Strips:Socket_Strip_Straight_1x04</footprint>
+      <libsource lib="conn" part="CONN_01X04"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56D9666B</tstamp>
+    </comp>
+    <comp ref="P8">
+      <value>DF1E_3P_DS</value>
+      <footprint>user_conn:DF1E_3P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF1E_3P_DS"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56D98E57</tstamp>
+    </comp>
+    <comp ref="P9">
+      <value>DF1E_3P_DS</value>
+      <footprint>user_conn:DF1E_3P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF1E_3P_DS"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56D9CCE2</tstamp>
+    </comp>
+    <comp ref="C8">
+      <value>1uF</value>
+      <footprint>Resistors_SMD:R_0805_HandSoldering</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>56D9D3FA</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>TA48M05F</value>
+      <footprint>user_IC:TA48M05F</footprint>
+      <libsource lib="RoboKUT_regul" part="TA48M05F"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C87DEA</tstamp>
+    </comp>
+    <comp ref="U3">
+      <value>TA48M033F</value>
+      <footprint>user_IC:TA48M05F</footprint>
+      <libsource lib="RoboKUT_regul" part="TA48M033F"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C87E41</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>0.1uF</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C87ECE</tstamp>
+    </comp>
+    <comp ref="C9">
+      <value>47uF</value>
+      <footprint>Capacitors_ThroughHole:Capacitor5x6RM2.5</footprint>
+      <libsource lib="device" part="CP"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C87F5E</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>0.1uF</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="C_Small"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C87FB0</tstamp>
+    </comp>
+    <comp ref="C10">
+      <value>47uF</value>
+      <footprint>Capacitors_ThroughHole:Capacitor5x6RM2.5</footprint>
+      <libsource lib="device" part="CP"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C8802C</tstamp>
+    </comp>
+    <comp ref="SW1">
+      <value>SWITCH_INV_MSM</value>
+      <footprint>user_SW:Toggle_Switch_1L</footprint>
+      <libsource lib="device" part="SWITCH_INV_MSM"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C88150</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>LED</value>
+      <footprint>user_IC:LED_HL_REG</footprint>
+      <libsource lib="device" part="LED"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C88C99</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>1kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C88D06</tstamp>
+    </comp>
+    <comp ref="SW2">
+      <value>SWITCH_INV_MSM</value>
+      <footprint>user_SW:Toggle_Switch_1L</footprint>
+      <libsource lib="device" part="SWITCH_INV_MSM"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C965B4</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>120Ω</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C96B93</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>330uF</value>
+      <footprint>Capacitors_SMD:c_elec_10x7.7</footprint>
+      <libsource lib="device" part="CP"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C96EE3</tstamp>
+    </comp>
+    <comp ref="Q1">
+      <value>MOS_N+pad</value>
+      <footprint>Transistors_TO-220:TO-220_FET-GDS_Horizontal</footprint>
+      <libsource lib="RoboKUT_IC" part="MOS_N+pad"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C97006</tstamp>
+    </comp>
+    <comp ref="CN4">
+      <value>DF22L-2P</value>
+      <footprint>user_conn:CONN_RED_2P</footprint>
+      <libsource lib="RoboKUT_conn" part="DF22L-2P"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C978E7</tstamp>
+    </comp>
+    <comp ref="D2">
+      <value>LED</value>
+      <footprint>user_IC:LED_HL_REG</footprint>
+      <libsource lib="device" part="LED"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C99A2B</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>1kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56C99C50</tstamp>
+    </comp>
+    <comp ref="R11">
+      <value>10kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/Power/" tstamps="/56C87D6A/"/>
+      <tstamp>56CDC30B</tstamp>
+    </comp>
+    <comp ref="U4">
+      <value>BTM7752G</value>
+      <footprint>user_IC:PG-DSO-36</footprint>
+      <libsource lib="RoboKUT_IC" part="BTM7752G"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C8772A</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>10kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9A9D5</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>10kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9AA91</tstamp>
+    </comp>
+    <comp ref="R9">
+      <value>1kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9AD2F</tstamp>
+    </comp>
+    <comp ref="U5">
+      <value>BTM7752G</value>
+      <footprint>user_IC:PG-DSO-36</footprint>
+      <libsource lib="RoboKUT_IC" part="BTM7752G"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9B081</tstamp>
+    </comp>
+    <comp ref="R8">
+      <value>10kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9B0AF</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>10kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9B0B9</tstamp>
+    </comp>
+    <comp ref="R10">
+      <value>1kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56C9B0CC</tstamp>
+    </comp>
+    <comp ref="R12">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56CDE6A6</tstamp>
+    </comp>
+    <comp ref="R13">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56CDE6E9</tstamp>
+    </comp>
+    <comp ref="R14">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56CDEB57</tstamp>
+    </comp>
+    <comp ref="R15">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56CDEB5D</tstamp>
+    </comp>
+    <comp ref="R17">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56CDEB87</tstamp>
+    </comp>
+    <comp ref="R16">
+      <value>4.7kΩ</value>
+      <footprint>Resistors_SMD:R_0603_HandSoldering</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/motor/" tstamps="/56C876E2/"/>
+      <tstamp>56CDECC8</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="device" part="LED">
+      <footprints>
+        <fp>LED-3MM</fp>
+        <fp>LED-5MM</fp>
+        <fp>LED-10MM</fp>
+        <fp>LED-0603</fp>
+        <fp>LED-0805</fp>
+        <fp>LED-1206</fp>
+        <fp>LEDV</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="CP">
+      <description>Polarised capacitor</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>Elko*</fp>
+        <fp>TantalC*</fp>
+        <fp>C*elec</fp>
+        <fp>c_elec*</fp>
+        <fp>SMD*_Pol</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C_Small">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+        <fp>Resistor_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="SWITCH_INV_MSM">
+      <description>Switch inverseur M S M</description>
+      <fields>
+        <field name="Reference">SW</field>
+        <field name="Value">SWITCH_INV_MSM</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_01X03">
+      <footprints>
+        <fp>Pin_Header_Straight_1X03</fp>
+        <fp>Pin_Header_Angled_1X03</fp>
+        <fp>Socket_Strip_Straight_1X03</fp>
+        <fp>Socket_Strip_Angled_1X03</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_01X03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_01X04">
+      <footprints>
+        <fp>Pin_Header_Straight_1X04</fp>
+        <fp>Pin_Header_Angled_1X04</fp>
+        <fp>Socket_Strip_Straight_1X04</fp>
+        <fp>Socket_Strip_Angled_1X04</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_01X04</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn" part="DF1E_3P_DS">
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">DF1E_3P_DS</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PIN1" type="BiDi"/>
+        <pin num="2" name="PIN2" type="BiDi"/>
+        <pin num="3" name="PIN3" type="BiDi"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn" part="DF1E_5P_DS">
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">DF1E_5P_DS</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PIN1" type="BiDi"/>
+        <pin num="2" name="PIN2" type="BiDi"/>
+        <pin num="3" name="PIN3" type="BiDi"/>
+        <pin num="4" name="PIN4" type="BiDi"/>
+        <pin num="5" name="PIN5" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn" part="DF22-2P">
+      <description>HIROSE DF22 WHITE 2P</description>
+      <fields>
+        <field name="Reference">CN</field>
+        <field name="Value">DF22-2P</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Vo1" type="power_in"/>
+        <pin num="2" name="Vo2" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn" part="DF22L-2P">
+      <description>HIROSE DF22 RED 2P</description>
+      <fields>
+        <field name="Reference">CN</field>
+        <field name="Value">DF22L-2P</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Vi+" type="power_out"/>
+        <pin num="2" name="Vi-" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_conn_KRP" part="CONN_4_KRP">
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_4_KRP</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PIN1" type="BiDi"/>
+        <pin num="2" name="PIN2" type="BiDi"/>
+        <pin num="3" name="PIN3" type="BiDi"/>
+        <pin num="4" name="PIN4" type="BiDi"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_IC" part="BTM7752G">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">BTM7752G</field>
+      </fields>
+      <pins>
+        <pin num="1" name="OUT1" type="input"/>
+        <pin num="2" name="OUT1" type="input"/>
+        <pin num="3" name="OUT1" type="input"/>
+        <pin num="4" name="OUT1" type="input"/>
+        <pin num="5" name="GND" type="input"/>
+        <pin num="6" name="GND" type="input"/>
+        <pin num="7" name="GND" type="input"/>
+        <pin num="8" name="GND" type="input"/>
+        <pin num="9" name="IN1" type="input"/>
+        <pin num="10" name="IN2" type="input"/>
+        <pin num="11" name="VS" type="input"/>
+        <pin num="12" name="VS" type="input"/>
+        <pin num="13" name="VS" type="input"/>
+        <pin num="14" name="VS" type="input"/>
+        <pin num="15" name="OUT2" type="input"/>
+        <pin num="16" name="OUT2" type="input"/>
+        <pin num="17" name="OUT2" type="input"/>
+        <pin num="18" name="OUT2" type="input"/>
+        <pin num="19" name="OUT2" type="input"/>
+        <pin num="20" name="OUT2" type="input"/>
+        <pin num="21" name="OUT2" type="input"/>
+        <pin num="22" name="OUT2" type="input"/>
+        <pin num="23" name="GND" type="input"/>
+        <pin num="24" name="GND" type="input"/>
+        <pin num="25" name="GND" type="input"/>
+        <pin num="26" name="GND" type="input"/>
+        <pin num="27" name="INH" type="input"/>
+        <pin num="28" name="IS" type="input"/>
+        <pin num="29" name="VS" type="input"/>
+        <pin num="30" name="VS" type="input"/>
+        <pin num="31" name="VS" type="input"/>
+        <pin num="32" name="VS" type="input"/>
+        <pin num="33" name="OUT1" type="input"/>
+        <pin num="34" name="OUT1" type="input"/>
+        <pin num="35" name="OUT1" type="input"/>
+        <pin num="36" name="OUT1" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_IC" part="MOS_N+pad">
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">MOS_N+pad</field>
+      </fields>
+      <pins>
+        <pin num="4" name="pad" type="input"/>
+        <pin num="D" name="D" type="passive"/>
+        <pin num="G" name="G" type="input"/>
+        <pin num="S" name="S" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_regul" part="TA48M033F">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TA48M033F</field>
+      </fields>
+      <pins>
+        <pin num="1" name="IN" type="input"/>
+        <pin num="2" name="OUT" type="input"/>
+        <pin num="3" name="GND" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_regul" part="TA48M05F">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TA48M05F</field>
+      </fields>
+      <pins>
+        <pin num="1" name="IN" type="power_in"/>
+        <pin num="2" name="OUT" type="power_out"/>
+        <pin num="3" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="RoboKUT_uC" part="CY8CKIT-059_Target">
+      <description>PSoC 5LP Prototyping Kit</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">CY8CKIT-059_Target</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="P3[0]" type="passive"/>
+        <pin num="3" name="P3[1]" type="passive"/>
+        <pin num="4" name="P3[2]_REF1" type="passive"/>
+        <pin num="5" name="P3[3]" type="passive"/>
+        <pin num="6" name="P3[4]" type="passive"/>
+        <pin num="7" name="P3[5]" type="passive"/>
+        <pin num="8" name="P3[6]" type="passive"/>
+        <pin num="9" name="P3[7]" type="passive"/>
+        <pin num="10" name="P15[0]" type="passive"/>
+        <pin num="11" name="P15[1]" type="passive"/>
+        <pin num="12" name="P15[2]_XTAL_OUT" type="passive"/>
+        <pin num="13" name="P15[3]_XTAL_IN" type="passive"/>
+        <pin num="14" name="P15[4]_CMOD" type="passive"/>
+        <pin num="15" name="P15[5]" type="passive"/>
+        <pin num="16" name="P0[0]" type="passive"/>
+        <pin num="17" name="P0[1]" type="passive"/>
+        <pin num="18" name="P0[2]_SAR1" type="passive"/>
+        <pin num="19" name="P0[3]_REF0" type="passive"/>
+        <pin num="20" name="P0[4]_SAR0" type="passive"/>
+        <pin num="21" name="P0[5]" type="passive"/>
+        <pin num="22" name="P0[6]" type="passive"/>
+        <pin num="23" name="P0[7]" type="passive"/>
+        <pin num="24" name="RESET" type="input"/>
+        <pin num="25" name="GND" type="power_in"/>
+        <pin num="26" name="VDD" type="power_in"/>
+        <pin num="27" name="P2[0]" type="passive"/>
+        <pin num="28" name="P2[1]_LED1" type="passive"/>
+        <pin num="29" name="P2[2]_SW1" type="passive"/>
+        <pin num="30" name="P2[3]" type="passive"/>
+        <pin num="31" name="P2[4]" type="passive"/>
+        <pin num="32" name="P2[5]" type="passive"/>
+        <pin num="33" name="P2[6]" type="passive"/>
+        <pin num="34" name="P2[7]" type="passive"/>
+        <pin num="35" name="P12[7]_UART_TX" type="passive"/>
+        <pin num="36" name="P12[6]_UART_RX" type="passive"/>
+        <pin num="37" name="P12[5]" type="passive"/>
+        <pin num="38" name="P12[4]" type="passive"/>
+        <pin num="39" name="P12[3]" type="passive"/>
+        <pin num="40" name="P12[2]" type="passive"/>
+        <pin num="41" name="P12[1]_I2C_SDA" type="passive"/>
+        <pin num="42" name="P12[0]_I2C_SCL" type="passive"/>
+        <pin num="43" name="P1[0]_SWDIO" type="passive"/>
+        <pin num="44" name="P1[1]_SWDCLK" type="passive"/>
+        <pin num="46" name="P1[2]" type="passive"/>
+        <pin num="47" name="P1[4]" type="passive"/>
+        <pin num="48" name="P1[5]" type="passive"/>
+        <pin num="49" name="P1[6]" type="passive"/>
+        <pin num="50" name="P1[7]" type="passive"/>
+        <pin num="51" name="GND" type="power_in"/>
+        <pin num="52" name="VDDIO" type="power_in"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="conn">
+      <uri>C:\Program Files\KiCad\share\kicad\library\conn.lib</uri>
+    </library>
+    <library logical="device">
+      <uri>C:\Program Files\KiCad\share\kicad\library\device.lib</uri>
+    </library>
+    <library logical="RoboKUT_conn">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_conn.lib</uri>
+    </library>
+    <library logical="RoboKUT_conn_KRP">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_conn_KRP.lib</uri>
+    </library>
+    <library logical="RoboKUT_IC">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_IC.lib</uri>
+    </library>
+    <library logical="RoboKUT_regul">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_regul.lib</uri>
+    </library>
+    <library logical="RoboKUT_uC">
+      <uri>C:\Users\Ringo\kiCad\kicad-library-master\component\RoboKUT_uC.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+5V">
+      <node ref="P7" pin="1"/>
+      <node ref="C8" pin="1"/>
+      <node ref="U2" pin="2"/>
+      <node ref="C9" pin="1"/>
+      <node ref="U1" pin="26"/>
+      <node ref="P6" pin="2"/>
+      <node ref="U1" pin="52"/>
+      <node ref="P5" pin="2"/>
+      <node ref="R1" pin="1"/>
+      <node ref="P4" pin="1"/>
+      <node ref="P8" pin="2"/>
+      <node ref="P9" pin="2"/>
+    </net>
+    <net code="2" name="GND">
+      <node ref="P3" pin="1"/>
+      <node ref="P4" pin="2"/>
+      <node ref="U1" pin="51"/>
+      <node ref="U5" pin="25"/>
+      <node ref="R7" pin="2"/>
+      <node ref="U5" pin="26"/>
+      <node ref="R5" pin="2"/>
+      <node ref="R6" pin="2"/>
+      <node ref="U5" pin="5"/>
+      <node ref="R9" pin="1"/>
+      <node ref="R10" pin="1"/>
+      <node ref="C4" pin="2"/>
+      <node ref="C3" pin="2"/>
+      <node ref="U4" pin="7"/>
+      <node ref="U4" pin="6"/>
+      <node ref="U4" pin="5"/>
+      <node ref="U4" pin="8"/>
+      <node ref="U4" pin="26"/>
+      <node ref="CN1" pin="2"/>
+      <node ref="C2" pin="2"/>
+      <node ref="U4" pin="25"/>
+      <node ref="C1" pin="2"/>
+      <node ref="U4" pin="24"/>
+      <node ref="P2" pin="1"/>
+      <node ref="U4" pin="23"/>
+      <node ref="P1" pin="1"/>
+      <node ref="U5" pin="23"/>
+      <node ref="U5" pin="24"/>
+      <node ref="R8" pin="2"/>
+      <node ref="U5" pin="8"/>
+      <node ref="U5" pin="7"/>
+      <node ref="U5" pin="6"/>
+      <node ref="U3" pin="3"/>
+      <node ref="P6" pin="1"/>
+      <node ref="P5" pin="1"/>
+      <node ref="C6" pin="2"/>
+      <node ref="U2" pin="3"/>
+      <node ref="U1" pin="1"/>
+      <node ref="C7" pin="2"/>
+      <node ref="C8" pin="2"/>
+      <node ref="Q1" pin="D"/>
+      <node ref="P8" pin="1"/>
+      <node ref="P7" pin="4"/>
+      <node ref="R3" pin="2"/>
+      <node ref="C10" pin="2"/>
+      <node ref="C9" pin="2"/>
+      <node ref="R2" pin="2"/>
+      <node ref="P9" pin="1"/>
+    </net>
+    <net code="3" name="COLOR_SDA">
+      <node ref="P7" pin="3"/>
+      <node ref="P3" pin="3"/>
+      <node ref="U1" pin="41"/>
+    </net>
+    <net code="4" name="COLOR_SCL">
+      <node ref="P3" pin="4"/>
+      <node ref="P7" pin="2"/>
+      <node ref="U1" pin="42"/>
+    </net>
+    <net code="5" name="PIN_3">
+      <node ref="U1" pin="4"/>
+      <node ref="P8" pin="3"/>
+    </net>
+    <net code="6" name="Net-(U1-Pad30)">
+      <node ref="U1" pin="30"/>
+    </net>
+    <net code="7" name="Net-(U1-Pad29)">
+      <node ref="U1" pin="29"/>
+    </net>
+    <net code="8" name="Net-(U1-Pad28)">
+      <node ref="U1" pin="28"/>
+    </net>
+    <net code="9" name="Net-(U1-Pad27)">
+      <node ref="U1" pin="27"/>
+    </net>
+    <net code="10" name="Net-(U1-Pad24)">
+      <node ref="U1" pin="24"/>
+    </net>
+    <net code="11" name="Net-(U1-Pad8)">
+      <node ref="U1" pin="8"/>
+    </net>
+    <net code="12" name="Net-(U1-Pad7)">
+      <node ref="U1" pin="7"/>
+    </net>
+    <net code="13" name="Net-(U1-Pad6)">
+      <node ref="U1" pin="6"/>
+    </net>
+    <net code="14" name="Net-(U1-Pad31)">
+      <node ref="U1" pin="31"/>
+    </net>
+    <net code="15" name="Net-(U1-Pad47)">
+      <node ref="U1" pin="47"/>
+    </net>
+    <net code="16" name="Net-(U1-Pad50)">
+      <node ref="U1" pin="50"/>
+    </net>
+    <net code="17" name="Net-(U1-Pad49)">
+      <node ref="U1" pin="49"/>
+    </net>
+    <net code="18" name="Net-(U1-Pad48)">
+      <node ref="U1" pin="48"/>
+    </net>
+    <net code="19" name="Net-(U1-Pad43)">
+      <node ref="U1" pin="43"/>
+    </net>
+    <net code="20" name="Net-(U1-Pad44)">
+      <node ref="U1" pin="44"/>
+    </net>
+    <net code="22" name="Net-(U1-Pad40)">
+      <node ref="U1" pin="40"/>
+    </net>
+    <net code="23" name="Net-(U1-Pad38)">
+      <node ref="U1" pin="38"/>
+    </net>
+    <net code="24" name="Net-(U1-Pad37)">
+      <node ref="U1" pin="37"/>
+    </net>
+    <net code="25" name="Net-(U1-Pad33)">
+      <node ref="U1" pin="33"/>
+    </net>
+    <net code="26" name="Net-(U1-Pad34)">
+      <node ref="U1" pin="34"/>
+    </net>
+    <net code="27" name="Net-(U1-Pad32)">
+      <node ref="U1" pin="32"/>
+    </net>
+    <net code="28" name="Net-(U1-Pad39)">
+      <node ref="U1" pin="39"/>
+    </net>
+    <net code="29" name="Net-(U1-Pad9)">
+      <node ref="U1" pin="9"/>
+    </net>
+    <net code="30" name="Net-(U1-Pad20)">
+      <node ref="U1" pin="20"/>
+    </net>
+    <net code="31" name="+3V3">
+      <node ref="C10" pin="1"/>
+      <node ref="U3" pin="2"/>
+      <node ref="P3" pin="2"/>
+    </net>
+    <net code="32" name="Net-(U1-Pad5)">
+      <node ref="U1" pin="5"/>
+    </net>
+    <net code="33" name="Net-(U1-Pad19)">
+      <node ref="U1" pin="19"/>
+    </net>
+    <net code="34" name="Net-(U1-Pad18)">
+      <node ref="U1" pin="18"/>
+    </net>
+    <net code="35" name="Net-(U1-Pad21)">
+      <node ref="U1" pin="21"/>
+    </net>
+    <net code="36" name="/motor/motor_a-OUT2">
+      <node ref="R5" pin="1"/>
+      <node ref="U4" pin="34"/>
+      <node ref="U4" pin="33"/>
+      <node ref="U4" pin="35"/>
+      <node ref="U4" pin="36"/>
+      <node ref="U4" pin="1"/>
+      <node ref="U4" pin="2"/>
+      <node ref="CN2" pin="2"/>
+      <node ref="U4" pin="3"/>
+      <node ref="U4" pin="4"/>
+    </net>
+    <net code="37" name="/motor/motor_b-OUT2">
+      <node ref="CN3" pin="1"/>
+      <node ref="U5" pin="3"/>
+      <node ref="U5" pin="2"/>
+      <node ref="U5" pin="34"/>
+      <node ref="R7" pin="1"/>
+      <node ref="U5" pin="36"/>
+      <node ref="U5" pin="35"/>
+      <node ref="U5" pin="4"/>
+      <node ref="U5" pin="33"/>
+      <node ref="U5" pin="1"/>
+    </net>
+    <net code="38" name="/motor/motor_b-OUT1">
+      <node ref="U5" pin="16"/>
+      <node ref="U5" pin="17"/>
+      <node ref="U5" pin="18"/>
+      <node ref="U5" pin="19"/>
+      <node ref="U5" pin="15"/>
+      <node ref="U5" pin="21"/>
+      <node ref="U5" pin="20"/>
+      <node ref="U5" pin="22"/>
+      <node ref="CN3" pin="2"/>
+      <node ref="R8" pin="1"/>
+    </net>
+    <net code="39" name="/motor/motor_a-OUT1">
+      <node ref="R6" pin="1"/>
+      <node ref="U4" pin="21"/>
+      <node ref="U4" pin="17"/>
+      <node ref="U4" pin="22"/>
+      <node ref="U4" pin="15"/>
+      <node ref="U4" pin="19"/>
+      <node ref="U4" pin="18"/>
+      <node ref="CN2" pin="1"/>
+      <node ref="U4" pin="20"/>
+      <node ref="U4" pin="16"/>
+    </net>
+    <net code="40" name="PIN_1">
+      <node ref="U1" pin="2"/>
+      <node ref="P5" pin="3"/>
+    </net>
+    <net code="41" name="VS">
+      <node ref="SW2" pin="1"/>
+      <node ref="U4" pin="32"/>
+      <node ref="U4" pin="31"/>
+      <node ref="U4" pin="12"/>
+      <node ref="C5" pin="1"/>
+      <node ref="U4" pin="30"/>
+      <node ref="U4" pin="29"/>
+      <node ref="U5" pin="13"/>
+      <node ref="U4" pin="13"/>
+      <node ref="CN4" pin="1"/>
+      <node ref="U4" pin="14"/>
+      <node ref="U4" pin="11"/>
+      <node ref="U5" pin="32"/>
+      <node ref="C2" pin="1"/>
+      <node ref="C1" pin="1"/>
+      <node ref="P2" pin="2"/>
+      <node ref="P1" pin="2"/>
+      <node ref="U5" pin="12"/>
+      <node ref="U5" pin="14"/>
+      <node ref="U5" pin="31"/>
+      <node ref="U5" pin="11"/>
+      <node ref="U5" pin="30"/>
+      <node ref="U5" pin="29"/>
+      <node ref="C3" pin="1"/>
+      <node ref="C4" pin="1"/>
+    </net>
+    <net code="42" name="sensor_LED">
+      <node ref="P3" pin="5"/>
+      <node ref="U1" pin="46"/>
+    </net>
+    <net code="43" name="IS_a">
+      <node ref="U4" pin="28"/>
+      <node ref="U1" pin="17"/>
+      <node ref="R9" pin="2"/>
+    </net>
+    <net code="44" name="IN_a-1">
+      <node ref="U1" pin="12"/>
+      <node ref="R12" pin="2"/>
+    </net>
+    <net code="45" name="IS_b">
+      <node ref="U5" pin="28"/>
+      <node ref="R10" pin="2"/>
+      <node ref="U1" pin="11"/>
+    </net>
+    <net code="46" name="Servo">
+      <node ref="R1" pin="2"/>
+      <node ref="U1" pin="22"/>
+      <node ref="P1" pin="3"/>
+      <node ref="P2" pin="3"/>
+    </net>
+    <net code="47" name="INH_b">
+      <node ref="R17" pin="1"/>
+      <node ref="U1" pin="10"/>
+    </net>
+    <net code="48" name="PIN_2">
+      <node ref="U1" pin="3"/>
+      <node ref="P6" pin="3"/>
+    </net>
+    <net code="49" name="RX/LineSensor">
+      <node ref="U1" pin="36"/>
+      <node ref="P4" pin="4"/>
+    </net>
+    <net code="50" name="INH_a">
+      <node ref="U1" pin="16"/>
+      <node ref="R16" pin="1"/>
+    </net>
+    <net code="51" name="TX/LineSensor">
+      <node ref="U1" pin="35"/>
+      <node ref="P4" pin="3"/>
+    </net>
+    <net code="52" name="Net-(U1-Pad25)">
+      <node ref="U1" pin="25"/>
+    </net>
+    <net code="53" name="IN_b-2">
+      <node ref="U1" pin="15"/>
+      <node ref="R15" pin="2"/>
+    </net>
+    <net code="54" name="IN_b-1">
+      <node ref="R14" pin="2"/>
+      <node ref="U1" pin="14"/>
+    </net>
+    <net code="55" name="PIN_PWM">
+      <node ref="P9" pin="3"/>
+      <node ref="U1" pin="23"/>
+    </net>
+    <net code="56" name="IN_a-2">
+      <node ref="R13" pin="2"/>
+      <node ref="U1" pin="13"/>
+    </net>
+    <net code="57" name="+8V">
+      <node ref="CN1" pin="1"/>
+      <node ref="SW1" pin="1"/>
+    </net>
+    <net code="58" name="Net-(R15-Pad1)">
+      <node ref="U5" pin="10"/>
+      <node ref="R15" pin="1"/>
+    </net>
+    <net code="59" name="Net-(R16-Pad2)">
+      <node ref="R16" pin="2"/>
+      <node ref="U4" pin="27"/>
+    </net>
+    <net code="60" name="Net-(R17-Pad2)">
+      <node ref="R17" pin="2"/>
+      <node ref="U5" pin="27"/>
+    </net>
+    <net code="61" name="Net-(R14-Pad1)">
+      <node ref="R14" pin="1"/>
+      <node ref="U5" pin="9"/>
+    </net>
+    <net code="62" name="Net-(R13-Pad1)">
+      <node ref="R13" pin="1"/>
+      <node ref="U4" pin="10"/>
+    </net>
+    <net code="63" name="Net-(R12-Pad1)">
+      <node ref="R12" pin="1"/>
+      <node ref="U4" pin="9"/>
+    </net>
+    <net code="64" name="Net-(D1-Pad1)">
+      <node ref="D1" pin="1"/>
+      <node ref="R2" pin="1"/>
+    </net>
+    <net code="65" name="Net-(C6-Pad1)">
+      <node ref="C7" pin="1"/>
+      <node ref="SW1" pin="2"/>
+      <node ref="C6" pin="1"/>
+      <node ref="U3" pin="1"/>
+      <node ref="D1" pin="2"/>
+      <node ref="U2" pin="1"/>
+      <node ref="SW1" pin="3"/>
+    </net>
+    <net code="66" name="Net-(D2-Pad1)">
+      <node ref="D2" pin="1"/>
+      <node ref="R3" pin="1"/>
+    </net>
+    <net code="67" name="Net-(Q1-Pad4)">
+      <node ref="Q1" pin="4"/>
+    </net>
+    <net code="68" name="Net-(D2-Pad2)">
+      <node ref="D2" pin="2"/>
+      <node ref="SW2" pin="2"/>
+      <node ref="SW2" pin="3"/>
+      <node ref="R4" pin="2"/>
+    </net>
+    <net code="69" name="PowerSW">
+      <node ref="Q1" pin="G"/>
+      <node ref="R4" pin="1"/>
+      <node ref="R11" pin="1"/>
+    </net>
+    <net code="70" name="Net-(C5-Pad2)">
+      <node ref="C5" pin="2"/>
+      <node ref="Q1" pin="S"/>
+      <node ref="R11" pin="2"/>
+      <node ref="CN4" pin="2"/>
+    </net>
+  </nets>
+</export>
